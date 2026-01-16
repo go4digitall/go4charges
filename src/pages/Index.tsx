@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { BundleSection } from "@/components/BundleSection";
 import { BenefitsSection } from "@/components/BenefitsSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
@@ -21,6 +22,9 @@ const Index = () => {
         <Header />
         <main className="flex-1">
           <HeroSection />
+          
+          {/* Bundle Section - Highlighted */}
+          <BundleSection />
           
           {/* Products Section */}
           <section id="products" className="container py-12 md:py-16">
