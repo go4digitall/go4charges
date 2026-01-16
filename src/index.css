@@ -2,56 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Vibrant Neon Theme - Inspired by Glow Board */
+    --background: 0 0% 98%;
+    --foreground: 230 30% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 230 30% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 230 30% 25%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Vibrant Yellow Neon - Primary */
+    --primary: 54 100% 50%;
+    --primary-foreground: 230 30% 25%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Lime Green Neon - Secondary */
+    --secondary: 84 100% 45%;
+    --secondary-foreground: 230 30% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Hot Pink/Magenta Neon - Accent */
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 15% 92%;
+    --muted-foreground: 230 20% 45%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 88%;
+    --input: 220 15% 92%;
+    --ring: 54 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Vibrant Neon Glow Colors */
+    --glow-yellow: 54 100% 50%;
+    --glow-lime: 84 100% 45%;
+    --glow-blue: 210 100% 50%;
+    --glow-pink: 210 100% 50%;
+    --glow-orange: 30 100% 50%;
+
+    /* Neon Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(54 100% 50%), hsl(84 100% 45%));
+    --gradient-neon: linear-gradient(135deg, hsl(210 100% 50%), hsl(30 100% 50%));
+    --gradient-light: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 100%));
+
+    /* Vibrant Glow Shadows */
+    --shadow-glow-yellow: 0 0 20px hsl(54 100% 50% / 0.5), 0 0 40px hsl(54 100% 50% / 0.3);
+    --shadow-glow-lime: 0 0 20px hsl(84 100% 45% / 0.5), 0 0 40px hsl(84 100% 45% / 0.3);
+    --shadow-glow-pink: 0 0 20px hsl(210 100% 50% / 0.5), 0 0 40px hsl(210 100% 50% / 0.3);
+    --shadow-glow-blue: 0 0 20px hsl(210 100% 50% / 0.5), 0 0 40px hsl(210 100% 50% / 0.3);
+    --shadow-glow-multi: 0 0 15px hsl(54 100% 50% / 0.4), 0 0 30px hsl(210 100% 50% / 0.3);
+
+    /* Animation Timing */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glow: all 0.5s ease-in-out;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -65,16 +85,16 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 54 100% 50%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 84 100% 45%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 210 100% 50%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -100,6 +120,64 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Vibrant Neon Glow Utilities */
+  .glow-yellow {
+    box-shadow: var(--shadow-glow-yellow);
+  }
+
+  .glow-lime {
+    box-shadow: var(--shadow-glow-lime);
+  }
+
+  .glow-pink {
+    box-shadow: var(--shadow-glow-pink);
+  }
+
+  .glow-blue {
+    box-shadow: var(--shadow-glow-blue);
+  }
+
+  .glow-multi {
+    box-shadow: var(--shadow-glow-multi);
+  }
+
+  .glow-border {
+    border: 2px solid transparent;
+    background: linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+                var(--gradient-primary) border-box;
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hover Glow Animation */
+  .hover-glow {
+    transition: var(--transition-glow);
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow-multi);
+    transform: translateY(-2px);
+  }
+
+  /* Pulse Glow Animation - Neon */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(54 100% 50% / 0.4), 0 0 40px hsl(210 100% 50% / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 30px hsl(54 100% 50% / 0.6), 0 0 60px hsl(210 100% 50% / 0.5);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
   }
 }
