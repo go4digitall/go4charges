@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Gift, ShieldCheck, Truck, RotateCcw, Headphones, Star, Zap } from "lucide-react";
+import { Gift, ShieldCheck, Truck, RotateCcw, Headphones, Star } from "lucide-react";
+import heroImage from "@/assets/hero-image.png";
 
 export const HeroSection = () => {
   const scrollToProducts = () => {
@@ -8,96 +9,107 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative md:min-h-screen flex items-start md:items-center justify-center overflow-hidden pt-3 pb-3 md:py-20 px-4">
-      <div className="relative z-10 max-w-5xl mx-auto text-center">
-        {/* Headline */}
-        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2">
-          <span className="block mb-1 md:mb-2">The Charging Cable</span>
-          <span className="text-gradient">That Powers Everything</span>
-        </h1>
+    <section className="relative overflow-hidden">
+      {/* Hero Image Background */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroImage} 
+          alt="ChargeStand 240W Cable" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+      </div>
 
-        {/* Hero Image Placeholder */}
-        <div className="mt-4 mb-4 md:mt-6 md:mb-6 w-full max-w-3xl lg:max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 aspect-video flex items-center justify-center border border-border">
-          <div className="text-center p-8">
-            <Zap className="w-20 h-20 mx-auto text-primary mb-4" />
-            <p className="text-lg text-muted-foreground">ChargeStand™ – 240W 90° Fast Charging</p>
-          </div>
-        </div>
-
-        {/* Subheadline */}
-        <p className="text-base md:text-2xl text-muted-foreground mb-6 md:mb-10 max-w-3xl mx-auto px-4">
-          240W Ultra-Fast Charging • 90° Design • Universal Compatibility
-        </p>
-
-        {/* Trust Badges */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
-          <Badge variant="outline" className="px-4 py-2 bg-background border-emerald-200 text-emerald-700">
-            <Gift className="w-4 h-4 mr-2 text-emerald-500" />
-            FREE Shipping Worldwide
-          </Badge>
-          <Badge variant="outline" className="px-4 py-2 bg-background border-border flex items-center gap-2">
-            <div className="flex gap-0.5">
+      <div className="relative z-10 container mx-auto px-4 py-16 md:py-28 lg:py-36">
+        <div className="max-w-2xl">
+          {/* Trust Badge */}
+          <Badge variant="outline" className="mb-6 px-4 py-2 bg-background/80 backdrop-blur-sm border-emerald-200 text-emerald-700">
+            <div className="flex gap-0.5 mr-2">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-6 h-6 bg-[#00b67a] rounded flex items-center justify-center">
-                  <Star className="w-4 h-4 fill-white text-white" />
-                </div>
+                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <span className="ml-1">4.9/5 from 1,000+ customers</span>
+            4.9/5 from 1,000+ customers
           </Badge>
-        </div>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-          <Button
-            size="lg"
-            className="text-lg px-8 py-6 bg-primary hover:bg-primary/90"
-            onClick={scrollToProducts}
-          >
-            Shop Now
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-lg px-8 py-6 bg-background hover:bg-muted"
-            onClick={scrollToProducts}
-          >
-            See Products
-          </Button>
-        </div>
+          {/* Headline */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            The Charging Cable{" "}
+            <span className="text-gradient">That Powers Everything</span>
+          </h1>
 
-        {/* Trust Badges Grid */}
-        <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          <div className="flex flex-col items-center text-center group">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-emerald-200 group-hover:scale-110">
-              <ShieldCheck className="w-7 h-7 text-emerald-600" />
-            </div>
-            <p className="text-xs md:text-sm font-medium text-foreground">Secure Payments</p>
+          {/* Subheadline */}
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
+            240W Ultra-Fast Charging • 90° Design • Universal USB-C Compatibility
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Button
+              size="lg"
+              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 shadow-lg"
+              onClick={scrollToProducts}
+            >
+              Shop Now
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 py-6 bg-background/80 backdrop-blur-sm hover:bg-background"
+              onClick={scrollToProducts}
+            >
+              See Products
+            </Button>
           </div>
-          <div className="flex flex-col items-center text-center group">
-            <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-blue-200 group-hover:scale-110">
-              <Truck className="w-7 h-7 text-blue-600" />
+
+          {/* Trust Badges Inline */}
+          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-emerald-500" />
+              <span>FREE Shipping</span>
             </div>
-            <p className="text-xs md:text-sm font-medium text-foreground">Free Shipping</p>
-          </div>
-          <div className="flex flex-col items-center text-center group">
-            <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-amber-200 group-hover:scale-110">
-              <RotateCcw className="w-7 h-7 text-amber-600" />
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-blue-500" />
+              <span>30-Day Guarantee</span>
             </div>
-            <p className="text-xs md:text-sm font-medium text-foreground">Money-Back Guarantee</p>
-          </div>
-          <div className="flex flex-col items-center text-center group">
-            <div className="w-14 h-14 rounded-full bg-violet-100 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-violet-200 group-hover:scale-110">
-              <Headphones className="w-7 h-7 text-violet-600" />
+            <div className="flex items-center gap-2">
+              <Truck className="w-5 h-5 text-violet-500" />
+              <span>Fast Delivery</span>
             </div>
-            <p className="text-xs md:text-sm font-medium text-foreground">24/7 Support</p>
           </div>
         </div>
+      </div>
 
-        {/* Scarcity Message */}
-        <p className="text-sm text-amber-600 font-medium">
-          ⚡ Limited stock available at this price!
-        </p>
+      {/* Trust Badges Grid - Below Hero */}
+      <div className="relative z-10 bg-muted/50 border-y border-border py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <ShieldCheck className="w-6 h-6 text-emerald-600" />
+              </div>
+              <p className="text-xs md:text-sm font-medium">Secure Payments</p>
+            </div>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <Truck className="w-6 h-6 text-blue-600" />
+              </div>
+              <p className="text-xs md:text-sm font-medium">Free Shipping</p>
+            </div>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <RotateCcw className="w-6 h-6 text-amber-600" />
+              </div>
+              <p className="text-xs md:text-sm font-medium">Money-Back Guarantee</p>
+            </div>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <Headphones className="w-6 h-6 text-violet-600" />
+              </div>
+              <p className="text-xs md:text-sm font-medium">24/7 Support</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

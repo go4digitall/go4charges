@@ -25,11 +25,11 @@ const Index = () => {
           {/* Products Section */}
           <section id="products" className="container py-12 md:py-16">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Nos Produits Premium
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">
+                Our Premium Products
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Découvrez notre gamme de câbles de charge haute qualité, conçus pour durer et charger rapidement.
+                Discover our range of high-quality charging cables, built to last and charge fast.
               </p>
             </div>
             
@@ -39,17 +39,19 @@ const Index = () => {
               </div>
             ) : error ? (
               <div className="text-center py-12 text-destructive">
-                Erreur lors du chargement des produits
+                Error loading products
               </div>
             ) : products && products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="flex flex-wrap justify-center gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.node.id} product={product} />
+                  <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-12 text-muted-foreground">
-                Aucun produit disponible pour le moment
+                No products available at the moment
               </div>
             )}
           </section>
