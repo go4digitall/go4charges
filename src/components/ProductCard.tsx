@@ -49,8 +49,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link to={`/product/${node.handle}`}>
-      <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300">
-        <div className="aspect-square overflow-hidden bg-secondary/10">
+      <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 bg-card/50 backdrop-blur glow-border hover-glow">
+        <div className="aspect-square overflow-hidden bg-primary/5">
           {image ? (
             <img
               src={image.url}
@@ -71,13 +71,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             {node.description}
           </p>
           <div className="flex items-center justify-between gap-2">
-            <span className="font-bold text-lg">
+            <span className="font-bold text-lg text-primary">
               {parseFloat(price.amount).toFixed(2)} {price.currencyCode}
             </span>
             <Button 
               size="sm" 
               onClick={handleAddToCart}
               disabled={isAdding || !firstVariant?.availableForSale}
+              className="bg-primary hover:bg-primary/90"
             >
               {isAdding ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
 
 export const CountdownBanner = () => {
   const [endDate] = useState(() => {
@@ -69,7 +68,7 @@ export const CountdownBanner = () => {
 
           <button
             onClick={scrollToProducts}
-            className="ml-2 bg-gradient-to-r from-[hsl(54,100%,50%)] to-[hsl(84,100%,45%)] text-foreground px-4 py-1.5 rounded-md text-xs sm:text-sm font-semibold hover:from-[hsl(54,100%,45%)] hover:to-[hsl(84,100%,40%)] transition-all border-2 border-black"
+            className="ml-2 bg-background text-primary px-4 py-1.5 rounded-md text-xs sm:text-sm font-semibold hover:bg-background/90 transition-all border border-primary/30"
           >
             Shop Now
           </button>

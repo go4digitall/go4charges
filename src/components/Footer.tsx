@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Zap } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export const Footer = () => {
   return (
@@ -9,8 +9,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Zap className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">Go4charges</span>
+              <img src={logo} alt="Go4charges" className="h-10 w-auto" />
             </div>
             <p className="text-sm text-muted-foreground">
               Premium charging cables for all your devices. Fast, reliable, and built to last.
