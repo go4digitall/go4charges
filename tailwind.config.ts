@@ -58,11 +58,16 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         glow: {
-          yellow: "hsl(var(--glow-yellow))",
-          lime: "hsl(var(--glow-lime))",
           blue: "hsl(var(--glow-blue))",
-          pink: "hsl(var(--glow-pink))",
-          orange: "hsl(var(--glow-orange))",
+          "light-blue": "hsl(var(--glow-light-blue))",
+          silver: "hsl(var(--glow-silver))",
+          cyan: "hsl(var(--glow-cyan))",
+          white: "hsl(var(--glow-white))",
+          /* Legacy mappings */
+          yellow: "hsl(var(--glow-blue))",
+          lime: "hsl(var(--glow-light-blue))",
+          pink: "hsl(var(--glow-light-blue))",
+          orange: "hsl(var(--glow-cyan))",
         },
       },
       borderRadius: {
