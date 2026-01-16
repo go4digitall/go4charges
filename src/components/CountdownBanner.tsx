@@ -36,29 +36,29 @@ export const CountdownBanner = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary via-secondary to-primary text-primary-foreground py-3 px-4 shadow-lg animate-pulse-glow">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary to-secondary text-white py-3 px-4 shadow-md">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-sm sm:text-base animate-blink-fast">
+          <span className="font-bold text-sm sm:text-base">
             🔥 50% OFF Launch Sale – Ends Tonight 🔥
           </span>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex gap-2">
-            <div className="bg-background/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
+            <div className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
               <span className="font-bold text-base sm:text-lg">
                 {String(timeLeft.hours).padStart(2, "0")}
               </span>
               <span className="text-xs ml-1">h</span>
             </div>
-            <div className="bg-background/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
+            <div className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
               <span className="font-bold text-base sm:text-lg">
                 {String(timeLeft.minutes).padStart(2, "0")}
               </span>
               <span className="text-xs ml-1">m</span>
             </div>
-            <div className="bg-background/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
+            <div className="bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-1 rounded">
               <span className="font-bold text-base sm:text-lg">
                 {String(timeLeft.seconds).padStart(2, "0")}
               </span>
@@ -68,7 +68,7 @@ export const CountdownBanner = () => {
 
           <button
             onClick={scrollToProducts}
-            className="ml-2 bg-background text-primary px-4 py-1.5 rounded-md text-xs sm:text-sm font-semibold hover:bg-background/90 transition-all border border-primary/30"
+            className="ml-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-colors"
           >
             Shop Now
           </button>
