@@ -47,7 +47,7 @@ export const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button 
               size="lg" 
-              className="text-lg px-10 py-7 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 text-white shadow-xl shadow-emerald-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 animate-pulse" 
+              className="text-lg px-10 py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50" 
               onClick={scrollToProducts}
             >
               🛒 Shop Now
