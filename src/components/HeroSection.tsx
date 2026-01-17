@@ -29,13 +29,17 @@ export const HeroSection = () => {
           </h1>
         </div>
 
-        {/* Image in the middle */}
-        <div className="relative w-full aspect-[16/10]">
+        {/* Image in the middle with shine effect */}
+        <div className="relative w-full aspect-[16/10] overflow-hidden">
           <img 
             src={heroImage} 
             alt="Go4Charges - Premium Charging Cable" 
             className="w-full h-full object-cover object-center"
           />
+          {/* Shine effect overlay */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine" />
+          </div>
         </div>
         
         {/* Description and CTAs below image on mobile */}
@@ -81,13 +85,17 @@ export const HeroSection = () => {
 
       {/* Desktop: Overlay layout */}
       <div className="hidden md:block relative">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <img 
             src={heroImage} 
             alt="Go4Charges - Premium Charging Cable" 
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
+          {/* Shine effect overlay */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine" />
+          </div>
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-28 lg:py-36">

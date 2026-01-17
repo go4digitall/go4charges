@@ -108,12 +108,21 @@ export default {
             transform: "translateX(-100%)",
           },
         },
+        "shine": {
+          "0%": {
+            transform: "translateX(-100%) skewX(-15deg)",
+          },
+          "100%": {
+            transform: "translateX(200%) skewX(-15deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "blink-fast": "blink-fast 0.8s ease-in-out infinite",
         "scroll-text": "scroll-text 15s linear infinite",
+        "shine": "shine 3s ease-in-out infinite",
       },
     },
   },
