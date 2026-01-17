@@ -37,9 +37,9 @@ const badges = [
 
 export const TrustBadgeSection = () => {
   return (
-    <section className="py-12 px-4 bg-section-alt">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="py-8 px-4 bg-section-alt">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {badges.map((badge, index) => {
             const Icon = badge.icon;
             return (
@@ -47,13 +47,13 @@ export const TrustBadgeSection = () => {
                 key={index}
                 className="flex flex-col items-center text-center group"
               >
-                <div className={`w-16 h-16 rounded-full ${badge.bgColor} flex items-center justify-center mb-4 transition-all duration-300 ${badge.hoverBg} group-hover:scale-110`}>
-                  <Icon className={`w-8 h-8 ${badge.color}`} />
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${badge.bgColor} flex items-center justify-center mb-2 transition-all duration-300 ${badge.hoverBg} group-hover:scale-110`}>
+                  <Icon className={`w-5 h-5 md:w-6 md:h-6 ${badge.color}`} />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">
+                <h3 className="font-semibold text-foreground text-xs md:text-sm mb-1">
                   {badge.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[10px] md:text-xs text-muted-foreground">
                   {badge.description}
                 </p>
               </div>
