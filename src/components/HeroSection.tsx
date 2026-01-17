@@ -65,38 +65,38 @@ export const HeroSection = () => {
       </div>
 
       {/* Trust Badges - Single Row */}
-      <div className="bg-muted/50 border-y border-border py-8">
+      <div className="bg-muted/50 border-y border-border py-4 md:py-8">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10 max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-10 max-w-5xl mx-auto">
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <CreditCard className="w-6 h-6 text-emerald-600" />
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110">
+                <CreditCard className="w-4 h-4 md:w-6 md:h-6 text-emerald-600" />
               </div>
-              <p className="text-xs md:text-sm font-medium">Secure Payments</p>
+              <p className="text-[10px] md:text-sm font-medium">Secure Payments</p>
             </div>
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <Truck className="w-6 h-6 text-blue-600" />
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-blue-100 flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110">
+                <Truck className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
               </div>
-              <p className="text-xs md:text-sm font-medium">Free Shipping</p>
+              <p className="text-[10px] md:text-sm font-medium">Free Shipping</p>
             </div>
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <ShieldCheck className="w-6 h-6 text-violet-600" />
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-violet-100 flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110">
+                <ShieldCheck className="w-4 h-4 md:w-6 md:h-6 text-violet-600" />
               </div>
-              <p className="text-xs md:text-sm font-medium">30-Day Guarantee</p>
+              <p className="text-[10px] md:text-sm font-medium">30-Day Guarantee</p>
             </div>
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <RotateCcw className="w-6 h-6 text-amber-600" />
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-amber-100 flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110">
+                <RotateCcw className="w-4 h-4 md:w-6 md:h-6 text-amber-600" />
               </div>
-              <p className="text-xs md:text-sm font-medium">Easy Returns</p>
+              <p className="text-[10px] md:text-sm font-medium">Easy Returns</p>
             </div>
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <Headphones className="w-6 h-6 text-rose-600" />
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-rose-100 flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110">
+                <Headphones className="w-4 h-4 md:w-6 md:h-6 text-rose-600" />
               </div>
-              <p className="text-xs md:text-sm font-medium">24/7 Support</p>
+              <p className="text-[10px] md:text-sm font-medium">24/7 Support</p>
             </div>
           </div>
         </div>
