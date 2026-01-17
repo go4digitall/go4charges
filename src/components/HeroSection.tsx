@@ -24,7 +24,7 @@ export const HeroSection = () => {
       <div className="bg-background py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
           {/* Trustpilot-style Rating */}
-          <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="flex flex-col items-center gap-2 mb-6">
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="w-7 h-7 bg-[#00b67a] flex items-center justify-center">
@@ -32,7 +32,7 @@ export const HeroSection = () => {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col items-start text-left">
+            <div className="flex flex-col items-center text-center">
               <span className="text-sm font-semibold text-foreground">Excellent</span>
               <span className="text-xs text-muted-foreground">4.9 out of 5 • 1,000+ reviews</span>
             </div>
