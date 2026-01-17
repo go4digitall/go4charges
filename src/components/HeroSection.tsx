@@ -45,11 +45,20 @@ export const HeroSection = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 shadow-lg" onClick={scrollToProducts}>
-              Shop Now
+            <Button 
+              size="lg" 
+              className="text-lg px-10 py-7 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 shadow-xl shadow-primary/30 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/40" 
+              onClick={scrollToProducts}
+            >
+              🛒 Shop Now
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={scrollToProducts}>
-              See Products
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg px-10 py-7 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold tracking-wide transition-all duration-300 hover:scale-105" 
+              onClick={scrollToProducts}
+            >
+              See Products →
             </Button>
           </div>
 
