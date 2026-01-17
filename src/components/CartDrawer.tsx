@@ -26,10 +26,10 @@ export const CartDrawer = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
-          <ShoppingCart className="h-5 w-5" />
+        <Button variant="outline" size="icon" className="relative border-2 border-foreground/20 hover:border-primary hover:bg-primary/10">
+          <ShoppingCart className="h-5 w-5 text-foreground" />
           {totalItems > 0 && (
-            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
+            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-amber-500 text-white">
               {totalItems}
             </Badge>
           )}

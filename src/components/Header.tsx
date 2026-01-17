@@ -20,29 +20,28 @@ export const Header = () => {
           <img src={logo} alt="Go4charges" className="h-10 md:h-14 w-auto" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-8">
           <button
             onClick={() => scrollToSection("products")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
           >
             Products
           </button>
           <button
             onClick={() => scrollToSection("benefits")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
           >
             Benefits
           </button>
           <button
             onClick={() => scrollToSection("testimonials")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
           >
             Reviews
           </button>
           <button
             onClick={() => scrollToSection("faq")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
           >
             FAQ
           </button>
