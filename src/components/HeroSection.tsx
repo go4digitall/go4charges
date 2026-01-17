@@ -15,10 +15,10 @@ export const HeroSection = () => {
         <img 
           src={heroImage} 
           alt="Go4Charges - Charge Faster. Play Longer." 
-          className="w-full h-full object-cover object-center md:object-right"
+          className="w-full h-full object-contain md:object-cover object-top"
         />
-        {/* Mobile: lighter overlay for better image visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-transparent md:bg-gradient-to-r md:from-background/80 md:via-background/40 md:to-transparent" />
+        {/* Very subtle overlay only on left side for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-16 md:py-28 lg:py-36">
