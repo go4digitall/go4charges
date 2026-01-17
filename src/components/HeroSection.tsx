@@ -12,9 +12,9 @@ export const HeroSection = () => {
     <section className="relative overflow-hidden">
       {/* Mobile: Stacked layout */}
       <div className="md:hidden">
-        {/* Title above image on mobile */}
-        <div className="px-4 pt-6 pb-4 bg-background">
-          <Badge variant="outline" className="mb-4 px-3 py-1.5 border-emerald-200 text-emerald-700">
+        {/* Title above image on mobile - centered */}
+        <div className="px-4 pt-6 pb-4 bg-background text-center">
+          <Badge variant="outline" className="mb-4 px-3 py-1.5 border-emerald-200 text-emerald-700 inline-flex">
             <div className="flex gap-0.5 mr-2">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
