@@ -89,7 +89,7 @@ export const HeroSection = () => {
           />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 py-28 lg:py-36">
+        <div className="relative z-10 container mx-auto px-4 py-36 lg:py-48">
           <div className="max-w-2xl">
             <Badge variant="outline" className="mb-6 px-4 py-2 bg-background/80 backdrop-blur-sm border-emerald-200 text-emerald-700">
               <div className="flex gap-0.5 mr-2">
