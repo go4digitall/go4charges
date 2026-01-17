@@ -8,7 +8,7 @@ export const AsSeenSection = () => {
   ];
 
   return (
-    <section className="bg-muted/30 py-10 md:py-12">
+    <section className="bg-background py-10 md:py-12">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-2">
