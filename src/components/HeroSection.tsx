@@ -14,10 +14,11 @@ export const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <img 
           src={heroImage} 
-          alt="ChargeStand 240W Cable" 
-          className="w-full h-full object-cover"
+          alt="Go4Charges - Charge Faster. Play Longer." 
+          className="w-full h-full object-cover object-center md:object-right"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+        {/* Mobile: stronger overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/50 md:bg-gradient-to-r md:from-background/95 md:via-background/60 md:to-transparent" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-16 md:py-28 lg:py-36">
