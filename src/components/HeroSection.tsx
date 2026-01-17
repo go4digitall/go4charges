@@ -29,17 +29,13 @@ export const HeroSection = () => {
           </h1>
         </div>
 
-        {/* Image in the middle with shine effect */}
+        {/* Image in the middle with subtle zoom effect */}
         <div className="relative w-full aspect-[16/10] overflow-hidden">
           <img 
             src={heroImage} 
             alt="Go4Charges - Premium Charging Cable" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center animate-subtle-zoom"
           />
-          {/* Shine effect overlay - electric blue */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#0099FF]/30 to-transparent animate-shine" />
-          </div>
         </div>
         
         {/* Description and CTAs below image on mobile */}
@@ -89,13 +85,9 @@ export const HeroSection = () => {
           <img 
             src={heroImage} 
             alt="Go4Charges - Premium Charging Cable" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center animate-subtle-zoom"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
-          {/* Shine effect overlay - electric blue */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#0099FF]/20 to-transparent animate-shine" />
-          </div>
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-28 lg:py-36">
