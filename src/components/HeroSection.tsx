@@ -47,7 +47,7 @@ export const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button 
               size="lg" 
-              className="text-lg px-10 py-7 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 shadow-xl shadow-primary/30 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary/40" 
+              className="text-lg px-10 py-7 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 text-white shadow-xl shadow-emerald-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 animate-pulse" 
               onClick={scrollToProducts}
             >
               🛒 Shop Now
@@ -55,7 +55,7 @@ export const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="text-lg px-10 py-7 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold tracking-wide transition-all duration-300 hover:scale-105" 
+              className="text-lg px-10 py-7 border-2 border-foreground/20 bg-white/90 text-foreground hover:bg-foreground hover:text-background font-bold tracking-wide transition-all duration-300 hover:scale-105" 
               onClick={scrollToProducts}
             >
               See Products →
