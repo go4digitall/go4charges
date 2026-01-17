@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <CountdownBanner />
-      <div className="pt-14">
+      <div className="pt-[72px] sm:pt-[52px]">
         <Header />
         <main className="flex-1">
           <HeroSection />
