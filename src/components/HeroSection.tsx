@@ -12,17 +12,8 @@ export const HeroSection = () => {
     <section className="relative overflow-hidden">
       {/* Mobile: Stacked layout */}
       <div className="md:hidden">
-        {/* Image container - fixed aspect ratio on mobile */}
-        <div className="relative w-full aspect-[16/10]">
-          <img 
-            src={heroImage} 
-            alt="Go4Charges - Premium Charging Cable" 
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
-        
-        {/* Content below image on mobile */}
-        <div className="px-4 py-8 bg-background">
+        {/* Title above image on mobile */}
+        <div className="px-4 pt-6 pb-4 bg-background">
           <Badge variant="outline" className="mb-4 px-3 py-1.5 border-emerald-200 text-emerald-700">
             <div className="flex gap-0.5 mr-2">
               {[...Array(5)].map((_, i) => (
@@ -32,11 +23,23 @@ export const HeroSection = () => {
             4.9/5 from 1,000+ customers
           </Badge>
 
-          <h1 className="text-3xl font-bold mb-4 leading-tight">
+          <h1 className="text-3xl font-bold leading-tight">
             The Charging Cable{" "}
             <span className="text-gradient">That Powers Everything</span>
           </h1>
+        </div>
 
+        {/* Image in the middle */}
+        <div className="relative w-full aspect-[16/10]">
+          <img 
+            src={heroImage} 
+            alt="Go4Charges - Premium Charging Cable" 
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+        
+        {/* Description and CTAs below image on mobile */}
+        <div className="px-4 py-6 bg-background">
           <p className="text-base text-muted-foreground mb-6">
             240W Ultra-Fast Charging • 90° Design • Universal USB-C
           </p>
