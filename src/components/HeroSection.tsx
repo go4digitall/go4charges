@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Gift, ShieldCheck, Truck, RotateCcw, Headphones, Star } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard } from "lucide-react";
 import heroImage from "@/assets/hero-image.png";
 
 export const HeroSection = () => {
@@ -61,32 +61,16 @@ export const HeroSection = () => {
               See Products →
             </Button>
           </div>
-
-          {/* Trust Badges */}
-          <div className="flex flex-wrap gap-6 justify-center text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Gift className="w-5 h-5 text-emerald-500" />
-              <span>FREE Shipping</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-blue-500" />
-              <span>30-Day Guarantee</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Truck className="w-5 h-5 text-violet-500" />
-              <span>Fast Delivery</span>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Trust Badges Grid */}
+      {/* Trust Badges - Single Row */}
       <div className="bg-muted/50 border-y border-border py-8">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 max-w-5xl mx-auto">
             <div className="flex flex-col items-center text-center group">
               <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <ShieldCheck className="w-6 h-6 text-emerald-600" />
+                <CreditCard className="w-6 h-6 text-emerald-600" />
               </div>
               <p className="text-xs md:text-sm font-medium">Secure Payments</p>
             </div>
@@ -97,14 +81,20 @@ export const HeroSection = () => {
               <p className="text-xs md:text-sm font-medium">Free Shipping</p>
             </div>
             <div className="flex flex-col items-center text-center group">
+              <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <ShieldCheck className="w-6 h-6 text-violet-600" />
+              </div>
+              <p className="text-xs md:text-sm font-medium">30-Day Guarantee</p>
+            </div>
+            <div className="flex flex-col items-center text-center group">
               <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
                 <RotateCcw className="w-6 h-6 text-amber-600" />
               </div>
               <p className="text-xs md:text-sm font-medium">Easy Returns</p>
             </div>
             <div className="flex flex-col items-center text-center group">
-              <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
-                <Headphones className="w-6 h-6 text-violet-600" />
+              <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mb-2 transition-all duration-300 group-hover:scale-110">
+                <Headphones className="w-6 h-6 text-rose-600" />
               </div>
               <p className="text-xs md:text-sm font-medium">24/7 Support</p>
             </div>
