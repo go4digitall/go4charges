@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Gift, ShieldCheck, Truck, RotateCcw, Headphones, Star } from "lucide-react";
-import heroImage from "@/assets/hero-image.png";
+import heroImage from "@/assets/hero-image.jpg";
 
 export const HeroSection = () => {
   const scrollToProducts = () => {
