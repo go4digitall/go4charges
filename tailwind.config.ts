@@ -116,6 +116,14 @@ export default {
             transform: "translateX(200%) skewX(-15deg)",
           },
         },
+        "subtle-zoom": {
+          "0%, 100%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(1.03)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -123,6 +131,7 @@ export default {
         "blink-fast": "blink-fast 0.8s ease-in-out infinite",
         "scroll-text": "scroll-text 15s linear infinite",
         "shine": "shine 3s ease-in-out infinite",
+        "subtle-zoom": "subtle-zoom 8s ease-in-out infinite",
       },
     },
   },
