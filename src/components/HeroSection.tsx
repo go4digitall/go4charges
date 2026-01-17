@@ -87,7 +87,6 @@ export const HeroSection = () => {
             alt="Go4Charges - Premium Charging Cable" 
             className="w-full h-full object-cover object-center animate-subtle-zoom"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-28 lg:py-36">
