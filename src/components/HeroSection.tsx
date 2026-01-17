@@ -12,11 +12,11 @@ export const HeroSection = () => {
   return (
     <section className="flex flex-col">
       {/* Hero Image - Full Width */}
-      <div className="w-full">
+      <div className="w-full aspect-[4/3] md:aspect-auto overflow-hidden">
         <img 
           src={heroImage} 
           alt="ChargeStand 240W Cable" 
-          className="w-full h-auto object-contain" 
+          className="w-full h-full object-cover md:h-auto md:object-contain" 
         />
       </div>
 
