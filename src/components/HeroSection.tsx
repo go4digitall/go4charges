@@ -23,14 +23,19 @@ export const HeroSection = () => {
       {/* Content Below Image */}
       <div className="bg-background py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
-          {/* Rating */}
-          <div className="flex items-center justify-center gap-2 mb-4">
+          {/* Trustpilot-style Rating */}
+          <div className="flex items-center justify-center gap-3 mb-6">
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                <div key={i} className="w-7 h-7 bg-[#00b67a] flex items-center justify-center">
+                  <Star className="w-4 h-4 fill-white text-white" />
+                </div>
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">4.9/5 from 1,000+ customers</span>
+            <div className="flex flex-col items-start text-left">
+              <span className="text-sm font-semibold text-foreground">Excellent</span>
+              <span className="text-xs text-muted-foreground">4.9 out of 5 • 1,000+ reviews</span>
+            </div>
           </div>
 
           {/* Description */}
