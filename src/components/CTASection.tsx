@@ -8,7 +8,7 @@ export const CTASection = () => {
   };
 
   return (
-    <section className="pt-8 pb-12 md:py-20 px-4 relative overflow-hidden bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5">
+    <section className="pt-8 pb-12 md:py-20 px-4 relative overflow-hidden bg-primary/5">
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <Badge className="mb-6 px-6 py-2 text-lg bg-amber-500 hover:bg-amber-600 text-white border-0">
           <Timer className="w-5 h-5 mr-2" />

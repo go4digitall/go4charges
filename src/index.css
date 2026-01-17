@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Go4Charges Clean Blue Theme */
-    --background: 210 25% 97%;
+    --background: 0 0% 100%;
     --foreground: 210 30% 15%;
     
     --card: 0 0% 100%;
@@ -22,8 +22,11 @@
     --secondary: 205 85% 55%;
     --secondary-foreground: 0 0% 100%;
     
-    --muted: 210 15% 92%;
+    --muted: 210 20% 96%;
     --muted-foreground: 210 15% 45%;
+    
+    /* Section alternate - more visible grey */
+    --section-alt: 210 15% 95%;
     
     /* Accent: Silver/Gray */
     --accent: 210 20% 88%;
@@ -71,6 +74,8 @@
     
     --muted: 210 20% 20%;
     --muted-foreground: 210 15% 60%;
+    
+    --section-alt: 210 20% 15%;
     
     --accent: 210 20% 25%;
     --accent-foreground: 210 15% 95%;

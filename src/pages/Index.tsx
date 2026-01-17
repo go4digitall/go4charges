@@ -26,7 +26,7 @@ const Index = () => {
           <AsSeenSection />
           
           {/* Products Section */}
-          <section id="products" className="py-12 md:py-16 bg-muted/30">
+          <section id="products" className="py-12 md:py-16 bg-section-alt">
             <div className="container">
               <div className="text-center mb-10">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">
