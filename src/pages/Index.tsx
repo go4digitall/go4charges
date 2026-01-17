@@ -25,6 +25,8 @@ const Index = () => {
           
           <AsSeenSection />
           
+          <BenefitsSection />
+          
           {/* Products Section */}
           <section id="products" className="py-12 md:py-16 bg-section-alt">
             <div className="container">
@@ -61,7 +63,6 @@ const Index = () => {
             </div>
           </section>
 
-          <BenefitsSection />
           <TrustBadgeSection />
           <TestimonialsSection />
           <FAQSection />
