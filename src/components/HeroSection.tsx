@@ -80,12 +80,12 @@ export const HeroSection = () => {
       </div>
 
       {/* Desktop: Overlay layout */}
-      <div className="hidden md:block relative">
+      <div className="hidden md:block relative min-h-[80vh] lg:min-h-[90vh]">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <img 
             src={heroImage} 
             alt="Go4Charges - Premium Charging Cable" 
-            className="w-full h-full object-cover object-center animate-subtle-zoom"
+            className="w-full h-full object-cover object-top animate-subtle-zoom"
           />
         </div>
 
