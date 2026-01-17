@@ -36,9 +36,9 @@ export const HeroSection = () => {
             alt="Go4Charges - Premium Charging Cable" 
             className="w-full h-full object-cover object-center"
           />
-          {/* Shine effect overlay */}
+          {/* Shine effect overlay - electric blue */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine" />
+            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#0099FF]/30 to-transparent animate-shine" />
           </div>
         </div>
         
@@ -92,9 +92,9 @@ export const HeroSection = () => {
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
-          {/* Shine effect overlay */}
+          {/* Shine effect overlay - electric blue */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine" />
+            <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#0099FF]/20 to-transparent animate-shine" />
           </div>
         </div>
 
