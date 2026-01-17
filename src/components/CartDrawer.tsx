@@ -37,9 +37,9 @@ export const CartDrawer = () => {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-lg flex flex-col h-full">
         <SheetHeader className="flex-shrink-0">
-          <SheetTitle>Panier</SheetTitle>
+          <SheetTitle>Cart</SheetTitle>
           <SheetDescription>
-            {totalItems === 0 ? "Votre panier est vide" : `${totalItems} article${totalItems !== 1 ? 's' : ''} dans votre panier`}
+            {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col flex-1 pt-6 min-h-0">
@@ -47,7 +47,7 @@ export const CartDrawer = () => {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Votre panier est vide</p>
+                <p className="text-muted-foreground">Your cart is empty</p>
               </div>
             </div>
           ) : (
@@ -122,7 +122,7 @@ export const CartDrawer = () => {
                   ) : (
                     <>
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Passer la commande
+                      Checkout
                     </>
                   )}
                 </Button>
