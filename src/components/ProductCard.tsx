@@ -36,12 +36,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         quantity: 1,
         selectedOptions: firstVariant.selectedOptions || []
       });
-      toast.success("Ajouté au panier", {
+      toast.success("Added to cart", {
         description: node.title,
         position: "top-center"
       });
     } catch (error) {
-      toast.error("Erreur lors de l'ajout au panier");
+      toast.error("Error adding to cart");
     } finally {
       setIsAdding(false);
     }
@@ -59,7 +59,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-              Pas d'image
+              No image
             </div>
           )}
         </div>
@@ -85,7 +85,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               ) : (
                 <>
                   <ShoppingCart className="h-4 w-4 mr-1" />
-                  Ajouter
+                  Add
                 </>
               )}
             </Button>

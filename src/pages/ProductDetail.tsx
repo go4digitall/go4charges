@@ -33,11 +33,11 @@ const ProductDetail = () => {
         <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Produit non trouvé</h1>
+            <h1 className="text-2xl font-bold mb-4">Product not found</h1>
             <Link to="/">
               <Button variant="outline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Retour à l'accueil
+                Back to home
               </Button>
             </Link>
           </div>
@@ -82,12 +82,12 @@ const ProductDetail = () => {
         quantity: 1,
         selectedOptions: selectedVariant.selectedOptions || []
       });
-      toast.success("Ajouté au panier", {
+      toast.success("Added to cart", {
         description: product.title,
         position: "top-center"
       });
     } catch (error) {
-      toast.error("Erreur lors de l'ajout au panier");
+      toast.error("Error adding to cart");
     } finally {
       setIsAdding(false);
     }
@@ -99,7 +99,7 @@ const ProductDetail = () => {
       <main className="flex-1 container py-8">
         <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour aux produits
+          Back to products
         </Link>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
@@ -114,7 +114,7 @@ const ProductDetail = () => {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                  Pas d'image
+                  No image
                 </div>
               )}
             </div>
@@ -183,11 +183,11 @@ const ProductDetail = () => {
               {isAdding ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : !selectedVariant?.availableForSale ? (
-                "Rupture de stock"
+                "Out of stock"
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  Ajouter au panier
+                  Add to cart
                 </>
               )}
             </Button>
@@ -200,11 +200,11 @@ const ProductDetail = () => {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Check className="h-4 w-4 text-primary" />
-                <span>Connecteur 90° ergonomique</span>
+                <span>90° ergonomic connector</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Check className="h-4 w-4 text-primary" />
-                <span>Compatible avec tous les appareils</span>
+                <span>Compatible with all USB-C devices</span>
               </div>
             </div>
           </div>
