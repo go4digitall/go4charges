@@ -31,10 +31,10 @@ const Index = () => {
           <section id="products" className="py-12 md:py-16 bg-section-alt">
             <div className="container">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient">
-                  Our Premium Products
+                <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
+                  Our <span className="text-gradient">Premium</span> Products
                 </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
                   Discover our range of high-quality charging cables, built to last and charge fast.
                 </p>
               </div>
@@ -49,11 +49,23 @@ const Index = () => {
                 </div>
               ) : products && products.length > 0 ? (
                 <div className="flex flex-wrap justify-center gap-6">
-                  {products.map((product) => (
-                    <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
-                      <ProductCard product={product} />
-                    </div>
-                  ))}
+                  {/* Sort products to put Duo Pack first */}
+                  {[...products]
+                    .sort((a, b) => {
+                      const aIsDuo = a.node.handle.toLowerCase().includes('duo');
+                      const bIsDuo = b.node.handle.toLowerCase().includes('duo');
+                      if (aIsDuo && !bIsDuo) return -1;
+                      if (!aIsDuo && bIsDuo) return 1;
+                      return 0;
+                    })
+                    .map((product) => {
+                      const isFeatured = product.node.handle.toLowerCase().includes('duo');
+                      return (
+                        <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
+                          <ProductCard product={product} isFeatured={isFeatured} />
+                        </div>
+                      );
+                    })}
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
