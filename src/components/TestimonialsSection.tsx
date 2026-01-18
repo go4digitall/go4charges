@@ -10,7 +10,7 @@ const testimonials = [
   {
     name: "Sarah K.",
     rating: 5,
-    quote: "The 240W charging is incredible. My MacBook Pro charges so fast now. Worth every penny for the quality and speed."
+    quote: "The fast charging is incredible. My MacBook Pro charges so fast now. Worth every penny for the quality and speed."
   },
   {
     name: "James L.",
