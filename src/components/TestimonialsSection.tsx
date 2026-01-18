@@ -1,11 +1,20 @@
 import { Star, Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+// Import avatar images
+import avatarAlex from "@/assets/testimonials/avatar-alex.jpg";
+import avatarSarah from "@/assets/testimonials/avatar-sarah.jpg";
+import avatarJames from "@/assets/testimonials/avatar-james.jpg";
+import avatarEmily from "@/assets/testimonials/avatar-emily.jpg";
+import avatarDavid from "@/assets/testimonials/avatar-david.jpg";
+import avatarMichelle from "@/assets/testimonials/avatar-michelle.jpg";
+
 const testimonials = [
   {
     name: "Alex M.",
     rating: 5,
     quote: "Finally a cable that doesn't break after a month! The 90° design is genius - my old cables always broke at the bend. This one looks brand new after 6 months of daily use.",
+    avatar: avatarAlex,
     avatarColor: "bg-blue-500",
     verified: false
   },
@@ -13,6 +22,7 @@ const testimonials = [
     name: "Sarah K.",
     rating: 5,
     quote: "The fast charging is incredible. My MacBook Pro charges so fast now. Worth every penny for the quality and speed.",
+    avatar: avatarSarah,
     avatarColor: "bg-rose-500",
     verified: false
   },
@@ -28,6 +38,7 @@ const testimonials = [
     name: "James L.",
     rating: 5,
     quote: "I've tried so many cables and this is by far the best. The braided design feels premium and the 90° angle is perfect for using my phone while charging.",
+    avatar: avatarJames,
     avatarColor: "bg-green-500",
     verified: false
   },
@@ -43,6 +54,7 @@ const testimonials = [
     name: "Emily R.",
     rating: 5,
     quote: "Bought one for myself and ended up buying three more for my family. Everyone loves them! Great quality and super fast charging.",
+    avatar: avatarEmily,
     avatarColor: "bg-purple-500",
     verified: false
   },
@@ -58,6 +70,7 @@ const testimonials = [
     name: "David C.",
     rating: 5,
     quote: "As someone who travels a lot, having a reliable cable is essential. The ChargeStand™ has been my go-to for months now. Highly recommend!",
+    avatar: avatarDavid,
     avatarColor: "bg-amber-500",
     verified: false
   },
@@ -65,6 +78,7 @@ const testimonials = [
     name: "Michelle T.",
     rating: 5,
     quote: "The quality is amazing! I was skeptical at first but this cable exceeded all my expectations. Fast shipping too!",
+    avatar: avatarMichelle,
     avatarColor: "bg-cyan-500",
     verified: false
   }
@@ -102,11 +116,19 @@ export const TestimonialsSection = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-full ${testimonial.avatarColor} flex items-center justify-center flex-shrink-0`}>
-                    <span className="text-white font-semibold text-sm">
-                      {testimonial.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
+                  {testimonial.avatar ? (
+                    <img 
+                      src={testimonial.avatar} 
+                      alt={testimonial.name}
+                      className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <div className={`w-10 h-10 rounded-full ${testimonial.avatarColor} flex items-center justify-center flex-shrink-0`}>
+                      <span className="text-white font-semibold text-sm">
+                        {testimonial.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-semibold text-foreground">{testimonial.name}</h3>
                     <div className="flex items-center gap-2 mt-1">
