@@ -93,7 +93,7 @@ export const TestimonialsSection = () => {
           </p>
         </div>
 
-        {/* Trustpilot-style Global Rating */}
+        {/* Global Rating */}
         <div className="flex flex-col items-center justify-center mb-6 md:mb-10 p-4 md:p-6 bg-card/30 rounded-xl border border-border/30">
           <p className="text-sm text-muted-foreground mb-2">Excellent</p>
           <div className="flex gap-1 mb-2">
@@ -106,10 +106,6 @@ export const TestimonialsSection = () => {
           <p className="text-sm md:text-base text-foreground font-medium">
             Based on <span className="font-bold">1,247 reviews</span>
           </p>
-          <div className="flex items-center gap-2 mt-2">
-            <Star className="w-4 h-4 fill-green-500 text-green-500" />
-            <span className="text-xs md:text-sm text-muted-foreground">Trustpilot</span>
-          </div>
         </div>
 
         {/* Reviews Grid - 2 columns on mobile */}
