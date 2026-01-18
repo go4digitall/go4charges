@@ -15,7 +15,7 @@ export const HeroSection = () => {
       <div className="w-full aspect-[4/3] md:aspect-auto overflow-hidden">
         <img 
           src={heroImage} 
-          alt="ChargeStand 240W Cable" 
+          alt="ChargeStand Up to 240W Cable" 
           className="w-full h-full object-cover md:h-auto md:object-contain" 
         />
       </div>
@@ -40,7 +40,7 @@ export const HeroSection = () => {
 
           {/* Description */}
           <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-xl mx-auto">
-            240W Ultra-Fast Charging • 90° Design • Universal USB-C Compatibility
+            Up to 240W Ultra-Fast Charging • 90° Design • Universal USB-C Compatibility
           </p>
 
           {/* CTAs */}

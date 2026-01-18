@@ -196,7 +196,7 @@ const ProductDetail = () => {
             <div className="border-t pt-6 space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Check className="h-4 w-4 text-primary" />
-                <span>Charge ultra-rapide 240W</span>
+                <span>Up to 240W ultra-fast charging</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Check className="h-4 w-4 text-primary" />

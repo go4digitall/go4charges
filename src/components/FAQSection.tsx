@@ -8,15 +8,15 @@ import {
 const faqs = [
   {
     question: "What devices are compatible with the ChargeStand™?",
-    answer: "The ChargeStand™ is universally compatible with all USB-C devices including MacBooks, iPads, iPhones 15+, Samsung Galaxy phones, Nintendo Switch, and most modern laptops and tablets. The 240W power delivery ensures fast charging for all your devices."
+    answer: "The ChargeStand™ is universally compatible with all USB-C devices including MacBooks, iPads, iPhones 15+, Samsung Galaxy phones, Nintendo Switch, and most modern laptops and tablets. With up to 240W power delivery, it ensures fast charging for all your devices."
   },
   {
     question: "Why is the 90° angle design better?",
     answer: "The 90° angle design reduces cable stress at the connection point, preventing the common issue of cables breaking near the plug. It also makes it more comfortable to use your device while charging and keeps cables neater on your desk."
   },
   {
-    question: "How fast is the 240W charging?",
-    answer: "With 240W power delivery, you can charge a MacBook Pro from 0 to 50% in about 30 minutes. For phones, you'll get hours of battery life in just minutes of charging. It's currently the fastest USB-C charging standard available."
+    question: "How fast is the charging?",
+    answer: "With up to 240W power delivery (max), you can charge a MacBook Pro from 0 to 50% in about 30 minutes. For phones, you'll get hours of battery life in just minutes of charging. It's currently the fastest USB-C charging standard available."
   },
   {
     question: "What's included in the package?",
