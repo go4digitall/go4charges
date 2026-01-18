@@ -6,8 +6,11 @@ export const AsSeenSection = () => {
     { name: "CNET", font: "font-bold tracking-wide uppercase" },
   ];
 
+  // Double the brands for seamless loop
+  const duplicatedBrands = [...brands, ...brands];
+
   return (
-    <section className="bg-background py-10 md:py-12">
+    <section className="bg-background py-10 md:py-12 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-2">
@@ -18,15 +21,17 @@ export const AsSeenSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:flex md:flex-wrap items-center justify-items-center justify-center gap-6 md:gap-12 lg:gap-16 max-w-xs md:max-w-none mx-auto">
-          {brands.map((brand) => (
-            <span
-              key={brand.name}
-              className={`text-lg md:text-xl text-muted-foreground/60 select-none ${brand.font}`}
-            >
-              {brand.name}
-            </span>
-          ))}
+        <div className="relative">
+          <div className="flex animate-marquee gap-12 md:gap-16">
+            {duplicatedBrands.map((brand, index) => (
+              <span
+                key={`${brand.name}-${index}`}
+                className={`text-lg md:text-xl text-muted-foreground/60 select-none whitespace-nowrap ${brand.font}`}
+              >
+                {brand.name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
