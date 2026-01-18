@@ -2,7 +2,6 @@ export const AsSeenSection = () => {
   const brands = [
     { name: "WIRED", font: "font-bold tracking-tight" },
     { name: "mashable", font: "font-bold italic lowercase" },
-    { name: "THE VERGE", font: "font-black tracking-tighter uppercase" },
     { name: "TechCrunch", font: "font-bold" },
     { name: "CNET", font: "font-bold tracking-wide uppercase" },
   ];
