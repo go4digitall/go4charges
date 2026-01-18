@@ -176,7 +176,7 @@ export const TestimonialsSection = () => {
                   <span className="text-xs md:text-sm text-foreground font-medium">{review.name}</span>
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-primary text-primary" />
+                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-500 text-amber-500" />
                     ))}
                   </div>
                   <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500" />
@@ -197,7 +197,7 @@ export const TestimonialsSection = () => {
                   <span className="text-xs md:text-sm text-foreground font-medium">{review.name}</span>
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-primary text-primary" />
+                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-500 text-amber-500" />
                     ))}
                   </div>
                   <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500" />
