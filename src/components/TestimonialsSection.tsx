@@ -1,6 +1,12 @@
 import { Star, Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+// Import real avatar images from AliExpress
+import avatarLo from "@/assets/testimonials/avatar-L-o.avif";
+import avatarNl from "@/assets/testimonials/avatar-n-l.avif";
+import avatarPa from "@/assets/testimonials/avatar-P-a.avif";
+import avatarSi from "@/assets/testimonials/avatar-s-i.avif";
+
 const testimonials = [
   {
     name: "Alex M.",
@@ -21,7 +27,7 @@ const testimonials = [
     date: "Jan 9, 2026",
     rating: 5,
     quote: "Super cables!",
-    avatarColor: "bg-rose-400",
+    avatar: avatarPa,
     verified: true
   },
   {
@@ -32,11 +38,11 @@ const testimonials = [
     verified: false
   },
   {
-    name: "m***m",
-    date: "Jan 12, 2026",
+    name: "n***l",
+    date: "Jan 10, 2026",
     rating: 5,
     quote: "Everything is fine.",
-    avatarColor: "bg-green-500",
+    avatar: avatarNl,
     verified: true
   },
   {
@@ -51,7 +57,7 @@ const testimonials = [
     date: "Jan 14, 2026",
     rating: 4,
     quote: "Good, thank you.",
-    avatarColor: "bg-gray-400",
+    avatar: avatarSi,
     verified: true
   },
   {
@@ -62,23 +68,23 @@ const testimonials = [
     verified: false
   },
   {
-    name: "Michelle T.",
+    name: "L***o",
+    date: "Jan 16, 2026",
     rating: 5,
     quote: "The quality is amazing! I was skeptical at first but this cable exceeded all my expectations. Fast shipping too!",
-    avatarColor: "bg-cyan-500",
-    verified: false
+    avatar: avatarLo,
+    verified: true
   }
 ];
 
 const quickReviews = [
   { name: "b***n", date: "Jan 3, 2026", color: "bg-red-400" },
   { name: "B***s", date: "Jan 8, 2026", color: "bg-blue-400" },
-  { name: "n***l", date: "Jan 10, 2026", color: "bg-yellow-500" },
   { name: "w***r", date: "Jan 12, 2026", color: "bg-purple-400" },
-  { name: "L***o", date: "Jan 16, 2026", color: "bg-orange-400" },
   { name: "A***o", date: "Dec 29, 2025", color: "bg-teal-400" },
   { name: "G***i", date: "Dec 30, 2025", color: "bg-pink-400" },
   { name: "K***i", date: "Jan 4, 2026", color: "bg-indigo-400" },
+  { name: "m***m", date: "Jan 12, 2026", color: "bg-green-500" },
 ];
 
 export const TestimonialsSection = () => {
@@ -102,11 +108,19 @@ export const TestimonialsSection = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-full ${testimonial.avatarColor} flex items-center justify-center flex-shrink-0`}>
-                    <span className="text-white font-semibold text-sm">
-                      {testimonial.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
+                  {testimonial.avatar ? (
+                    <img 
+                      src={testimonial.avatar} 
+                      alt={testimonial.name}
+                      className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <div className={`w-10 h-10 rounded-full ${testimonial.avatarColor} flex items-center justify-center flex-shrink-0`}>
+                      <span className="text-white font-semibold text-sm">
+                        {testimonial.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-semibold text-foreground">{testimonial.name}</h3>
                     <div className="flex items-center gap-2 mt-1">
