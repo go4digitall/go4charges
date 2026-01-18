@@ -130,7 +130,7 @@ export default {
             transform: "translateX(0)",
           },
           "100%": {
-            transform: "translateX(-50%)",
+            transform: "translateX(calc(-100% - 3rem))",
           },
         },
       },
@@ -141,7 +141,7 @@ export default {
         "scroll-text": "scroll-text 15s linear infinite",
         "shine": "shine 3s ease-in-out infinite",
         "subtle-zoom": "subtle-zoom 8s ease-in-out infinite",
-        "marquee": "marquee 15s linear infinite",
+        "marquee": "marquee 10s linear infinite",
       },
     },
   },
