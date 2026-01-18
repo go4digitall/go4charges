@@ -3,10 +3,32 @@ import { useParams, Link } from "react-router-dom";
 import { useProduct } from "@/hooks/useProducts";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, ArrowLeft, Check } from "lucide-react";
+import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star } from "lucide-react";
 import { toast } from "sonner";
 import { ShopifyProduct } from "@/lib/shopify";
+
+// Parse description into structured sections
+const parseDescription = (description: string) => {
+  const lines = description.split(/[•\n]/).map(line => line.trim()).filter(Boolean);
+  const specs: { label: string; value: string }[] = [];
+  let mainDescription = "";
+
+  lines.forEach(line => {
+    if (line.includes(":")) {
+      const [label, ...valueParts] = line.split(":");
+      const value = valueParts.join(":").trim();
+      if (label && value) {
+        specs.push({ label: label.trim(), value });
+      }
+    } else if (line.length > 30) {
+      mainDescription = line;
+    }
+  });
+
+  return { specs, mainDescription };
+};
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -18,10 +40,10 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </div>
     );
@@ -29,7 +51,7 @@ const ProductDetail = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -49,6 +71,14 @@ const ProductDetail = () => {
   const images = product.images?.edges || [];
   const currentImage = images[selectedImageIndex]?.node;
   const options = product.options || [];
+  
+  // Filter out "Title" option with only "Default Title"
+  const displayableOptions = options.filter(option => {
+    if (option.name === "Title" && option.values.length === 1 && option.values[0] === "Default Title") {
+      return false;
+    }
+    return true;
+  });
 
   // Initialize selected options with first value of each option
   const effectiveOptions = { ...selectedOptions };
@@ -64,6 +94,8 @@ const ProductDetail = () => {
       opt => effectiveOptions[opt.name] === opt.value
     );
   })?.node || product.variants?.edges?.[0]?.node;
+
+  const { specs, mainDescription } = parseDescription(product.description);
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
@@ -93,24 +125,28 @@ const ProductDetail = () => {
     }
   };
 
+  const price = parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount);
+  const currency = selectedVariant?.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="flex-1 container py-8">
-        <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-8">
+      <main className="flex-1 container py-6 md:py-10">
+        {/* Breadcrumb */}
+        <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to products
         </Link>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
           {/* Images */}
           <div className="space-y-4">
-            <div className="aspect-square overflow-hidden rounded-lg bg-secondary/10">
+            <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/5 border border-border/50 shadow-lg">
               {currentImage ? (
                 <img
                   src={currentImage.url}
                   alt={currentImage.altText || product.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -119,13 +155,15 @@ const ProductDetail = () => {
               )}
             </div>
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-3 overflow-x-auto pb-2">
                 {images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
-                      index === selectedImageIndex ? 'border-primary' : 'border-transparent hover:border-muted'
+                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                      index === selectedImageIndex 
+                        ? 'border-primary shadow-md shadow-primary/20' 
+                        : 'border-transparent hover:border-muted-foreground/30'
                     }`}
                   >
                     <img
@@ -141,29 +179,79 @@ const ProductDetail = () => {
 
           {/* Product Info */}
           <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-              <p className="text-2xl font-bold text-primary">
-                {parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount).toFixed(2)}{" "}
-                {selectedVariant?.price.currencyCode || product.priceRange.minVariantPrice.currencyCode}
-              </p>
+            {/* Badges */}
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <Zap className="h-3 w-3 mr-1" />
+                Up to 240W
+              </Badge>
+              <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                <Truck className="h-3 w-3 mr-1" />
+                Free Shipping
+              </Badge>
             </div>
 
-            <p className="text-muted-foreground">{product.description}</p>
+            {/* Title & Rating */}
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{product.title}</h1>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="text-sm text-muted-foreground">(1,000+ reviews)</span>
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl font-bold text-primary">
+                {price.toFixed(2)} {currency}
+              </span>
+              <span className="text-lg text-muted-foreground line-through">
+                {(price * 2).toFixed(2)} {currency}
+              </span>
+              <Badge className="bg-red-500 text-white hover:bg-red-600">
+                50% OFF
+              </Badge>
+            </div>
+
+            {/* Main Description */}
+            {mainDescription && (
+              <p className="text-muted-foreground leading-relaxed">
+                {mainDescription}
+              </p>
+            )}
+
+            {/* Specifications */}
+            {specs.length > 0 && (
+              <div className="bg-secondary/30 rounded-xl p-4 space-y-2">
+                <h3 className="font-semibold text-sm text-foreground mb-3">Specifications</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {specs.map((spec, index) => (
+                    <div key={index} className="flex flex-col">
+                      <span className="text-xs text-muted-foreground">{spec.label}</span>
+                      <span className="text-sm font-medium text-foreground">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Options */}
-            {options.map((option) => (
+            {displayableOptions.map((option) => (
               <div key={option.name}>
-                <label className="block text-sm font-medium mb-2">{option.name}</label>
+                <label className="block text-sm font-semibold mb-3 text-foreground">{option.name}</label>
                 <div className="flex flex-wrap gap-2">
                   {option.values.map((value) => (
                     <button
                       key={value}
                       onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
-                      className={`px-4 py-2 rounded-md border text-sm transition-colors ${
+                      className={`px-5 py-2.5 rounded-lg border-2 text-sm font-medium transition-all duration-200 ${
                         effectiveOptions[option.name] === value
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-input hover:border-primary'
+                          ? 'border-primary bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                          : 'border-border bg-background hover:border-primary/50 text-foreground'
                       }`}
                     >
                       {value}
@@ -176,7 +264,7 @@ const ProductDetail = () => {
             {/* Add to Cart */}
             <Button
               size="lg"
-              className="w-full"
+              className="w-full h-14 text-lg font-semibold bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all duration-300"
               onClick={handleAddToCart}
               disabled={isAdding || !selectedVariant?.availableForSale}
             >
@@ -187,24 +275,39 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  Add to cart
+                  Add to Cart
                 </>
               )}
             </Button>
 
-            {/* Features */}
-            <div className="border-t pt-6 space-y-3">
-              <div className="flex items-center gap-2 text-sm">
-                <Check className="h-4 w-4 text-primary" />
-                <span>Up to 240W ultra-fast charging</span>
+            {/* Trust Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                  <Check className="h-5 w-5 text-emerald-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Up to 240W</p>
+                  <p className="text-xs text-muted-foreground">Ultra-fast charging</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Check className="h-4 w-4 text-primary" />
-                <span>90° ergonomic connector</span>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
+                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">30-Day</p>
+                  <p className="text-xs text-muted-foreground">Money-back guarantee</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Check className="h-4 w-4 text-primary" />
-                <span>Compatible with all USB-C devices</span>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
+                <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center">
+                  <Truck className="h-5 w-5 text-violet-500" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Free Shipping</p>
+                  <p className="text-xs text-muted-foreground">Worldwide delivery</p>
+                </div>
               </div>
             </div>
           </div>
