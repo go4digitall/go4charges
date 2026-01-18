@@ -125,6 +125,14 @@ export default {
             transform: "scale(1.03)",
           },
         },
+        "marquee": {
+          "0%": {
+            transform: "translateX(0)",
+          },
+          "100%": {
+            transform: "translateX(-50%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -133,6 +141,7 @@ export default {
         "scroll-text": "scroll-text 15s linear infinite",
         "shine": "shine 3s ease-in-out infinite",
         "subtle-zoom": "subtle-zoom 8s ease-in-out infinite",
+        "marquee": "marquee 15s linear infinite",
       },
     },
   },
