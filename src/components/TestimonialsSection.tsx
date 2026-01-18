@@ -8,20 +8,7 @@ import avatarPa from "@/assets/testimonials/avatar-P-a.avif";
 import avatarSi from "@/assets/testimonials/avatar-s-i.avif";
 
 const testimonials = [
-  {
-    name: "Alex M.",
-    rating: 5,
-    quote: "Finally a cable that doesn't break after a month! The 90° design is genius.",
-    avatarColor: "bg-blue-500",
-    verified: false
-  },
-  {
-    name: "Sarah K.",
-    rating: 5,
-    quote: "The fast charging is incredible. My MacBook Pro charges so fast now.",
-    avatarColor: "bg-rose-500",
-    verified: false
-  },
+  // Reviews with photos first
   {
     name: "P***a",
     date: "Jan 9, 2026",
@@ -31,26 +18,12 @@ const testimonials = [
     verified: true
   },
   {
-    name: "James L.",
-    rating: 5,
-    quote: "By far the best cable. The braided design feels premium.",
-    avatarColor: "bg-emerald-500",
-    verified: false
-  },
-  {
     name: "n***l",
     date: "Jan 10, 2026",
     rating: 5,
     quote: "Everything is fine.",
     avatar: avatarNl,
     verified: true
-  },
-  {
-    name: "Emily R.",
-    rating: 5,
-    quote: "Bought one for myself and three more for my family!",
-    avatarColor: "bg-purple-500",
-    verified: false
   },
   {
     name: "s***i",
@@ -67,6 +40,35 @@ const testimonials = [
     quote: "Amazing quality! Fast shipping too!",
     avatar: avatarLo,
     verified: true
+  },
+  // Reviews without photos
+  {
+    name: "Alex M.",
+    rating: 5,
+    quote: "Finally a cable that doesn't break after a month! The 90° design is genius.",
+    avatarColor: "bg-blue-500",
+    verified: false
+  },
+  {
+    name: "Sarah K.",
+    rating: 5,
+    quote: "The fast charging is incredible. My MacBook Pro charges so fast now.",
+    avatarColor: "bg-rose-500",
+    verified: false
+  },
+  {
+    name: "James L.",
+    rating: 5,
+    quote: "By far the best cable. The braided design feels premium.",
+    avatarColor: "bg-emerald-500",
+    verified: false
+  },
+  {
+    name: "Emily R.",
+    rating: 5,
+    quote: "Bought one for myself and three more for my family!",
+    avatarColor: "bg-purple-500",
+    verified: false
   }
 ];
 
@@ -79,6 +81,26 @@ const quickReviews = [
   { name: "K***i", date: "Jan 4, 2026", color: "bg-indigo-400" },
   { name: "m***m", date: "Jan 12, 2026", color: "bg-green-500" },
 ];
+
+// Trustpilot-style star component
+const TrustpilotStar = ({ filled = true, size = "md" }: { filled?: boolean; size?: "sm" | "md" | "lg" }) => {
+  const sizeClasses = {
+    sm: "w-3 h-3 md:w-4 md:h-4",
+    md: "w-4 h-4 md:w-5 md:h-5",
+    lg: "w-6 h-6 md:w-8 md:h-8"
+  };
+  const starSizeClasses = {
+    sm: "w-2 h-2 md:w-2.5 md:h-2.5",
+    md: "w-2.5 h-2.5 md:w-3 md:h-3",
+    lg: "w-4 h-4 md:w-5 md:h-5"
+  };
+  
+  return (
+    <div className={`${sizeClasses[size]} ${filled ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center`}>
+      <Star className={`${starSizeClasses[size]} ${filled ? 'fill-white text-white' : 'fill-gray-400 text-gray-400'}`} />
+    </div>
+  );
+};
 
 export const TestimonialsSection = () => {
   return (
@@ -93,14 +115,12 @@ export const TestimonialsSection = () => {
           </p>
         </div>
 
-        {/* Global Rating */}
+        {/* Global Rating - Trustpilot style */}
         <div className="flex flex-col items-center justify-center mb-6 md:mb-10 p-4 md:p-6 bg-card/30 rounded-xl border border-border/30">
           <p className="text-sm text-muted-foreground mb-2">Excellent</p>
-          <div className="flex gap-1 mb-2">
+          <div className="flex gap-0.5 mb-2">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="w-6 h-6 md:w-8 md:h-8 bg-green-500 flex items-center justify-center">
-                <Star className="w-4 h-4 md:w-5 md:h-5 fill-white text-white" />
-              </div>
+              <TrustpilotStar key={i} filled={true} size="lg" />
             ))}
           </div>
           <p className="text-sm md:text-base text-foreground font-medium">
@@ -140,11 +160,8 @@ export const TestimonialsSection = () => {
                   </div>
                 </div>
                 <div className="flex gap-0.5 mb-2">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="w-3 h-3 md:w-4 md:h-4 fill-amber-500 text-amber-500" />
-                  ))}
-                  {Array.from({ length: 5 - testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground/30" />
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <TrustpilotStar key={i} filled={i < testimonial.rating} size="sm" />
                   ))}
                 </div>
                 <p className="text-muted-foreground text-xs md:text-sm leading-relaxed line-clamp-3">
@@ -176,7 +193,7 @@ export const TestimonialsSection = () => {
                   <span className="text-xs md:text-sm text-foreground font-medium">{review.name}</span>
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-500 text-amber-500" />
+                      <TrustpilotStar key={i} filled={true} size="sm" />
                     ))}
                   </div>
                   <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500" />
@@ -197,7 +214,7 @@ export const TestimonialsSection = () => {
                   <span className="text-xs md:text-sm text-foreground font-medium">{review.name}</span>
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-500 text-amber-500" />
+                      <TrustpilotStar key={i} filled={true} size="sm" />
                     ))}
                   </div>
                   <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500" />
