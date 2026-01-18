@@ -14,7 +14,7 @@ export const AsSeenSection = () => {
             As Seen <span className="text-gradient">Across the Web</span>
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            Products like ChargeStand are trending on leading tech and lifestyle platforms.
+            Products like ChargeStand are trending on leading tech platforms and social media, including YouTube.
           </p>
         </div>
         
