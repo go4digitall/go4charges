@@ -12,7 +12,7 @@ export const AsSeenSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-2">
-            As Seen Across the Web
+            As Seen <span className="text-gradient">Across the Web</span>
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">
             Products like ChargeStand are trending on leading tech and lifestyle platforms.

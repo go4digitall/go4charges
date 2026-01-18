@@ -4,42 +4,34 @@ const badges = [
   {
     icon: ShieldCheck,
     title: "30-Day Money-Back",
-    description: "100% satisfaction guaranteed or your money back",
     color: "text-emerald-600",
     bgColor: "bg-emerald-100",
-    hoverBg: "group-hover:bg-emerald-200"
   },
   {
     icon: Lock,
     title: "Secure Checkout",
-    description: "SSL encrypted payment processing",
     color: "text-violet-600",
     bgColor: "bg-violet-100",
-    hoverBg: "group-hover:bg-violet-200"
   },
   {
     icon: Truck,
     title: "FREE Shipping",
-    description: "Worldwide shipping on all orders",
     color: "text-blue-600",
     bgColor: "bg-blue-100",
-    hoverBg: "group-hover:bg-blue-200"
   },
   {
     icon: Headphones,
-    title: "24/7 Customer Support",
-    description: "Available every day to help you",
+    title: "24/7 Support",
     color: "text-amber-600",
     bgColor: "bg-amber-100",
-    hoverBg: "group-hover:bg-amber-200"
   }
 ];
 
 export const TrustBadgeSection = () => {
   return (
-    <section className="py-8 px-4 bg-section-alt">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className="bg-muted/50 border-y border-border py-4 md:py-8">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-10 max-w-5xl mx-auto">
           {badges.map((badge, index) => {
             const Icon = badge.icon;
             return (
@@ -47,20 +39,17 @@ export const TrustBadgeSection = () => {
                 key={index}
                 className="flex flex-col items-center text-center group"
               >
-                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${badge.bgColor} flex items-center justify-center mb-2 transition-all duration-300 ${badge.hoverBg} group-hover:scale-110`}>
-                  <Icon className={`w-5 h-5 md:w-6 md:h-6 ${badge.color}`} />
+                <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full ${badge.bgColor} flex items-center justify-center mb-1 md:mb-2 transition-all duration-300 group-hover:scale-110`}>
+                  <Icon className={`w-4 h-4 md:w-6 md:h-6 ${badge.color}`} />
                 </div>
-                <h3 className="font-semibold text-foreground text-xs md:text-sm mb-1">
+                <p className="text-[10px] md:text-sm font-medium">
                   {badge.title}
-                </h3>
-                <p className="text-[10px] md:text-xs text-muted-foreground">
-                  {badge.description}
                 </p>
               </div>
             );
           })}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
