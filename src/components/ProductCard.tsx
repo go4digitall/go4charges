@@ -2,16 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2 } from "lucide-react";
+import { ShoppingCart, Loader2, Star, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProductCardProps {
   product: ShopifyProduct;
+  isFeatured?: boolean;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const addItem = useCartStore(state => state.addItem);
   const { node } = product;
@@ -49,8 +51,30 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link to={`/product/${node.handle}`}>
-      <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 bg-card/50 backdrop-blur glow-border hover-glow">
-        <div className="aspect-square overflow-hidden bg-primary/5">
+      <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative ${
+        isFeatured 
+          ? 'border-2 border-amber-500 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 ring-2 ring-amber-500/20' 
+          : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
+      }`}>
+        {/* Featured Badge */}
+        {isFeatured && (
+          <div className="absolute top-3 left-3 z-10">
+            <Badge className="bg-amber-500 text-white hover:bg-amber-600 shadow-md px-3 py-1">
+              <Star className="h-3 w-3 mr-1 fill-white" />
+              Best Seller
+            </Badge>
+          </div>
+        )}
+        
+        {/* Power Badge */}
+        <div className={`absolute top-3 z-10 ${isFeatured ? 'right-3' : 'right-3'}`}>
+          <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
+            <Zap className="h-3 w-3 mr-1" />
+            Up to 240W
+          </Badge>
+        </div>
+
+        <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>
           {image ? (
             <img
               src={image.url}
@@ -63,22 +87,27 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             </div>
           )}
         </div>
-        <CardContent className="p-4">
-          <h3 className="font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+        <CardContent className={`p-4 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
+          <h3 className={`font-semibold text-sm mb-1 line-clamp-2 transition-colors ${
+            isFeatured ? 'text-foreground group-hover:text-amber-600' : 'group-hover:text-primary'
+          }`}>
             {node.title}
           </h3>
           <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
             {node.description}
           </p>
           <div className="flex items-center justify-between gap-2">
-            <span className="font-bold text-lg text-primary">
+            <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
               {parseFloat(price.amount).toFixed(2)} {price.currencyCode}
             </span>
             <Button 
               size="sm" 
               onClick={handleAddToCart}
               disabled={isAdding || !firstVariant?.availableForSale}
-              className="bg-primary hover:bg-primary/90"
+              className={isFeatured 
+                ? "bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/30" 
+                : "bg-primary hover:bg-primary/90"
+              }
             >
               {isAdding ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
