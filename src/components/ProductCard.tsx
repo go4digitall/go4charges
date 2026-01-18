@@ -21,8 +21,23 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const image = node.images?.edges?.[0]?.node;
   const firstVariant = node.variants?.edges?.[0]?.node;
   const price = parseFloat(firstVariant?.price.amount || node.priceRange.minVariantPrice.amount);
-  const compareAtPrice = firstVariant?.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null;
   const currencyCode = firstVariant?.price.currencyCode || node.priceRange.minVariantPrice.currencyCode;
+  
+  // Calculate compare at price - use Shopify's compareAtPrice if available, 
+  // otherwise calculate for bundles based on single unit price (49.90)
+  const SINGLE_UNIT_ORIGINAL_PRICE = 49.90;
+  let compareAtPrice = firstVariant?.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null;
+  
+  // For bundle products, calculate the compare price if not set in Shopify
+  if (!compareAtPrice) {
+    const handle = node.handle.toLowerCase();
+    if (handle.includes('duo') || handle.includes('2x')) {
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2; // 99.80
+    } else if (handle.includes('family') || handle.includes('3x')) {
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3; // 149.70
+    }
+  }
+  
   const hasDiscount = compareAtPrice && compareAtPrice > price;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
