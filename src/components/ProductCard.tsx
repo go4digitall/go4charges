@@ -19,8 +19,11 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const { node } = product;
   
   const image = node.images?.edges?.[0]?.node;
-  const price = node.priceRange.minVariantPrice;
   const firstVariant = node.variants?.edges?.[0]?.node;
+  const price = parseFloat(firstVariant?.price.amount || node.priceRange.minVariantPrice.amount);
+  const compareAtPrice = firstVariant?.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null;
+  const currencyCode = firstVariant?.price.currencyCode || node.priceRange.minVariantPrice.currencyCode;
+  const hasDiscount = compareAtPrice && compareAtPrice > price;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -50,8 +53,8 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   };
 
   return (
-    <Link to={`/product/${node.handle}`}>
-      <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative ${
+    <Link to={`/product/${node.handle}`} className="h-full">
+      <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col ${
         isFeatured 
           ? 'border-2 border-amber-500 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 ring-2 ring-amber-500/20' 
           : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
@@ -67,7 +70,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         )}
         
         {/* Power Badge */}
-        <div className={`absolute top-3 z-10 ${isFeatured ? 'right-3' : 'right-3'}`}>
+        <div className="absolute top-3 right-3 z-10">
           <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
             <Zap className="h-3 w-3 mr-1" />
             Up to 240W
@@ -87,19 +90,33 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
           )}
         </div>
-        <CardContent className={`p-4 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
+        <CardContent className={`p-4 flex flex-col flex-1 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
           <h3 className={`font-semibold text-sm mb-1 line-clamp-2 transition-colors ${
             isFeatured ? 'text-foreground group-hover:text-amber-600' : 'group-hover:text-primary'
           }`}>
             {node.title}
           </h3>
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+          <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">
             {node.description}
           </p>
-          <div className="flex items-center justify-between gap-2">
-            <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
-              {parseFloat(price.amount).toFixed(2)} {price.currencyCode}
-            </span>
+          <div className="flex items-center justify-between gap-2 mt-auto">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
+                  {price.toFixed(2)} {currencyCode}
+                </span>
+                {hasDiscount && (
+                  <Badge className="bg-red-500 text-white hover:bg-red-600 text-xs px-1.5 py-0">
+                    -{Math.round((1 - price / compareAtPrice) * 100)}%
+                  </Badge>
+                )}
+              </div>
+              {hasDiscount && (
+                <span className="text-xs text-muted-foreground line-through">
+                  {compareAtPrice.toFixed(2)} {currencyCode}
+                </span>
+              )}
+            </div>
             <Button 
               size="sm" 
               onClick={handleAddToCart}
