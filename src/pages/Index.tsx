@@ -48,7 +48,7 @@ const Index = () => {
                   Error loading products
                 </div>
               ) : products && products.length > 0 ? (
-                <div className="flex flex-wrap justify-center gap-6">
+                <div className="flex flex-wrap justify-center items-stretch gap-6">
                   {/* Sort products to put Duo Pack first */}
                   {[...products]
                     .sort((a, b) => {
@@ -61,7 +61,7 @@ const Index = () => {
                     .map((product) => {
                       const isFeatured = product.node.handle.toLowerCase().includes('duo');
                       return (
-                        <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
+                        <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm h-full">
                           <ProductCard product={product} isFeatured={isFeatured} />
                         </div>
                       );
