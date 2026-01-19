@@ -54,12 +54,6 @@ export const Header = () => {
           >
             FAQ
           </button>
-          <Link
-            to="/track-order"
-            className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
-          >
-            Track Order
-          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -105,13 +99,6 @@ export const Header = () => {
             >
               FAQ
             </button>
-            <Link
-              to="/track-order"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-left py-2 px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors"
-            >
-              Track Order
-            </Link>
           </nav>
         </div>
       )}

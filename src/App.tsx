@@ -10,7 +10,6 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import ShippingReturns from "./pages/ShippingReturns";
-import OrderTracking from "./pages/OrderTracking";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +22,6 @@ const AppContent = () => {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsConditions />} />
       <Route path="/shipping" element={<ShippingReturns />} />
-      <Route path="/track-order" element={<OrderTracking />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
