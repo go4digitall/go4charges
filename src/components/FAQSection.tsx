@@ -42,7 +42,7 @@ const faqs = [
 
 export const FAQSection = () => {
   return (
-    <section id="faq" className="pt-8 pb-12 md:py-20 px-4 bg-section-alt scroll-mt-40 md:scroll-mt-36">
+    <section id="faq" className="pt-8 pb-12 md:py-20 px-4 bg-section-alt scroll-mt-48 md:scroll-mt-36">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-6 md:mb-12">
           <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 px-2">
