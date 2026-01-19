@@ -12,7 +12,7 @@ export const Header = () => {
     const element = document.getElementById(id);
     if (element) {
       const isMobile = window.innerWidth < 640;
-      const offset = isMobile ? 280 : 180;
+      const offset = isMobile ? 320 : 200;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - offset,
