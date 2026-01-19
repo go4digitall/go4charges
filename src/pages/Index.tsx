@@ -28,7 +28,7 @@ const Index = () => {
           <BenefitsSection />
           
           {/* Products Section */}
-          <section id="products" className="py-12 md:py-16 bg-section-alt">
+          <section id="products" className="py-12 md:py-16 bg-section-alt scroll-mt-40 md:scroll-mt-36">
             <div className="container">
               <div className="text-center mb-10">
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">

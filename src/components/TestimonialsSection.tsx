@@ -104,7 +104,7 @@ const TrustpilotStar = ({ filled = true, size = "md" }: { filled?: boolean; size
 
 export const TestimonialsSection = () => {
   return (
-    <section id="testimonials" className="pt-8 pb-12 md:py-20 px-4 bg-background">
+    <section id="testimonials" className="pt-8 pb-12 md:py-20 px-4 bg-background scroll-mt-40 md:scroll-mt-36">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6 md:mb-12">
           <h2 className="text-2xl md:text-5xl font-bold mb-2 md:mb-4 px-2">
