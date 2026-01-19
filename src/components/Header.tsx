@@ -11,9 +11,8 @@ export const Header = () => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      // Calculate offset: CountdownBanner (~72px mobile, ~52px desktop) + Header (~80px mobile, ~96px desktop) + extra margin
       const isMobile = window.innerWidth < 640;
-      const offset = isMobile ? 180 : 160;
+      const offset = isMobile ? 220 : 160;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - offset,
