@@ -23,6 +23,10 @@ const faqs = [
     answer: "Each ChargeStand™ cable comes with the premium braided USB-C cable, a protective carrying pouch, and our comprehensive warranty card. Everything you need for reliable charging on the go."
   },
   {
+    question: "How can I track my order?",
+    answer: "Once your order ships, you'll receive an email with your tracking number and a direct link to track your package with the carrier. You can also check your order status anytime by clicking the link in your order confirmation email."
+  },
+  {
     question: "Do you ship internationally?",
     answer: "Yes! We offer FREE worldwide shipping on all orders. Orders typically arrive within 7-14 business days depending on your location. You'll receive tracking information once your order ships."
   },
