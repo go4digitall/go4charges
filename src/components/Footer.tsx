@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import paymentBadges from "@/assets/payment-badges.png";
 
 export const Footer = () => {
   return (
@@ -77,7 +78,14 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border/40">
+        <div className="mt-8 pt-8 border-t border-border/40 space-y-4">
+          <div className="flex justify-center">
+            <img 
+              src={paymentBadges} 
+              alt="Secure payment methods: Visa, Mastercard, American Express, PayPal, Google Pay" 
+              className="h-8 md:h-10 w-auto opacity-80"
+            />
+          </div>
           <p className="text-center text-sm text-muted-foreground">
             © {new Date().getFullYear()} Go4charges. All rights reserved.
           </p>
