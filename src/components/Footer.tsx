@@ -49,6 +49,11 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
+                <Link to="/track-order" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Track Your Order
+                </Link>
+              </li>
+              <li>
                 <Link to="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   FAQ
                 </Link>
@@ -66,13 +71,19 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <span className="text-sm text-muted-foreground">Terms & Conditions</span>
+                <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Terms & Conditions
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-muted-foreground">Privacy Policy</span>
+                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Privacy Policy
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-muted-foreground">Return Policy</span>
+                <Link to="/shipping" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Shipping & Returns
+                </Link>
               </li>
             </ul>
           </div>
