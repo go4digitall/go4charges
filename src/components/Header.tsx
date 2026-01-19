@@ -15,7 +15,7 @@ export const Header = () => {
 
   return (
     <header className="sticky top-[72px] sm:top-[52px] z-40 w-full border-b border-border bg-background shadow-md">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-20 md:h-24 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Go4charges" className="h-14 md:h-20 w-auto" />
         </Link>
