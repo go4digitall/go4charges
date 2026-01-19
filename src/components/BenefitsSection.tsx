@@ -2,7 +2,7 @@ import benefitsBanner from "@/assets/benefits-banner.jpg";
 
 export const BenefitsSection = () => {
   return (
-    <section id="benefits" className="pt-8 pb-12 md:py-20 px-4 bg-background scroll-mt-48 md:scroll-mt-36">
+    <section id="benefits" className="pt-8 pb-12 md:py-20 px-4 bg-background scroll-mt-56 md:scroll-mt-36">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 px-2">
