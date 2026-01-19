@@ -8,6 +8,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star } from "lucide-react";
 import { toast } from "sonner";
 import { ShopifyProduct } from "@/lib/shopify";
+import paymentBadges from "@/assets/payment-badges.png";
 
 // Parse description into structured sections
 const parseDescription = (description: string) => {
@@ -279,6 +280,16 @@ const ProductDetail = () => {
                 </>
               )}
             </Button>
+
+            {/* Payment Methods */}
+            <div className="flex flex-col items-center gap-2 pt-2">
+              <img 
+                src={paymentBadges} 
+                alt="Secure payment: Visa, Mastercard, American Express, PayPal, Google Pay" 
+                className="h-6 md:h-8 w-auto"
+              />
+              <p className="text-xs text-muted-foreground">Secure checkout with encrypted payment</p>
+            </div>
 
             {/* Trust Features */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
