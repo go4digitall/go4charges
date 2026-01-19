@@ -31,6 +31,13 @@ const Index = () => {
           <section id="products" className="py-12 md:py-16 bg-section-alt scroll-mt-40 md:scroll-mt-36">
             <div className="container">
               <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 animate-pulse shadow-lg shadow-amber-500/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                  </span>
+                  URGENT: Limited Stock Available
+                </div>
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
                   Our <span className="text-gradient">Premium</span> Products
                 </h2>
