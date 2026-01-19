@@ -129,6 +129,29 @@ const ProductDetail = () => {
   const price = parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount);
   const currency = selectedVariant?.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
 
+  // Calculate compare at price - use Shopify's compareAtPrice if available,
+  // otherwise calculate for bundles based on single unit price (49.90)
+  const SINGLE_UNIT_ORIGINAL_PRICE = 49.90;
+  let compareAtPrice: number | null = selectedVariant?.compareAtPrice 
+    ? parseFloat(selectedVariant.compareAtPrice.amount) 
+    : null;
+  
+  // For bundle products, calculate the compare price if not set in Shopify
+  if (!compareAtPrice) {
+    const handle = product.handle.toLowerCase();
+    if (handle.includes('duo') || handle.includes('2x')) {
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2; // 99.80
+    } else if (handle.includes('family') || handle.includes('3x')) {
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3; // 149.70
+    } else {
+      // For single products, use the original price
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE;
+    }
+  }
+  
+  const hasDiscount = compareAtPrice && compareAtPrice > price;
+  const discountPercent = hasDiscount ? Math.round((1 - price / compareAtPrice) * 100) : 0;
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
@@ -210,12 +233,16 @@ const ProductDetail = () => {
               <span className="text-3xl font-bold text-primary">
                 {price.toFixed(2)} {currency}
               </span>
-              <span className="text-lg text-muted-foreground line-through">
-                {(price * 2).toFixed(2)} {currency}
-              </span>
-              <Badge className="bg-red-500 text-white hover:bg-red-600">
-                50% OFF
-              </Badge>
+              {hasDiscount && (
+                <>
+                  <span className="text-lg text-muted-foreground line-through">
+                    {compareAtPrice.toFixed(2)} {currency}
+                  </span>
+                  <Badge className="bg-red-500 text-white hover:bg-red-600">
+                    {discountPercent}% OFF
+                  </Badge>
+                </>
+              )}
             </div>
 
             {/* Main Description */}
