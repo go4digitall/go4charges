@@ -17,7 +17,7 @@ export const Header = () => {
     <header className="sticky top-[72px] sm:top-[52px] z-40 w-full border-b border-border bg-background shadow-md">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Go4charges" className="h-10 md:h-14 w-auto" />
+          <img src={logo} alt="Go4charges" className="h-14 md:h-20 w-auto" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
