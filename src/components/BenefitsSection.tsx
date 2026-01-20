@@ -14,19 +14,19 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
           {/* Main banner image - takes 3 columns on large screens */}
-          <div className="lg:col-span-3 flex">
+          <div className="lg:col-span-3">
             <img 
               src={benefitsBanner} 
               alt="Go4Charges - Up to 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable" 
-              className="w-full h-full object-cover rounded-xl shadow-lg"
+              className="w-full rounded-xl shadow-lg"
             />
           </div>
           
           {/* Video showcase - takes 2 columns on large screens */}
-          <div className="lg:col-span-2 flex flex-col">
-            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary flex-1">
+          <div className="lg:col-span-2">
+            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary aspect-[3/4]">
               <video 
                 src={benefitsVideo}
                 autoPlay 
