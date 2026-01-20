@@ -1,4 +1,5 @@
 import benefitsBanner from "@/assets/benefits-banner.jpg";
+import benefitsVideo from "@/assets/benefits-video.mp4";
 
 export const BenefitsSection = () => {
   return (
@@ -13,11 +14,36 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        <img 
-          src={benefitsBanner} 
-          alt="Go4Charges - Up to 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable" 
-          className="w-full max-w-4xl mx-auto rounded-xl shadow-lg"
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
+          {/* Main banner image - takes 3 columns on large screens */}
+          <div className="lg:col-span-3">
+            <img 
+              src={benefitsBanner} 
+              alt="Go4Charges - Up to 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable" 
+              className="w-full rounded-xl shadow-lg"
+            />
+          </div>
+          
+          {/* Video showcase - takes 2 columns on large screens */}
+          <div className="lg:col-span-2 relative">
+            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary">
+              <video 
+                src={benefitsVideo}
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-full object-cover rounded-xl"
+              />
+              {/* Subtle gradient overlay for polish */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
+            </div>
+            {/* Caption */}
+            <p className="text-center text-sm text-muted-foreground mt-3 italic">
+              See it in action
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
