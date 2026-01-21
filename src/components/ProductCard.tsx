@@ -7,6 +7,7 @@ import { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { ShoppingCart, Loader2, Star, Zap } from "lucide-react";
 import { toast } from "sonner";
+import { trackAddToCart } from "@/lib/facebookPixel";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -59,6 +60,15 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
       toast.success("Added to cart", {
         description: node.title,
         position: "top-center"
+      });
+      
+      // Track AddToCart event
+      trackAddToCart({
+        content_name: node.title,
+        content_ids: [firstVariant.id],
+        content_type: 'product',
+        value: price,
+        currency: currencyCode
       });
     } catch (error) {
       toast.error("Error adding to cart");
