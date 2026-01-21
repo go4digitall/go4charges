@@ -155,7 +155,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="flex-1 container py-6 md:py-10">
+      <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10">
         {/* Breadcrumb */}
         <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
