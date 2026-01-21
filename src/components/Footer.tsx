@@ -27,19 +27,19 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4">Shop</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/#products" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="/#products" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Products
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/#benefits" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="/#benefits" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Benefits
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   FAQ
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -49,9 +49,9 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <a href="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   FAQ
-                </Link>
+                </a>
               </li>
               <li>
                 <a href="mailto:contact@go4charges.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">

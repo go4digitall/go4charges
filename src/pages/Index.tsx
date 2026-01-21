@@ -10,10 +10,12 @@ import { CountdownBanner } from "@/components/CountdownBanner";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
+import { useHashScroll } from "@/hooks/useHashScroll";
 import { Loader2 } from "lucide-react";
 
 const Index = () => {
   const { data: products, isLoading, error } = useProducts();
+  useHashScroll();
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
