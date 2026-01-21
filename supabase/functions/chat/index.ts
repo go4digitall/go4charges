@@ -75,13 +75,13 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "google/gemini-2.5-flash-lite",
         messages: [
           { role: "system", content: SITE_CONTEXT },
           ...messages,
         ],
-        stream: false,
-        max_tokens: 300,
+        stream: true,
+        max_tokens: 200,
       }),
     });
 
@@ -105,15 +105,11 @@ serve(async (req) => {
       throw new Error(`AI gateway error: ${response.status}`);
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process your request.";
+    console.log("Streaming response started");
 
-    console.log("AI response received successfully");
-
-    return new Response(
-      JSON.stringify({ message: content }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(response.body, {
+      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    });
   } catch (error) {
     console.error("Chat function error:", error);
     return new Response(
