@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProduct } from "@/hooks/useProducts";
 import { Header } from "@/components/Header";
@@ -9,6 +9,7 @@ import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star } fro
 import { toast } from "sonner";
 import { ShopifyProduct } from "@/lib/shopify";
 import paymentBadges from "@/assets/payment-badges.png";
+import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
 
 // Parse description into structured sections
 const parseDescription = (description: string) => {
@@ -98,6 +99,22 @@ const ProductDetail = () => {
 
   const { specs, mainDescription } = parseDescription(product.description);
 
+  // Track ViewContent when product loads
+  useEffect(() => {
+    if (product && selectedVariant) {
+      const productPrice = parseFloat(selectedVariant.price.amount || product.priceRange.minVariantPrice.amount);
+      const productCurrency = selectedVariant.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
+      
+      trackViewContent({
+        content_name: product.title,
+        content_ids: [selectedVariant.id],
+        content_type: 'product',
+        value: productPrice,
+        currency: productCurrency
+      });
+    }
+  }, [product?.id]); // Only track once per product
+
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
     
@@ -115,9 +132,19 @@ const ProductDetail = () => {
         quantity: 1,
         selectedOptions: selectedVariant.selectedOptions || []
       });
+      
       toast.success("Added to cart", {
         description: product.title,
         position: "top-center"
+      });
+      
+      // Track AddToCart event
+      trackAddToCart({
+        content_name: product.title,
+        content_ids: [selectedVariant.id],
+        content_type: 'product',
+        value: parseFloat(selectedVariant.price.amount),
+        currency: selectedVariant.price.currencyCode
       });
     } catch (error) {
       toast.error("Error adding to cart");
