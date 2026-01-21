@@ -18,16 +18,15 @@ IMPORTANT RULES:
 
 PRODUCT INFORMATION:
 - Product: ChargeStand™ Premium USB-C Cable
-- Features: 90° angle design, up to 240W power delivery, braided nylon construction
+- Features: 90° angle design, up to 240W power delivery, braided nylon construction, 1.5m (5ft) length
 - Compatible with: MacBooks, iPads, iPhones 15+, Samsung Galaxy, Nintendo Switch, most USB-C devices
 - Durability: Over 10,000 bend cycles tested
 - Package includes: Cable, protective carrying pouch, warranty card
-- Current offer: 50% off launch sale (limited time)
 
-PRICING:
-- Single cable options available
-- Duo Pack (2 cables) with extra discount
-- Family Pack (4 cables) for best value
+PRICING (all prices in USD):
+- Single ChargeStand™ cable: $24.90 (was $49.90 - 50% OFF)
+- Duo Pack (2 cables): $39.90 (best for home + office)
+- Family Pack (3 cables): $54.90 (best value for families)
 
 SHIPPING:
 - FREE worldwide shipping on all orders
