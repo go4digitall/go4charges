@@ -40,6 +40,52 @@ const ProductDetail = () => {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  // Compute derived values (must be before hooks to maintain hook order)
+  const images = product?.images?.edges || [];
+  const currentImage = images[selectedImageIndex]?.node;
+  const options = product?.options || [];
+  
+  // Filter out "Title" option with only "Default Title"
+  const displayableOptions = options.filter(option => {
+    if (option.name === "Title" && option.values.length === 1 && option.values[0] === "Default Title") {
+      return false;
+    }
+    return true;
+  });
+
+  // Initialize selected options with first value of each option
+  const effectiveOptions = { ...selectedOptions };
+  options.forEach(option => {
+    if (!effectiveOptions[option.name] && option.values.length > 0) {
+      effectiveOptions[option.name] = option.values[0];
+    }
+  });
+
+  // Find matching variant based on selected options
+  const selectedVariant = product?.variants?.edges?.find(({ node }) => {
+    return node.selectedOptions.every(
+      opt => effectiveOptions[opt.name] === opt.value
+    );
+  })?.node || product?.variants?.edges?.[0]?.node;
+
+  const { specs, mainDescription } = parseDescription(product?.description || '');
+
+  // Track ViewContent when product loads
+  useEffect(() => {
+    if (product && selectedVariant) {
+      const productPrice = parseFloat(selectedVariant.price.amount || product.priceRange.minVariantPrice.amount);
+      const productCurrency = selectedVariant.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
+      
+      trackViewContent({
+        content_name: product.title,
+        content_ids: [selectedVariant.id],
+        content_type: 'product',
+        value: productPrice,
+        currency: productCurrency
+      });
+    }
+  }, [product?.id]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
@@ -69,51 +115,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  const images = product.images?.edges || [];
-  const currentImage = images[selectedImageIndex]?.node;
-  const options = product.options || [];
-  
-  // Filter out "Title" option with only "Default Title"
-  const displayableOptions = options.filter(option => {
-    if (option.name === "Title" && option.values.length === 1 && option.values[0] === "Default Title") {
-      return false;
-    }
-    return true;
-  });
-
-  // Initialize selected options with first value of each option
-  const effectiveOptions = { ...selectedOptions };
-  options.forEach(option => {
-    if (!effectiveOptions[option.name] && option.values.length > 0) {
-      effectiveOptions[option.name] = option.values[0];
-    }
-  });
-
-  // Find matching variant based on selected options
-  const selectedVariant = product.variants?.edges?.find(({ node }) => {
-    return node.selectedOptions.every(
-      opt => effectiveOptions[opt.name] === opt.value
-    );
-  })?.node || product.variants?.edges?.[0]?.node;
-
-  const { specs, mainDescription } = parseDescription(product.description);
-
-  // Track ViewContent when product loads
-  useEffect(() => {
-    if (product && selectedVariant) {
-      const productPrice = parseFloat(selectedVariant.price.amount || product.priceRange.minVariantPrice.amount);
-      const productCurrency = selectedVariant.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
-      
-      trackViewContent({
-        content_name: product.title,
-        content_ids: [selectedVariant.id],
-        content_type: 'product',
-        value: productPrice,
-        currency: productCurrency
-      });
-    }
-  }, [product?.id]); // Only track once per product
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
