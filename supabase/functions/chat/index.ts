@@ -39,6 +39,12 @@ SHIPPING:
   - Rest of World: 12-18 business days
 - Customs/duties may apply for international orders (customer responsibility)
 
+ORDER TRACKING:
+- When an order ships, customers receive an email with a tracking link
+- To track an order: check the "Shipping Confirmation" email received when the order was shipped
+- The tracking link is in that email and allows to follow the package with the carrier
+- If they can't find the email, check spam folder or contact contact@go4charges.com
+
 RETURNS & REFUNDS:
 - 30-day money-back guarantee
 - Items must be unused, in original packaging
