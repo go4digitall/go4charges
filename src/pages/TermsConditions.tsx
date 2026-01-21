@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CountdownBanner } from "@/components/CountdownBanner";
 
 const TermsConditions = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <CountdownBanner />
-      <Header />
+      <div className="pt-[72px] sm:pt-[52px]">
+        <Header />
       
-      <main className="container mx-auto px-4 py-12 max-w-4xl">
+        <main className="container mx-auto px-4 py-12 max-w-4xl">
         <h1 className="text-3xl md:text-4xl font-bold mb-8">
           Terms & <span className="text-gradient">Conditions</span>
         </h1>
@@ -114,9 +120,10 @@ const TermsConditions = () => {
             </p>
           </section>
         </div>
-      </main>
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
