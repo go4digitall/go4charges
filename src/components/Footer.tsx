@@ -37,8 +37,8 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  FAQ
+                <a href="/#testimonials" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Testimonials
                 </a>
               </li>
             </ul>
