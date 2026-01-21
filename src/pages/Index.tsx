@@ -9,6 +9,7 @@ import { CTASection } from "@/components/CTASection";
 import { CountdownBanner } from "@/components/CountdownBanner";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
+import { ChatBot } from "@/components/ChatBot";
 import { useProducts } from "@/hooks/useProducts";
 import { useHashScroll } from "@/hooks/useHashScroll";
 import { Loader2 } from "lucide-react";
@@ -90,6 +91,7 @@ const Index = () => {
           <CTASection />
         </main>
         <Footer />
+        <ChatBot />
       </div>
     </div>
   );
