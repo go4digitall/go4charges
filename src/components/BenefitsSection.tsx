@@ -1,5 +1,6 @@
 import benefitsBanner from "@/assets/benefits-banner.jpg";
 import benefitsVideo from "@/assets/benefits-video.mp4";
+import benefitsVideo2 from "@/assets/benefits-video-2.mp4";
 
 export const BenefitsSection = () => {
   return (
@@ -14,7 +15,7 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 items-center">
           {/* Main banner image - takes 3 columns on large screens */}
           <div className="lg:col-span-3">
             <img 
@@ -24,8 +25,8 @@ export const BenefitsSection = () => {
             />
           </div>
           
-          {/* Video showcase - takes 2 columns on large screens */}
-          <div className="lg:col-span-2">
+          {/* Video showcase 1 */}
+          <div className="lg:col-span-1.5">
             <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary aspect-[3/4]">
               <video 
                 src={benefitsVideo}
@@ -35,15 +36,30 @@ export const BenefitsSection = () => {
                 playsInline
                 className="w-full h-full object-cover rounded-xl"
               />
-              {/* Subtle gradient overlay for polish */}
               <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
             </div>
-            {/* Caption */}
-            <p className="text-center text-sm text-muted-foreground mt-3 italic">
-              See it in action
-            </p>
+          </div>
+
+          {/* Video showcase 2 */}
+          <div className="lg:col-span-1.5">
+            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary aspect-[3/4]">
+              <video 
+                src={benefitsVideo2}
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="w-full h-full object-cover rounded-xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
+            </div>
           </div>
         </div>
+
+        {/* Caption */}
+        <p className="text-center text-sm text-muted-foreground mt-4 italic">
+          See it in action
+        </p>
       </div>
     </section>
   );
