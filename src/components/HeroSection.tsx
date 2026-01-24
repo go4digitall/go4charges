@@ -21,13 +21,17 @@ export const HeroSection = () => {
       {/* Hero Image - Contained width on desktop */}
       <div className="w-full bg-white py-4 md:py-8">
         <div className="container mx-auto px-4">
-          <img 
-            src={heroImage} 
-            alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
-            width={1200}
-            height={800}
-            className="w-full h-auto object-contain rounded-lg md:rounded-xl" 
-          />
+          <div className="relative group">
+            <img 
+              src={heroImage} 
+              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
+              width={1200}
+              height={800}
+              className="w-full h-auto object-contain rounded-xl md:rounded-2xl shadow-2xl shadow-primary/20 transition-all duration-500 group-hover:shadow-3xl group-hover:shadow-primary/30 group-hover:scale-[1.01] animate-fade-in" 
+            />
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+          </div>
         </div>
       </div>
 
