@@ -1,7 +1,6 @@
 import benefitsBanner from "@/assets/benefits-banner.jpg";
 import benefitsVideo from "@/assets/benefits-video.mp4";
 import benefitsVideo2 from "@/assets/benefits-video-2.mp4";
-import beforeAfter from "@/assets/before-after.jpg";
 
 export const BenefitsSection = () => {
   return (
@@ -16,8 +15,8 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        {/* First row: Banner + 2 videos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-6">
+        {/* Grid: Banner + 2 videos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Main banner image */}
           <div className="md:col-span-2">
             <img 
@@ -56,15 +55,6 @@ export const BenefitsSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
             </div>
           </div>
-        </div>
-
-        {/* Second row: Before/After image */}
-        <div className="w-full">
-          <img 
-            src={beforeAfter} 
-            alt="Before and After - Upgrade from awkward charging to hands-free charging with ChargeStand" 
-            className="w-full rounded-xl shadow-lg"
-          />
         </div>
 
         {/* Caption */}
