@@ -184,11 +184,11 @@ const ProductDetail = () => {
   const getUrgencyMessage = () => {
     const handle = product.handle.toLowerCase();
     if (handle.includes('family') || handle.includes('3x')) {
-      return "🔥 -73% - OFFRE LIMITÉE !";
+      return "🔥 73% OFF - LIMITED OFFER!";
     } else if (handle.includes('duo') || handle.includes('2x')) {
-      return "🔥 -70% - PRIX FOU !";
+      return "🔥 70% OFF - CRAZY PRICE!";
     }
-    return "🔥 -60% - STOCK LIMITÉ !";
+    return "🔥 60% OFF - LIMITED STOCK!";
   };
 
   return (
@@ -292,7 +292,7 @@ const ProductDetail = () => {
             {/* Limited Time Notice */}
             <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
               <span className="text-lg">⏰</span>
-              <span className="font-medium">Offre à durée limitée - Jusqu'à épuisement des stocks !</span>
+              <span className="font-medium">Limited time offer - While supplies last!</span>
             </div>
 
             {/* Main Description */}

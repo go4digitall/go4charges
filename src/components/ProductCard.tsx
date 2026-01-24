@@ -107,7 +107,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
 
         {/* Limited Stock Urgency Banner */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-semibold py-1.5 px-2 text-center z-10 animate-pulse">
-          🔥 PRIX FOUS - Stock limité !
+          🔥 CRAZY PRICE - Limited Stock!
         </div>
 
         <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>
