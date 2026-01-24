@@ -25,6 +25,16 @@ export const HeroSection = () => {
       {/* Content Below Image */}
       <div className="bg-background py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
+          {/* PROMO BANNER - Above the fold */}
+          <div className="mb-6 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-4 px-6 rounded-2xl shadow-xl shadow-red-500/30 max-w-xl mx-auto animate-pulse">
+            <div className="text-2xl md:text-3xl font-black mb-1">
+              🔥 UP TO 73% OFF 🔥
+            </div>
+            <div className="text-sm md:text-base font-medium opacity-95">
+              Limited Time Only • While Supplies Last
+            </div>
+          </div>
+
           {/* Trustpilot-style Rating */}
           <div className="flex flex-col items-center gap-2 mb-6">
             <div className="flex gap-0.5">
@@ -46,13 +56,13 @@ export const HeroSection = () => {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <Button 
               size="lg" 
-              className="text-lg px-10 py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50" 
+              className="text-lg px-10 py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50 animate-bounce" 
               onClick={scrollToProducts}
             >
-              🛒 Shop Now
+              🛒 Shop Now - Up to 73% OFF
             </Button>
             <Button 
               size="lg" 
@@ -62,6 +72,25 @@ export const HeroSection = () => {
             >
               See Products →
             </Button>
+          </div>
+
+          {/* Price Preview */}
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
+            <div className="bg-white border-2 border-red-200 rounded-lg px-4 py-2 shadow-md">
+              <span className="text-xs text-muted-foreground line-through">$49.90</span>
+              <span className="text-lg font-bold text-red-600 ml-2">$19.90</span>
+              <span className="text-xs text-red-500 ml-1">-60%</span>
+            </div>
+            <div className="bg-amber-50 border-2 border-amber-300 rounded-lg px-4 py-2 shadow-md">
+              <span className="text-xs text-muted-foreground line-through">$99.80</span>
+              <span className="text-lg font-bold text-amber-600 ml-2">$29.90</span>
+              <span className="text-xs text-amber-500 ml-1">-70%</span>
+            </div>
+            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-lg px-4 py-2 shadow-md">
+              <span className="text-xs text-muted-foreground line-through">$149.70</span>
+              <span className="text-lg font-bold text-emerald-600 ml-2">$39.90</span>
+              <span className="text-xs text-emerald-500 ml-1">-73%</span>
+            </div>
           </div>
         </div>
       </div>
