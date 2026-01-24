@@ -16,6 +16,8 @@ export const HeroSection = () => {
         <img 
           src={heroImage} 
           alt="ChargeStand Up to 240W Cable" 
+          width={1376}
+          height={768}
           className="w-full h-full object-cover md:h-auto md:object-contain" 
         />
       </div>
