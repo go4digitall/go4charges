@@ -76,20 +76,25 @@ export const HeroSection = () => {
 
           {/* Price Preview */}
           <div className="flex flex-wrap justify-center gap-3 mb-4">
-            <div className="bg-white border-2 border-red-200 rounded-lg px-4 py-2 shadow-md">
+            <div className="bg-white border-2 border-red-200 rounded-lg px-4 py-2 shadow-md text-center">
+              <div className="text-xs font-semibold text-muted-foreground mb-1">1x Cable</div>
               <span className="text-xs text-muted-foreground line-through">$49.90</span>
               <span className="text-lg font-bold text-red-600 ml-2">$19.90</span>
-              <span className="text-xs text-red-500 ml-1">-60%</span>
+              <div className="text-xs font-bold text-red-500">-60%</div>
             </div>
-            <div className="bg-amber-50 border-2 border-amber-300 rounded-lg px-4 py-2 shadow-md">
+            <div className="bg-amber-50 border-2 border-amber-400 rounded-lg px-4 py-2 shadow-md text-center relative">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">BEST SELLER</div>
+              <div className="text-xs font-semibold text-muted-foreground mb-1 mt-1">Duo Pack</div>
               <span className="text-xs text-muted-foreground line-through">$99.80</span>
               <span className="text-lg font-bold text-amber-600 ml-2">$29.90</span>
-              <span className="text-xs text-amber-500 ml-1">-70%</span>
+              <div className="text-xs font-bold text-amber-500">-70%</div>
             </div>
-            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-lg px-4 py-2 shadow-md">
+            <div className="bg-emerald-50 border-2 border-emerald-300 rounded-lg px-4 py-2 shadow-md text-center relative">
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">BEST VALUE</div>
+              <div className="text-xs font-semibold text-muted-foreground mb-1 mt-1">Family Pack</div>
               <span className="text-xs text-muted-foreground line-through">$149.70</span>
               <span className="text-lg font-bold text-emerald-600 ml-2">$39.90</span>
-              <span className="text-xs text-emerald-500 ml-1">-73%</span>
+              <div className="text-xs font-bold text-emerald-500">-73%</div>
             </div>
           </div>
         </div>
