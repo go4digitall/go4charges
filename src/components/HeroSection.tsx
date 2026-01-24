@@ -62,10 +62,10 @@ export const HeroSection = () => {
           {/* CTA - Single prominent button */}
           <Button 
             size="lg" 
-            className="text-lg px-12 py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50 mb-5" 
+            className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50 mb-5 w-full sm:w-auto" 
             onClick={scrollToProducts}
           >
-            🛒 Shop Now - Up to 73% OFF
+            🛒 Shop Now - 73% OFF
           </Button>
 
           {/* Price Preview */}
