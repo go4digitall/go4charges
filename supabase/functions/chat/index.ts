@@ -24,9 +24,9 @@ PRODUCT INFORMATION:
 - Package includes: Cable, protective carrying pouch, warranty card
 
 PRICING (all prices in USD):
-- Single ChargeStand™ cable: $24.90 (was $49.90 - 50% OFF)
-- Duo Pack (2 cables): $39.90 (best for home + office)
-- Family Pack (3 cables): $54.90 (best value for families)
+- Single ChargeStand™ cable: $19.90 (was $49.90 - 60% OFF)
+- Duo Pack (2 cables): $29.90 (was $99.80 - 70% OFF - BEST SELLER)
+- Family Pack (3 cables): $39.90 (was $149.70 - 73% OFF - BEST VALUE)
 
 SHIPPING:
 - FREE worldwide shipping on all orders
