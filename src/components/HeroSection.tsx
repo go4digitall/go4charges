@@ -18,15 +18,17 @@ export const HeroSection = () => {
 
   return (
     <section className="flex flex-col">
-      {/* Hero Image - Full Width Before/After */}
-      <div className="w-full overflow-hidden bg-white">
-        <img 
-          src={heroImage} 
-          alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
-          width={1200}
-          height={800}
-          className="w-full h-auto object-contain" 
-        />
+      {/* Hero Image - Contained width on desktop */}
+      <div className="w-full bg-white py-4 md:py-8">
+        <div className="container mx-auto px-4">
+          <img 
+            src={heroImage} 
+            alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
+            width={1200}
+            height={800}
+            className="w-full h-auto object-contain rounded-lg md:rounded-xl" 
+          />
+        </div>
       </div>
 
       {/* Content Below Image */}
