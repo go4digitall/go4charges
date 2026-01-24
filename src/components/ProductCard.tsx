@@ -36,6 +36,9 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
       compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2; // 99.80
     } else if (handle.includes('family') || handle.includes('3x')) {
       compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3; // 149.70
+    } else {
+      // Single product fallback
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE; // 49.90
     }
   }
   
@@ -100,6 +103,11 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             <Zap className="h-3 w-3 mr-1" />
             Up to 240W
           </Badge>
+        </div>
+
+        {/* Limited Stock Urgency Banner */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-semibold py-1.5 px-2 text-center z-10 animate-pulse">
+          🔥 PRIX FOUS - Stock limité !
         </div>
 
         <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>

@@ -180,6 +180,17 @@ const ProductDetail = () => {
   const hasDiscount = compareAtPrice && compareAtPrice > price;
   const discountPercent = hasDiscount ? Math.round((1 - price / compareAtPrice) * 100) : 0;
 
+  // Determine urgency message based on product type
+  const getUrgencyMessage = () => {
+    const handle = product.handle.toLowerCase();
+    if (handle.includes('family') || handle.includes('3x')) {
+      return "🔥 -73% - OFFRE LIMITÉE !";
+    } else if (handle.includes('duo') || handle.includes('2x')) {
+      return "🔥 -70% - PRIX FOU !";
+    }
+    return "🔥 -60% - STOCK LIMITÉ !";
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
@@ -256,8 +267,13 @@ const ProductDetail = () => {
               </div>
             </div>
 
+            {/* Urgency Banner */}
+            <div className="bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-2 px-4 rounded-lg text-center animate-pulse">
+              {getUrgencyMessage()}
+            </div>
+
             {/* Price */}
-            <div className="flex items-baseline gap-3">
+            <div className="flex items-baseline gap-3 flex-wrap">
               <span className="text-3xl font-bold text-primary">
                 {price.toFixed(2)} {currency}
               </span>
@@ -266,11 +282,17 @@ const ProductDetail = () => {
                   <span className="text-lg text-muted-foreground line-through">
                     {compareAtPrice.toFixed(2)} {currency}
                   </span>
-                  <Badge className="bg-red-500 text-white hover:bg-red-600">
-                    {discountPercent}% OFF
+                  <Badge className="bg-red-500 text-white hover:bg-red-600 text-base px-3 py-1">
+                    -{discountPercent}%
                   </Badge>
                 </>
               )}
+            </div>
+            
+            {/* Limited Time Notice */}
+            <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <span className="text-lg">⏰</span>
+              <span className="font-medium">Offre à durée limitée - Jusqu'à épuisement des stocks !</span>
             </div>
 
             {/* Main Description */}
