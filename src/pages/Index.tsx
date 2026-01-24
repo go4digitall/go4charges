@@ -34,18 +34,28 @@ const Index = () => {
           <section id="products" className="py-12 md:py-16 bg-section-alt scroll-mt-56 md:scroll-mt-36">
             <div className="container">
               <div className="text-center mb-10">
+                {/* Urgency Banner */}
+                <div className="mb-6 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-3 px-4 rounded-xl shadow-lg shadow-red-500/30 max-w-2xl mx-auto">
+                  <div className="flex items-center justify-center gap-2 text-lg font-bold animate-pulse">
+                    <span>🔥</span>
+                    <span>PRIX FOUS - OFFRE LIMITÉE !</span>
+                    <span>🔥</span>
+                  </div>
+                  <p className="text-sm mt-1 opacity-90">Jusqu'à -73% • Jusqu'à épuisement des stocks</p>
+                </div>
+
                 <div className="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 animate-pulse shadow-lg shadow-amber-500/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                   </span>
-                  URGENT: Limited Stock Available
+                  URGENT: Stock très limité
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
-                  Our <span className="text-gradient">Premium</span> Products
+                  Nos <span className="text-gradient">Produits Premium</span>
                 </h2>
                 <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Discover our range of high-quality charging cables, built to last and charge fast.
+                  Profitez de nos prix exceptionnels avant qu'il ne soit trop tard !
                 </p>
               </div>
               
