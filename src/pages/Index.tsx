@@ -38,10 +38,10 @@ const Index = () => {
                 <div className="mb-6 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-3 px-4 rounded-xl shadow-lg shadow-red-500/30 max-w-2xl mx-auto">
                   <div className="flex items-center justify-center gap-2 text-lg font-bold animate-pulse">
                     <span>🔥</span>
-                    <span>PRIX FOUS - OFFRE LIMITÉE !</span>
+                    <span>CRAZY PRICES - LIMITED OFFER!</span>
                     <span>🔥</span>
                   </div>
-                  <p className="text-sm mt-1 opacity-90">Jusqu'à -73% • Jusqu'à épuisement des stocks</p>
+                  <p className="text-sm mt-1 opacity-90">Up to 73% OFF • While supplies last</p>
                 </div>
 
                 <div className="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 animate-pulse shadow-lg shadow-amber-500/30">
@@ -49,13 +49,13 @@ const Index = () => {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                   </span>
-                  URGENT: Stock très limité
+                  URGENT: Very Limited Stock
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
-                  Nos <span className="text-gradient">Produits Premium</span>
+                  Our <span className="text-gradient">Premium</span> Products
                 </h2>
                 <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Profitez de nos prix exceptionnels avant qu'il ne soit trop tard !
+                  Grab these insane deals before it's too late!
                 </p>
               </div>
               

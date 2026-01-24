@@ -40,7 +40,7 @@ export const CountdownBanner = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
         <div className="flex items-center gap-2">
           <span className="font-bold text-sm sm:text-base">
-            🔥 JUSQU'À -73% – Prix Fous – Stock Limité 🔥
+            🔥 UP TO 73% OFF – Crazy Prices – Limited Stock 🔥
           </span>
         </div>
 
