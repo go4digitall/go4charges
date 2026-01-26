@@ -60,10 +60,9 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         quantity: 1,
         selectedOptions: firstVariant.selectedOptions || []
       });
-      toast.success("Added to cart", {
-        description: node.title,
-        position: "top-center"
-      });
+      
+      // Open cart drawer instead of showing toast
+      useCartStore.getState().setIsOpen(true);
       
       // Track AddToCart event
       trackAddToCart({

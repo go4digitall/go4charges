@@ -134,10 +134,8 @@ const ProductDetail = () => {
         selectedOptions: selectedVariant.selectedOptions || []
       });
       
-      toast.success("Added to cart", {
-        description: product.title,
-        position: "top-center"
-      });
+      // Open cart drawer instead of showing toast
+      useCartStore.getState().setIsOpen(true);
       
       // Track AddToCart event
       trackAddToCart({
