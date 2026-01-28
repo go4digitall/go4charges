@@ -1,15 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, Loader2, Lock, Truck, RotateCcw, CheckCircle, Clock } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { trackInitiateCheckout } from "@/lib/facebookPixel";
+import paymentBadges from "@/assets/payment-badges.png";
+
+const ORIGINAL_UNIT_PRICE = 49.90;
+
+const useCountdown = () => {
+  const [endDate] = useState(() => {
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    return end;
+  });
+
+  const calculateTimeLeft = () => {
+    const difference = endDate.getTime() - new Date().getTime();
+    if (difference > 0) {
+      return {
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+    return { hours: 0, minutes: 0, seconds: 0 };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return timeLeft;
+};
 
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const timeLeft = useCountdown();
+  
+  // Calculate savings: original price vs current price
+  const totalOriginalPrice = items.reduce((sum, item) => sum + (ORIGINAL_UNIT_PRICE * item.quantity), 0);
+  const totalSavings = totalOriginalPrice - totalPrice;
 
   useEffect(() => { 
     if (isOpen) syncCart(); 
@@ -18,7 +57,6 @@ export const CartDrawer = () => {
   const handleCheckout = () => {
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
-      // Track InitiateCheckout event
       const currency = items[0]?.price.currencyCode || 'EUR';
       trackInitiateCheckout({
         content_ids: items.map(item => item.variantId),
@@ -45,14 +83,34 @@ export const CartDrawer = () => {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg flex flex-col h-full">
-        <SheetHeader className="flex-shrink-0">
+      <SheetContent className="w-full sm:max-w-lg flex flex-col h-full p-0">
+        <SheetHeader className="flex-shrink-0 p-4 pb-2">
           <SheetTitle>Cart</SheetTitle>
           <SheetDescription>
             {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
           </SheetDescription>
         </SheetHeader>
-        <div className="flex flex-col flex-1 pt-6 min-h-0">
+
+        {/* Urgency Banner */}
+        {items.length > 0 && (
+          <div className="mx-4 mb-2 bg-gradient-to-r from-red-500 to-orange-500 text-white py-2 px-3 rounded-lg flex items-center justify-center gap-2">
+            <Clock className="h-4 w-4" />
+            <span className="text-sm font-bold">OFFER ENDS IN:</span>
+            <div className="flex gap-1">
+              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                {String(timeLeft.hours).padStart(2, "0")}h
+              </span>
+              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                {String(timeLeft.minutes).padStart(2, "0")}m
+              </span>
+              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                {String(timeLeft.seconds).padStart(2, "0")}s
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col flex-1 px-4 min-h-0">
           {items.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
@@ -63,9 +121,9 @@ export const CartDrawer = () => {
           ) : (
             <>
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {items.map((item) => (
-                    <div key={item.variantId} className="flex gap-4 p-2 border rounded-lg">
+                    <div key={item.variantId} className="flex gap-3 p-2 border rounded-lg bg-card">
                       <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
                           <img 
@@ -78,7 +136,12 @@ export const CartDrawer = () => {
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium truncate text-sm">{item.product.node.title}</h4>
                         <p className="text-xs text-muted-foreground">{item.selectedOptions.map(option => option.value).join(' • ')}</p>
-                        <p className="font-semibold text-sm mt-1">{parseFloat(item.price.amount).toFixed(2)} {item.price.currencyCode}</p>
+                        {/* In Stock Badge */}
+                        <div className="flex items-center gap-1 mt-1">
+                          <CheckCircle className="h-3 w-3 text-emerald-500" />
+                          <span className="text-xs text-emerald-600 font-medium">In Stock</span>
+                        </div>
+                        <p className="font-semibold text-sm mt-1">${parseFloat(item.price.amount).toFixed(2)}</p>
                       </div>
                       <div className="flex flex-col items-end gap-2 flex-shrink-0">
                         <Button 
@@ -116,26 +179,82 @@ export const CartDrawer = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex-shrink-0 space-y-4 pt-4 border-t bg-background">
+
+              {/* Bottom Section */}
+              <div className="flex-shrink-0 space-y-3 pt-3 border-t bg-background">
+                {/* Savings Banner */}
+                {totalSavings > 0 && (
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
+                    <span className="text-lg">💰</span>
+                    <span className="text-emerald-700 font-bold text-sm">
+                      You're saving ${totalSavings.toFixed(2)}!
+                    </span>
+                  </div>
+                )}
+
+                {/* Total */}
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
-                  <span className="text-xl font-bold">{totalPrice.toFixed(2)} {items[0]?.price.currencyCode || 'EUR'}</span>
+                  <span className="text-xl font-bold">${totalPrice.toFixed(2)}</span>
                 </div>
+
+                {/* Secure Checkout Button */}
                 <Button 
                   onClick={handleCheckout} 
-                  className="w-full" 
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-base font-bold" 
                   size="lg" 
                   disabled={items.length === 0 || isLoading || isSyncing}
                 >
                   {isLoading || isSyncing ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <>
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Checkout
+                      <Lock className="w-5 h-5 mr-2" />
+                      SECURE CHECKOUT
                     </>
                   )}
                 </Button>
+
+                {/* Powered by Shopify */}
+                <p className="text-center text-xs text-muted-foreground">
+                  Powered by Shopify • 256-bit SSL Encryption
+                </p>
+
+                {/* Payment Badges */}
+                <div className="flex justify-center">
+                  <img 
+                    src={paymentBadges} 
+                    alt="Accepted payment methods: Visa, Mastercard, American Express, PayPal, Apple Pay" 
+                    className="h-8 object-contain"
+                  />
+                </div>
+
+                {/* Trust Badges */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center mb-1">
+                      <Lock className="w-4 h-4 text-violet-600" />
+                    </div>
+                    <span className="text-[10px] font-medium">Secure</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
+                      <Truck className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <span className="text-[10px] font-medium">FREE Shipping</span>
+                  </div>
+                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mb-1">
+                      <RotateCcw className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    <span className="text-[10px] font-medium">30-Day Return</span>
+                  </div>
+                </div>
+
+                {/* Final Reassurance */}
+                <p className="text-center text-xs text-muted-foreground pb-2">
+                  ✓ Free Worldwide Shipping • 30-Day Money-Back Guarantee
+                </p>
               </div>
             </>
           )}
