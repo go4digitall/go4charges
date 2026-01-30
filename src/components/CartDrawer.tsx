@@ -91,21 +91,29 @@ export const CartDrawer = () => {
           </SheetDescription>
         </SheetHeader>
 
-        {/* Urgency Banner */}
+        {/* Winter Urgency Banner */}
         {items.length > 0 && (
-          <div className="mx-4 mb-2 bg-gradient-to-r from-red-500 to-orange-500 text-white py-2 px-3 rounded-lg flex items-center justify-center gap-2">
-            <Clock className="h-4 w-4" />
-            <span className="text-sm font-bold">OFFER ENDS IN:</span>
-            <div className="flex gap-1">
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
-                {String(timeLeft.hours).padStart(2, "0")}h
-              </span>
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
-                {String(timeLeft.minutes).padStart(2, "0")}m
-              </span>
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
-                {String(timeLeft.seconds).padStart(2, "0")}s
-              </span>
+          <div className="mx-4 mb-2 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white py-2.5 px-3 rounded-lg relative overflow-hidden">
+            {/* Snowflake decorations */}
+            <div className="absolute top-0.5 left-2 text-white/20 text-sm">❄</div>
+            <div className="absolute top-1 right-3 text-white/15 text-xs">❄</div>
+            <div className="absolute bottom-0.5 right-8 text-white/20 text-sm">❄</div>
+            
+            <div className="flex items-center justify-center gap-2 relative z-10">
+              <span className="text-sm">❄️</span>
+              <span className="text-sm font-bold">WINTER SALE ENDS IN:</span>
+              <div className="flex gap-1">
+                <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                  {String(timeLeft.hours).padStart(2, "0")}h
+                </span>
+                <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                  {String(timeLeft.minutes).padStart(2, "0")}m
+                </span>
+                <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
+                  {String(timeLeft.seconds).padStart(2, "0")}s
+                </span>
+              </div>
+              <span className="text-sm">❄️</span>
             </div>
           </div>
         )}
@@ -182,13 +190,14 @@ export const CartDrawer = () => {
 
               {/* Bottom Section */}
               <div className="flex-shrink-0 space-y-3 pt-3 border-t bg-background">
-                {/* Savings Banner */}
+                {/* Winter Savings Banner */}
                 {totalSavings > 0 && (
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
-                    <span className="text-lg">💰</span>
-                    <span className="text-emerald-700 font-bold text-sm">
-                      You're saving ${totalSavings.toFixed(2)}!
+                  <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
+                    <span className="text-lg">❄️</span>
+                    <span className="text-sky-700 font-bold text-sm">
+                      Winter Savings: ${totalSavings.toFixed(2)}!
                     </span>
+                    <span className="text-lg">❄️</span>
                   </div>
                 )}
 
@@ -198,10 +207,10 @@ export const CartDrawer = () => {
                   <span className="text-xl font-bold">${totalPrice.toFixed(2)}</span>
                 </div>
 
-                {/* Secure Checkout Button */}
+                {/* Winter Secure Checkout Button */}
                 <Button 
                   onClick={handleCheckout} 
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-6 text-base font-bold" 
+                  className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white py-6 text-base font-bold shadow-lg shadow-blue-500/30" 
                   size="lg" 
                   disabled={items.length === 0 || isLoading || isSyncing}
                 >
@@ -210,7 +219,7 @@ export const CartDrawer = () => {
                   ) : (
                     <>
                       <Lock className="w-5 h-5 mr-2" />
-                      SECURE CHECKOUT
+                      ❄️ SECURE CHECKOUT
                     </>
                   )}
                 </Button>
@@ -253,7 +262,7 @@ export const CartDrawer = () => {
 
                 {/* Final Reassurance */}
                 <p className="text-center text-xs text-muted-foreground pb-2">
-                  ✓ Free Worldwide Shipping • 30-Day Money-Back Guarantee
+                  ❄️ Free Worldwide Shipping • 30-Day Money-Back Guarantee ❄️
                 </p>
               </div>
             </>

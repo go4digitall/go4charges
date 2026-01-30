@@ -86,9 +86,18 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           ? 'border-2 border-amber-500 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 ring-2 ring-amber-500/20' 
           : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
       }`}>
+        {/* Winter Deal Badge */}
+        <div className="absolute top-0 left-0 right-0 z-10">
+          <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
+            <span>❄️</span>
+            <span>WINTER DEAL</span>
+            <span>❄️</span>
+          </div>
+        </div>
+
         {/* Featured Badge */}
         {isFeatured && (
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-10 left-3 z-10">
             <Badge className="bg-amber-500 text-white hover:bg-amber-600 shadow-md px-3 py-1">
               <Star className="h-3 w-3 mr-1 fill-white" />
               Best Seller
@@ -97,7 +106,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         )}
         
         {/* Power Badge */}
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-10 right-3 z-10">
           <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
             <Zap className="h-3 w-3 mr-1" />
             Up to 240W
@@ -105,8 +114,8 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         </div>
 
         {/* Limited Stock Urgency Banner */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-semibold py-1.5 px-2 text-center z-10 animate-pulse">
-          🔥 CRAZY PRICE - Limited Stock!
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-sky-600 to-blue-600 text-white text-xs font-semibold py-1.5 px-2 text-center z-10">
+          ❄️ WINTER CLEARANCE - Limited Stock!
         </div>
 
         <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>
