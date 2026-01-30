@@ -31,20 +31,30 @@ const Index = () => {
           <BenefitsSection />
           
           {/* Products Section */}
-          <section id="products" className="py-12 md:py-16 bg-section-alt scroll-mt-56 md:scroll-mt-36">
+          <section id="products" className="py-12 md:py-16 bg-gradient-to-b from-sky-50 to-blue-50 scroll-mt-56 md:scroll-mt-36 relative overflow-hidden">
+            {/* Decorative snowflakes */}
+            <div className="absolute top-4 left-[10%] text-sky-300/40 text-2xl pointer-events-none">❄</div>
+            <div className="absolute top-12 right-[15%] text-blue-300/30 text-lg pointer-events-none">❄</div>
+            <div className="absolute bottom-8 left-[20%] text-indigo-300/25 text-xl pointer-events-none">❄</div>
+            <div className="absolute bottom-16 right-[25%] text-sky-300/35 text-base pointer-events-none">❄</div>
+            
             <div className="container">
               <div className="text-center mb-10">
-                {/* Urgency Banner */}
-                <div className="mb-6 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-3 px-4 rounded-xl shadow-lg shadow-red-500/30 max-w-2xl mx-auto">
-                  <div className="flex items-center justify-center gap-2 text-lg font-bold animate-pulse">
-                    <span>🔥</span>
-                    <span>CRAZY PRICES - LIMITED OFFER!</span>
-                    <span>🔥</span>
+                {/* Winter Clearance Banner */}
+                <div className="mb-6 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-2xl mx-auto relative overflow-hidden">
+                  <div className="absolute top-1 left-4 text-white/20 text-lg">❄</div>
+                  <div className="absolute top-2 right-6 text-white/15 text-sm">❄</div>
+                  <div className="absolute bottom-1 right-12 text-white/20 text-base">❄</div>
+                  
+                  <div className="flex items-center justify-center gap-2 text-lg md:text-xl font-bold">
+                    <span>❄️</span>
+                    <span>WINTER CLEARANCE - FINAL PRICES!</span>
+                    <span>❄️</span>
                   </div>
-                  <p className="text-sm mt-1 opacity-90">Up to 73% OFF • While supplies last</p>
+                  <p className="text-sm mt-1 text-blue-100">Up to 73% OFF • Limited Winter Stock</p>
                 </div>
 
-                <div className="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 animate-pulse shadow-lg shadow-amber-500/30">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-lg shadow-blue-500/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -52,10 +62,10 @@ const Index = () => {
                   URGENT: Very Limited Stock
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
-                  Our <span className="text-gradient">Premium</span> Products
+                  Our <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Premium</span> Products
                 </h2>
                 <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Grab these insane deals before it's too late!
+                  Grab these winter deals before they melt away!
                 </p>
               </div>
               
