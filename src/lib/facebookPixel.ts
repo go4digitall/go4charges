@@ -1,5 +1,11 @@
-// Facebook Pixel ID
-export const FB_PIXEL_ID = '661610226976532';
+// Facebook Pixel IDs - Multiple markets
+export const FB_PIXEL_IDS = {
+  US: '661610226976532',
+  UK: '1354309796450965',
+};
+
+// All pixel IDs as array for iteration
+const ALL_PIXEL_IDS = Object.values(FB_PIXEL_IDS);
 
 // Declare fbq on window
 declare global {
@@ -9,7 +15,7 @@ declare global {
   }
 }
 
-// Initialize Facebook Pixel
+// Initialize Facebook Pixels (all markets)
 export const initFacebookPixel = (): void => {
   if (typeof window === 'undefined') return;
   
@@ -45,12 +51,16 @@ export const initFacebookPixel = (): void => {
   const firstScript = b.getElementsByTagName(e)[0];
   firstScript?.parentNode?.insertBefore(script, firstScript);
 
-  // Initialize pixel
-  window.fbq('init', FB_PIXEL_ID);
+  // Initialize ALL pixels
+  ALL_PIXEL_IDS.forEach(pixelId => {
+    window.fbq('init', pixelId);
+  });
+  
+  // Track initial PageView for all pixels
   window.fbq('track', 'PageView');
 };
 
-// Track PageView event
+// Track PageView event (fires for all pixels)
 export const trackPageView = (): void => {
   if (typeof window !== 'undefined' && window.fbq) {
     window.fbq('track', 'PageView');
