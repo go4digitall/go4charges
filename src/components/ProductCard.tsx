@@ -131,7 +131,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
           )}
         </div>
-        <CardContent className={`p-4 flex flex-col flex-1 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
+        <CardContent className={`p-4 pb-10 flex flex-col flex-1 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
           <h3 className={`font-semibold text-sm mb-1 line-clamp-2 transition-colors ${
             isFeatured ? 'text-foreground group-hover:text-amber-600' : 'group-hover:text-primary'
           }`}>
@@ -142,21 +142,21 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           </p>
           <div className="flex items-center justify-between gap-2 mt-auto">
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
-                  {price.toFixed(2)} {currencyCode}
-                </span>
-                {hasDiscount && (
-                  <Badge className="bg-red-500 text-white hover:bg-red-600 text-xs px-1.5 py-0">
-                    -{Math.round((1 - price / compareAtPrice) * 100)}%
-                  </Badge>
-                )}
-              </div>
               {hasDiscount && (
                 <span className="text-xs text-muted-foreground line-through">
                   {compareAtPrice.toFixed(2)} {currencyCode}
                 </span>
               )}
+              <div className="flex items-center gap-2">
+                <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
+                  {price.toFixed(2)} {currencyCode}
+                </span>
+                {hasDiscount && (
+                  <Badge className="bg-sky-500 text-white hover:bg-sky-600 text-xs px-1.5 py-0">
+                    -{Math.round((1 - price / compareAtPrice) * 100)}%
+                  </Badge>
+                )}
+              </div>
             </div>
             <Button 
               size="sm" 
@@ -164,7 +164,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
               disabled={isAdding || !firstVariant?.availableForSale}
               className={isFeatured 
                 ? "bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/30" 
-                : "bg-primary hover:bg-primary/90"
+                : "bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700"
               }
             >
               {isAdding ? (
