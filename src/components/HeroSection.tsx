@@ -19,18 +19,25 @@ export const HeroSection = () => {
   return (
     <section className="flex flex-col">
       {/* Hero Image - Contained width on desktop */}
-      <div className="w-full bg-white py-4 md:py-8">
+      <div className="w-full bg-gradient-to-b from-blue-50 to-white py-4 md:py-8">
         <div className="container mx-auto px-4">
           <div className="relative group">
-            <img 
-              src={heroImage} 
-              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
-              width={1200}
-              height={800}
-              className="w-full h-auto object-contain rounded-xl md:rounded-2xl shadow-2xl shadow-primary/20 transition-all duration-500 group-hover:shadow-3xl group-hover:shadow-primary/30 group-hover:scale-[1.01] animate-fade-in" 
-            />
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+            {/* Enhanced image with stronger visual presence */}
+            <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-primary/30 ring-1 ring-primary/10">
+              <img 
+                src={heroImage} 
+                alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
+                width={1200}
+                height={800}
+                className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-[1.02] animate-fade-in contrast-[1.05] saturate-[1.1]" 
+              />
+              {/* Dynamic gradient overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/5 pointer-events-none" />
+              {/* Subtle vignette effect */}
+              <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] pointer-events-none" />
+            </div>
+            {/* Decorative glow behind image */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/10 to-primary/20 rounded-3xl blur-2xl -z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
           </div>
         </div>
       </div>
@@ -38,13 +45,22 @@ export const HeroSection = () => {
       {/* Content Below Image */}
       <div className="bg-background py-6 md:py-10">
         <div className="container mx-auto px-4 text-center">
-          {/* PROMO BANNER - Compact */}
-          <div className="mb-5 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white py-3 px-5 rounded-xl shadow-lg shadow-red-500/25 max-w-sm mx-auto">
-            <div className="text-xl md:text-2xl font-black">
-              🔥 UP TO 73% OFF 🔥
+          {/* WINTER SALE BANNER */}
+          <div className="mb-5 relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-md mx-auto">
+            {/* Snowflake decorations */}
+            <div className="absolute top-1 left-3 text-white/30 text-lg">❄</div>
+            <div className="absolute top-2 right-4 text-white/20 text-sm">❄</div>
+            <div className="absolute bottom-1 left-8 text-white/20 text-xs">❄</div>
+            <div className="absolute bottom-2 right-10 text-white/25 text-base">❄</div>
+            
+            <div className="text-xs md:text-sm font-semibold tracking-wider mb-1 text-sky-200">
+              ❄️ WINTER CLOSEOUT ❄️
             </div>
-            <div className="text-xs md:text-sm font-medium opacity-95">
-              Limited Time Only
+            <div className="text-xl md:text-2xl font-black tracking-tight">
+              SPECIAL SALE - 73% OFF
+            </div>
+            <div className="text-xs md:text-sm font-medium mt-1 text-blue-100">
+              Final Winter Prices • While Supplies Last
             </div>
           </div>
 
