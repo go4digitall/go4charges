@@ -182,17 +182,23 @@ const ProductDetail = () => {
   const getUrgencyMessage = () => {
     const handle = product.handle.toLowerCase();
     if (handle.includes('family') || handle.includes('3x')) {
-      return "🔥 73% OFF - LIMITED OFFER!";
+      return "❄️ WINTER SALE - 73% OFF!";
     } else if (handle.includes('duo') || handle.includes('2x')) {
-      return "🔥 70% OFF - CRAZY PRICE!";
+      return "❄️ WINTER SALE - 70% OFF!";
     }
-    return "🔥 60% OFF - LIMITED STOCK!";
+    return "❄️ WINTER SALE - 60% OFF!";
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/50 to-background">
       <Header />
-      <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10">
+      <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10 relative">
+        {/* Decorative snowflakes */}
+        <div className="absolute top-24 left-[5%] text-sky-300/30 text-2xl pointer-events-none">❄</div>
+        <div className="absolute top-32 right-[8%] text-blue-300/25 text-lg pointer-events-none">❄</div>
+        <div className="absolute top-[40%] left-[3%] text-indigo-300/20 text-xl pointer-events-none hidden md:block">❄</div>
+        <div className="absolute top-[60%] right-[5%] text-sky-300/25 text-base pointer-events-none hidden md:block">❄</div>
+
         {/* Breadcrumb */}
         <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -202,18 +208,28 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
           {/* Images */}
           <div className="space-y-4">
-            <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/5 border border-border/50 shadow-lg">
-              {currentImage ? (
-                <img
-                  src={currentImage.url}
-                  alt={currentImage.altText || product.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                  No image
+            {/* Winter Deal Badge on Image */}
+            <div className="relative">
+              <div className="absolute top-0 left-0 right-0 z-10">
+                <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
+                  <span>❄️</span>
+                  <span>WINTER DEAL</span>
+                  <span>❄️</span>
                 </div>
-              )}
+              </div>
+              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-sky-100/50 to-blue-50/30 border border-sky-200/50 shadow-lg shadow-blue-500/10">
+                {currentImage ? (
+                  <img
+                    src={currentImage.url}
+                    alt={currentImage.altText || product.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                    No image
+                  </div>
+                )}
+              </div>
             </div>
             {images.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-2">
@@ -223,8 +239,8 @@ const ProductDetail = () => {
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
                       index === selectedImageIndex 
-                        ? 'border-primary shadow-md shadow-primary/20' 
-                        : 'border-transparent hover:border-muted-foreground/30'
+                        ? 'border-sky-500 shadow-md shadow-sky-500/20' 
+                        : 'border-transparent hover:border-sky-300'
                     }`}
                   >
                     <img
@@ -242,13 +258,16 @@ const ProductDetail = () => {
           <div className="space-y-6">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
-              <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+              <Badge className="bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20">
                 <Zap className="h-3 w-3 mr-1" />
                 Up to 240W
               </Badge>
-              <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+              <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 border-blue-500/20">
                 <Truck className="h-3 w-3 mr-1" />
                 Free Shipping
+              </Badge>
+              <Badge variant="secondary" className="bg-indigo-500/10 text-indigo-600 border-indigo-500/20">
+                ❄️ Winter Special
               </Badge>
             </div>
 
@@ -265,14 +284,17 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Urgency Banner */}
-            <div className="bg-gradient-to-r from-red-600 to-red-500 text-white font-bold py-2 px-4 rounded-lg text-center animate-pulse">
-              {getUrgencyMessage()}
+            {/* Winter Urgency Banner */}
+            <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white font-bold py-3 px-4 rounded-lg text-center relative overflow-hidden">
+              {/* Snowflake decorations */}
+              <div className="absolute top-1 left-3 text-white/20 text-sm">❄</div>
+              <div className="absolute bottom-1 right-4 text-white/20 text-sm">❄</div>
+              <span className="relative z-10">{getUrgencyMessage()}</span>
             </div>
 
             {/* Price */}
             <div className="flex items-baseline gap-3 flex-wrap">
-              <span className="text-3xl font-bold text-primary">
+              <span className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
                 {price.toFixed(2)} {currency}
               </span>
               {hasDiscount && (
@@ -280,17 +302,17 @@ const ProductDetail = () => {
                   <span className="text-lg text-muted-foreground line-through">
                     {compareAtPrice.toFixed(2)} {currency}
                   </span>
-                  <Badge className="bg-red-500 text-white hover:bg-red-600 text-base px-3 py-1">
+                  <Badge className="bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700 text-base px-3 py-1">
                     -{discountPercent}%
                   </Badge>
                 </>
               )}
             </div>
             
-            {/* Limited Time Notice */}
-            <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
-              <span className="text-lg">⏰</span>
-              <span className="font-medium">Limited time offer - While supplies last!</span>
+            {/* Limited Time Notice - Winter themed */}
+            <div className="flex items-center gap-2 text-sm text-sky-700 bg-sky-50 border border-sky-200 rounded-lg p-3">
+              <span className="text-lg">❄️</span>
+              <span className="font-medium">Winter Closeout - Final prices while supplies last!</span>
             </div>
 
             {/* Main Description */}
@@ -302,7 +324,7 @@ const ProductDetail = () => {
 
             {/* Specifications */}
             {specs.length > 0 && (
-              <div className="bg-secondary/30 rounded-xl p-4 space-y-2">
+              <div className="bg-sky-50/50 border border-sky-100 rounded-xl p-4 space-y-2">
                 <h3 className="font-semibold text-sm text-foreground mb-3">Specifications</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {specs.map((spec, index) => (
@@ -326,8 +348,8 @@ const ProductDetail = () => {
                       onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
                       className={`px-5 py-2.5 rounded-lg border-2 text-sm font-medium transition-all duration-200 ${
                         effectiveOptions[option.name] === value
-                          ? 'border-primary bg-primary text-primary-foreground shadow-md shadow-primary/20'
-                          : 'border-border bg-background hover:border-primary/50 text-foreground'
+                          ? 'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20'
+                          : 'border-border bg-background hover:border-sky-300 text-foreground'
                       }`}
                     >
                       {value}
@@ -337,10 +359,10 @@ const ProductDetail = () => {
               </div>
             ))}
 
-            {/* Add to Cart */}
+            {/* Add to Cart - Winter themed */}
             <Button
               size="lg"
-              className="w-full h-14 text-lg font-semibold bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all duration-300"
+              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
               onClick={handleAddToCart}
               disabled={isAdding || !selectedVariant?.availableForSale}
             >
@@ -351,7 +373,7 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  Add to Cart
+                  ❄️ Add to Cart - Winter Sale
                 </>
               )}
             </Button>
@@ -366,29 +388,29 @@ const ProductDetail = () => {
               <p className="text-xs text-muted-foreground">Secure checkout with encrypted payment</p>
             </div>
 
-            {/* Trust Features */}
+            {/* Trust Features - Winter themed */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                  <Check className="h-5 w-5 text-emerald-500" />
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
+                  <Check className="h-5 w-5 text-sky-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Up to 240W</p>
                   <p className="text-xs text-muted-foreground">Ultra-fast charging</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
-                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-blue-500" />
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 border border-blue-100">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">30-Day</p>
                   <p className="text-xs text-muted-foreground">Money-back guarantee</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
-                <div className="w-10 h-10 rounded-full bg-violet-500/10 flex items-center justify-center">
-                  <Truck className="h-5 w-5 text-violet-500" />
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-indigo-50 border border-indigo-100">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <Truck className="h-5 w-5 text-indigo-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Free Shipping</p>
