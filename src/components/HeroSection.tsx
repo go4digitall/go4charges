@@ -3,6 +3,21 @@ import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard } from "luc
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-before-after.jpg";
 
+// Snowflake component for falling animation
+const Snowflake = ({ style, delay, duration, size }: { style: React.CSSProperties; delay: number; duration: number; size: string }) => (
+  <div
+    className="absolute text-white/40 pointer-events-none animate-snowfall"
+    style={{
+      ...style,
+      animationDelay: `${delay}s`,
+      animationDuration: `${duration}s`,
+      fontSize: size,
+    }}
+  >
+    ❄
+  </div>
+);
+
 export const HeroSection = () => {
   const navigate = useNavigate();
 
@@ -16,11 +31,59 @@ export const HeroSection = () => {
     navigate(`/product/${handle}`);
   };
 
+  // Generate random snowflakes
+  const snowflakes = Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: Math.random() * 5,
+    duration: 4 + Math.random() * 4,
+    size: ['0.6rem', '0.8rem', '1rem', '1.2rem'][Math.floor(Math.random() * 4)],
+  }));
+
   return (
     <section className="flex flex-col">
-      {/* Hero Image - Contained width on desktop */}
-      <div className="w-full bg-gradient-to-b from-blue-50 to-white py-4 md:py-8">
-        <div className="container mx-auto px-4">
+      {/* WINTER SALE BANNER - Above Hero Image */}
+      <div className="w-full bg-gradient-to-b from-sky-100 to-blue-50 pt-4 md:pt-6 pb-2">
+        <div className="container mx-auto px-4 text-center">
+          <div className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-lg mx-auto">
+            {/* Animated snowflakes inside banner */}
+            {snowflakes.slice(0, 6).map((flake) => (
+              <Snowflake
+                key={flake.id}
+                style={{ left: flake.left, top: '-20px' }}
+                delay={flake.delay}
+                duration={flake.duration}
+                size={flake.size}
+              />
+            ))}
+            
+            <div className="text-xs md:text-sm font-semibold tracking-wider mb-1 text-sky-200">
+              ❄️ WINTER CLOSEOUT ❄️
+            </div>
+            <div className="text-2xl md:text-3xl font-black tracking-tight">
+              SPECIAL SALE - 73% OFF
+            </div>
+            <div className="text-xs md:text-sm font-medium mt-1 text-blue-100">
+              Final Winter Prices • While Supplies Last
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hero Image - With falling snowflakes */}
+      <div className="w-full bg-gradient-to-b from-blue-50 to-white py-4 md:py-6 relative overflow-hidden">
+        {/* Falling snowflakes over entire hero section */}
+        {snowflakes.map((flake) => (
+          <Snowflake
+            key={`hero-${flake.id}`}
+            style={{ left: flake.left, top: '-30px' }}
+            delay={flake.delay}
+            duration={flake.duration}
+            size={flake.size}
+          />
+        ))}
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="relative group">
             {/* Enhanced image with stronger visual presence */}
             <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-primary/30 ring-1 ring-primary/10">
@@ -37,7 +100,7 @@ export const HeroSection = () => {
               <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] pointer-events-none" />
             </div>
             {/* Decorative glow behind image */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/10 to-primary/20 rounded-3xl blur-2xl -z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+            <div className="absolute -inset-4 bg-gradient-to-r from-sky-400/20 via-blue-500/15 to-indigo-500/20 rounded-3xl blur-2xl -z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
           </div>
         </div>
       </div>
@@ -45,25 +108,6 @@ export const HeroSection = () => {
       {/* Content Below Image */}
       <div className="bg-background py-6 md:py-10">
         <div className="container mx-auto px-4 text-center">
-          {/* WINTER SALE BANNER */}
-          <div className="mb-5 relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-md mx-auto">
-            {/* Snowflake decorations */}
-            <div className="absolute top-1 left-3 text-white/30 text-lg">❄</div>
-            <div className="absolute top-2 right-4 text-white/20 text-sm">❄</div>
-            <div className="absolute bottom-1 left-8 text-white/20 text-xs">❄</div>
-            <div className="absolute bottom-2 right-10 text-white/25 text-base">❄</div>
-            
-            <div className="text-xs md:text-sm font-semibold tracking-wider mb-1 text-sky-200">
-              ❄️ WINTER CLOSEOUT ❄️
-            </div>
-            <div className="text-xl md:text-2xl font-black tracking-tight">
-              SPECIAL SALE - 73% OFF
-            </div>
-            <div className="text-xs md:text-sm font-medium mt-1 text-blue-100">
-              Final Winter Prices • While Supplies Last
-            </div>
-          </div>
-
           {/* Trustpilot-style Rating */}
           <div className="flex flex-col items-center gap-1.5 mb-5">
             <div className="flex gap-0.5">
@@ -82,42 +126,42 @@ export const HeroSection = () => {
           {/* CTA - Single prominent button */}
           <Button 
             size="lg" 
-            className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-amber-500 hover:bg-amber-600 text-white shadow-xl shadow-amber-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/50 mb-5 w-full sm:w-auto" 
+            className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-xl shadow-blue-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 mb-5 w-full sm:w-auto" 
             onClick={scrollToProducts}
           >
-            🛒 Shop Now - 73% OFF
+            ❄️ Shop Winter Sale - 73% OFF
           </Button>
 
           {/* Price Preview */}
           <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
             <button 
               onClick={() => goToProduct("chargestand-240w-90-fast-charging-cable")}
-              className="bg-white border-2 border-red-200 rounded-lg px-2 py-2 shadow-md text-center hover:scale-105 hover:shadow-lg hover:border-red-400 transition-all duration-200 cursor-pointer"
+              className="bg-white border-2 border-sky-200 rounded-lg px-2 py-2 shadow-md text-center hover:scale-105 hover:shadow-lg hover:border-sky-400 transition-all duration-200 cursor-pointer"
             >
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">1x Cable</div>
               <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
-              <div className="text-base font-bold text-red-600">$19.90</div>
-              <div className="text-[10px] font-bold text-red-500">-60%</div>
+              <div className="text-base font-bold text-sky-600">$19.90</div>
+              <div className="text-[10px] font-bold text-sky-500">-60%</div>
             </button>
             <button 
               onClick={() => goToProduct("pack-duo-2x-chargestand™-240w")}
-              className="bg-amber-50 border-2 border-amber-400 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-amber-500 transition-all duration-200 cursor-pointer"
+              className="bg-blue-50 border-2 border-blue-400 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-blue-500 transition-all duration-200 cursor-pointer"
             >
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST SELLER</div>
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST SELLER</div>
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
               <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
-              <div className="text-base font-bold text-amber-600">$29.90</div>
-              <div className="text-[10px] font-bold text-amber-500">-70%</div>
+              <div className="text-base font-bold text-blue-600">$29.90</div>
+              <div className="text-[10px] font-bold text-blue-500">-70%</div>
             </button>
             <button 
               onClick={() => goToProduct("pack-famille-3x-chargestand™-240w")}
-              className="bg-emerald-50 border-2 border-emerald-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-emerald-400 transition-all duration-200 cursor-pointer"
+              className="bg-indigo-50 border-2 border-indigo-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-indigo-400 transition-all duration-200 cursor-pointer"
             >
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST VALUE</div>
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST VALUE</div>
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Family Pack</div>
               <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
-              <div className="text-base font-bold text-emerald-600">$39.90</div>
-              <div className="text-[10px] font-bold text-emerald-500">-73%</div>
+              <div className="text-base font-bold text-indigo-600">$39.90</div>
+              <div className="text-[10px] font-bold text-indigo-500">-73%</div>
             </button>
           </div>
         </div>
