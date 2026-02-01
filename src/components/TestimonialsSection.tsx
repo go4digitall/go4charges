@@ -27,7 +27,7 @@ const testimonials = [
     name: "M***k",
     date: "Jan 22, 2026",
     rating: 5,
-    quote: "Incredible quality! The 240W charging is insanely fast, my MacBook charges in no time. Best cable I've ever owned!",
+    quote: "Incredible quality, charges super fast!",
     avatar: avatarReview1,
     productImages: [productReview1, productReview2],
     verified: true
@@ -36,7 +36,7 @@ const testimonials = [
     name: "R***n",
     date: "Jan 18, 2026",
     rating: 5,
-    quote: "Fast shipping, amazing product! The braided cable feels premium and charges my devices super fast. Highly recommend!",
+    quote: "Premium feel, highly recommend!",
     avatar: avatarReview3,
     productImages: [productReview3, productReview4],
     verified: true
@@ -45,7 +45,7 @@ const testimonials = [
     name: "T***a",
     date: "Jan 20, 2026",
     rating: 5,
-    quote: "Perfect cable! The 90° angle is a game changer for using my phone while charging. Super durable too!",
+    quote: "Perfect cable, love the 90° angle!",
     avatar: avatarReview2,
     productImages: [productReview5],
     verified: true
@@ -54,7 +54,7 @@ const testimonials = [
     name: "J***e",
     date: "Jan 15, 2026",
     rating: 5,
-    quote: "Absolutely love it! Works perfectly with all my devices. The build quality is outstanding, worth every penny!",
+    quote: "Works perfectly with all my devices!",
     avatar: avatarReview4,
     verified: true
   },
@@ -62,7 +62,7 @@ const testimonials = [
     name: "D***s",
     date: "Jan 12, 2026",
     rating: 5,
-    quote: "Best purchase ever! The cable is so sturdy and the charging speed is incredible. Already ordered 2 more for my family!",
+    quote: "Best cable ever, ordered more!",
     avatar: avatarReview5,
     verified: true
   },
