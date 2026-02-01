@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, Search, MessageCircle, User, Bot, Calendar, RefreshCw, ChevronRight, X } from "lucide-react";
+import { ArrowLeft, Download, Search, MessageCircle, User, Calendar, RefreshCw, ChevronRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -167,8 +167,8 @@ const AdminChat = () => {
               className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               {msg.role === "assistant" && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm">
-                  <Bot className="h-4 w-4 text-white" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-sm text-white text-xs font-bold">
+                  M
                 </div>
               )}
               <div
