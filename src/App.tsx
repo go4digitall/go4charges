@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import ShippingReturns from "./pages/ShippingReturns";
+import AdminChat from "./pages/AdminChat";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const AppContent = () => {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsConditions />} />
       <Route path="/shipping" element={<ShippingReturns />} />
+      <Route path="/admin/chat" element={<AdminChat />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
