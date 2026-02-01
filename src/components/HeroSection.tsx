@@ -132,8 +132,31 @@ export const HeroSection = () => {
             ❄️ Shop Winter Sale - 73% OFF
           </Button>
 
-          {/* Price Preview */}
+          {/* Price Preview - Family Pack first and highlighted */}
           <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
+            {/* Family Pack - Most Prominent */}
+            <button 
+              onClick={() => goToProduct("pack-famille-3x-chargestand™-240w")}
+              className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-400 rounded-lg px-2 py-2 shadow-lg shadow-amber-500/20 text-center relative hover:scale-105 hover:shadow-xl hover:border-amber-500 transition-all duration-200 cursor-pointer ring-2 ring-amber-400/30"
+            >
+              <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-md animate-pulse">🏆 BEST VALUE</div>
+              <div className="text-[10px] font-bold text-amber-700 mb-0.5 mt-1">Family Pack</div>
+              <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
+              <div className="text-lg font-black text-amber-600">$39.90</div>
+              <div className="text-[10px] font-bold text-amber-500 bg-amber-100 rounded px-1">-73%</div>
+            </button>
+            {/* Duo Pack */}
+            <button 
+              onClick={() => goToProduct("pack-duo-2x-chargestand™-240w")}
+              className="bg-blue-50 border-2 border-blue-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-blue-400 transition-all duration-200 cursor-pointer"
+            >
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">POPULAR</div>
+              <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
+              <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
+              <div className="text-base font-bold text-blue-600">$29.90</div>
+              <div className="text-[10px] font-bold text-blue-500">-70%</div>
+            </button>
+            {/* Single Cable */}
             <button 
               onClick={() => goToProduct("chargestand-240w-90-fast-charging-cable")}
               className="bg-white border-2 border-sky-200 rounded-lg px-2 py-2 shadow-md text-center hover:scale-105 hover:shadow-lg hover:border-sky-400 transition-all duration-200 cursor-pointer"
@@ -142,26 +165,6 @@ export const HeroSection = () => {
               <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
               <div className="text-base font-bold text-sky-600">$19.90</div>
               <div className="text-[10px] font-bold text-sky-500">-60%</div>
-            </button>
-            <button 
-              onClick={() => goToProduct("pack-duo-2x-chargestand™-240w")}
-              className="bg-blue-50 border-2 border-blue-400 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-blue-500 transition-all duration-200 cursor-pointer"
-            >
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST SELLER</div>
-              <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
-              <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
-              <div className="text-base font-bold text-blue-600">$29.90</div>
-              <div className="text-[10px] font-bold text-blue-500">-70%</div>
-            </button>
-            <button 
-              onClick={() => goToProduct("pack-famille-3x-chargestand™-240w")}
-              className="bg-indigo-50 border-2 border-indigo-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-indigo-400 transition-all duration-200 cursor-pointer"
-            >
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">BEST VALUE</div>
-              <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Family Pack</div>
-              <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
-              <div className="text-base font-bold text-indigo-600">$39.90</div>
-              <div className="text-[10px] font-bold text-indigo-500">-73%</div>
             </button>
           </div>
         </div>
