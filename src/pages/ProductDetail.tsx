@@ -182,7 +182,7 @@ const ProductDetail = () => {
   const getUrgencyMessage = () => {
     const handle = product.handle.toLowerCase();
     if (handle.includes('family') || handle.includes('3x')) {
-      return "❄️ WINTER SALE - 73% OFF!";
+      return "❄️ WINTER SALE - 70% OFF!";
     } else if (handle.includes('duo') || handle.includes('2x')) {
       return "❄️ WINTER SALE - 70% OFF!";
     }

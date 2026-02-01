@@ -51,7 +51,7 @@ const Index = () => {
                     <span>WINTER CLEARANCE - FINAL PRICES!</span>
                     <span>❄️</span>
                   </div>
-                  <p className="text-sm mt-1 text-blue-100">Up to 73% OFF • Limited Winter Stock</p>
+                  <p className="text-sm mt-1 text-blue-100">Up to 70% OFF • Limited Winter Stock</p>
                 </div>
 
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-lg shadow-blue-500/30">

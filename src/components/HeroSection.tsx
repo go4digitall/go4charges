@@ -61,7 +61,7 @@ export const HeroSection = () => {
               ❄️ WINTER CLOSEOUT ❄️
             </div>
             <div className="text-2xl md:text-3xl font-black tracking-tight">
-              SPECIAL SALE - 73% OFF
+              SPECIAL SALE - 70% OFF
             </div>
             <div className="text-xs md:text-sm font-medium mt-1 text-blue-100">
               Final Winter Prices • While Supplies Last
