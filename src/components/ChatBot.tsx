@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -9,6 +9,16 @@ interface Message {
 }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+
+// Generate a unique session ID for this browser session
+const generateSessionId = () => {
+  const stored = sessionStorage.getItem("chat_session_id");
+  if (stored) return stored;
+  
+  const newId = `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  sessionStorage.setItem("chat_session_id", newId);
+  return newId;
+};
 
 export const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +31,9 @@ export const ChatBot = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Stable session ID for this browser session
+  const sessionId = useMemo(() => generateSessionId(), []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +62,7 @@ export const ChatBot = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: updatedMessages.slice(-10) }),
+        body: JSON.stringify({ messages: updatedMessages.slice(-10), sessionId }),
       });
 
       if (!resp.ok) {
