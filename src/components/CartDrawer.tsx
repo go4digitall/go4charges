@@ -9,6 +9,20 @@ import paymentBadges from "@/assets/payment-badges.png";
 
 const ORIGINAL_UNIT_PRICE = 49.90;
 
+// Helper to detect bundle size from product handle/title
+const getBundleSize = (product: { node: { handle: string; title: string } }): number => {
+  const handle = product.node.handle.toLowerCase();
+  const title = product.node.title.toLowerCase();
+  
+  if (handle.includes('family') || handle.includes('3x') || title.includes('3x') || title.includes('family')) {
+    return 3;
+  }
+  if (handle.includes('duo') || handle.includes('2x') || title.includes('2x') || title.includes('duo')) {
+    return 2;
+  }
+  return 1; // Single product
+};
+
 const useCountdown = () => {
   const [endDate] = useState(() => {
     const end = new Date();
@@ -46,8 +60,11 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   const timeLeft = useCountdown();
   
-  // Calculate savings: original price vs current price
-  const totalOriginalPrice = items.reduce((sum, item) => sum + (ORIGINAL_UNIT_PRICE * item.quantity), 0);
+  // Calculate savings based on bundle size (how many cables in each product)
+  const totalOriginalPrice = items.reduce((sum, item) => {
+    const bundleSize = getBundleSize(item.product);
+    return sum + (ORIGINAL_UNIT_PRICE * bundleSize * item.quantity);
+  }, 0);
   const totalSavings = totalOriginalPrice - totalPrice;
 
   useEffect(() => { 
