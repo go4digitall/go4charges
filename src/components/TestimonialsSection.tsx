@@ -29,16 +29,7 @@ const testimonials = [
     rating: 5,
     quote: "Incredible quality! The 240W charging is insanely fast, my MacBook charges in no time. Best cable I've ever owned!",
     avatar: avatarReview1,
-    productImage: productReview1,
-    verified: true
-  },
-  {
-    name: "T***a",
-    date: "Jan 20, 2026",
-    rating: 5,
-    quote: "Perfect cable! The 90° angle is a game changer for using my phone while charging. Super durable too!",
-    avatar: avatarReview2,
-    productImage: productReview2,
+    productImages: [productReview1, productReview2],
     verified: true
   },
   {
@@ -47,7 +38,16 @@ const testimonials = [
     rating: 5,
     quote: "Fast shipping, amazing product! The braided cable feels premium and charges my devices super fast. Highly recommend!",
     avatar: avatarReview3,
-    productImage: productReview3,
+    productImages: [productReview3, productReview4],
+    verified: true
+  },
+  {
+    name: "T***a",
+    date: "Jan 20, 2026",
+    rating: 5,
+    quote: "Perfect cable! The 90° angle is a game changer for using my phone while charging. Super durable too!",
+    avatar: avatarReview2,
+    productImages: [productReview5],
     verified: true
   },
   {
@@ -56,7 +56,6 @@ const testimonials = [
     rating: 5,
     quote: "Absolutely love it! Works perfectly with all my devices. The build quality is outstanding, worth every penny!",
     avatar: avatarReview4,
-    productImage: productReview4,
     verified: true
   },
   {
@@ -65,7 +64,6 @@ const testimonials = [
     rating: 5,
     quote: "Best purchase ever! The cable is so sturdy and the charging speed is incredible. Already ordered 2 more for my family!",
     avatar: avatarReview5,
-    productImage: productReview5,
     verified: true
   },
   // Existing reviews with photos
@@ -182,13 +180,16 @@ export const TestimonialsSection = () => {
                     )}
                   </div>
                 </div>
-                {'productImage' in testimonial && testimonial.productImage && (
-                  <div className="mb-2 rounded-lg overflow-hidden">
-                    <img 
-                      src={testimonial.productImage} 
-                      alt="Product review"
-                      className="w-full h-24 md:h-32 object-cover"
-                    />
+                {'productImages' in testimonial && testimonial.productImages && testimonial.productImages.length > 0 && (
+                  <div className="mb-2 rounded-lg overflow-hidden grid grid-cols-2 gap-1">
+                    {testimonial.productImages.map((img: string, imgIndex: number) => (
+                      <img 
+                        key={imgIndex}
+                        src={img} 
+                        alt="Product review"
+                        className={`w-full object-cover rounded ${testimonial.productImages.length === 1 ? 'col-span-2 h-24 md:h-32' : 'h-16 md:h-20'}`}
+                      />
+                    ))}
                   </div>
                 )}
                 <div className="flex gap-0.5 mb-2">
