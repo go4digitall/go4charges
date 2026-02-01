@@ -129,7 +129,7 @@ export const HeroSection = () => {
             className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-xl shadow-blue-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 mb-5 w-full sm:w-auto" 
             onClick={scrollToProducts}
           >
-            ❄️ Shop Winter Sale - 73% OFF
+            ❄️ Shop Winter Sale - 70% OFF
           </Button>
 
           {/* Price Preview - Family Pack first and highlighted */}
@@ -143,8 +143,8 @@ export const HeroSection = () => {
               <div className="text-[10px] font-bold text-amber-700 mb-0.5 mt-1">Family Pack</div>
               <div className="text-[9px] font-semibold text-amber-600 -mt-0.5 mb-0.5">3x Cables</div>
               <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
-              <div className="text-lg font-black text-amber-600">$39.90</div>
-              <div className="text-[10px] font-bold text-amber-500 bg-amber-100 rounded px-1">-73%</div>
+              <div className="text-lg font-black text-amber-600">$44.90</div>
+              <div className="text-[10px] font-bold text-amber-500 bg-amber-100 rounded px-1">-70%</div>
             </button>
             {/* Duo Pack */}
             <button 
@@ -155,8 +155,8 @@ export const HeroSection = () => {
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
               <div className="text-[9px] font-medium text-blue-600 -mt-0.5 mb-0.5">2x Cables</div>
               <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
-              <div className="text-base font-bold text-blue-600">$29.90</div>
-              <div className="text-[10px] font-bold text-blue-500">-70%</div>
+              <div className="text-base font-bold text-blue-600">$34.90</div>
+              <div className="text-[10px] font-bold text-blue-500">-65%</div>
             </button>
             {/* Single Cable */}
             <button 
@@ -165,8 +165,8 @@ export const HeroSection = () => {
             >
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">1x Cable</div>
               <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
-              <div className="text-base font-bold text-sky-600">$19.90</div>
-              <div className="text-[10px] font-bold text-sky-500">-60%</div>
+              <div className="text-base font-bold text-sky-600">$24.90</div>
+              <div className="text-[10px] font-bold text-sky-500">-50%</div>
             </button>
           </div>
         </div>
