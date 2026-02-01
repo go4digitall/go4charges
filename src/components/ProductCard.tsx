@@ -83,24 +83,37 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
     <Link to={`/product/${node.handle}`} className="h-full">
       <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col ${
         isFeatured 
-          ? 'border-2 border-amber-500 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 ring-2 ring-amber-500/20' 
+          ? 'border-2 border-amber-500 shadow-xl shadow-amber-500/30 hover:shadow-2xl hover:shadow-amber-500/40 ring-4 ring-amber-500/30 scale-[1.02]' 
           : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
       }`}>
+        {/* Featured Ribbon */}
+        {isFeatured && (
+          <div className="absolute -top-1 -right-12 z-20 rotate-45 transform">
+            <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold py-1 px-12 shadow-lg">
+              BEST VALUE
+            </div>
+          </div>
+        )}
+
         {/* Winter Deal Badge */}
         <div className="absolute top-0 left-0 right-0 z-10">
-          <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
-            <span>❄️</span>
-            <span>WINTER DEAL</span>
-            <span>❄️</span>
+          <div className={`text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg ${
+            isFeatured 
+              ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500'
+              : 'bg-gradient-to-r from-sky-500 to-blue-600'
+          }`}>
+            <span>{isFeatured ? '🏆' : '❄️'}</span>
+            <span>{isFeatured ? 'MOST POPULAR CHOICE' : 'WINTER DEAL'}</span>
+            <span>{isFeatured ? '🏆' : '❄️'}</span>
           </div>
         </div>
 
         {/* Featured Badge */}
         {isFeatured && (
           <div className="absolute top-10 left-3 z-10">
-            <Badge className="bg-amber-500 text-white hover:bg-amber-600 shadow-md px-3 py-1">
-              <Star className="h-3 w-3 mr-1 fill-white" />
-              Best Seller
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg px-3 py-1.5 text-xs font-bold animate-pulse">
+              <Star className="h-3.5 w-3.5 mr-1 fill-white" />
+              #1 Best Seller
             </Badge>
           </div>
         )}
