@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Gift, Clock, Snowflake, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useCartStore } from "@/stores/cartStore";
 
 const POPUP_SHOWN_KEY = "exit-intent-shown";
 const POPUP_COOLDOWN_HOURS = 24;
@@ -19,10 +20,8 @@ export const ExitIntentPopup = () => {
   const [showCode, setShowCode] = useState(false);
   const [copied, setCopied] = useState(false);
   
-  // Mobile scroll tracking
-  const lastScrollY = useRef(0);
-  const maxScrollY = useRef(0);
-  const scrollUpCount = useRef(0);
+  const { isOpen: isCartOpen, items } = useCartStore();
+  const wasCartOpen = useRef(false);
 
   const hasRecentlyShown = useCallback(() => {
     const lastShown = localStorage.getItem(POPUP_SHOWN_KEY);
@@ -35,67 +34,21 @@ export const ExitIntentPopup = () => {
     localStorage.setItem(POPUP_SHOWN_KEY, Date.now().toString());
   }, []);
 
-  const triggerPopup = useCallback(() => {
-    if (!hasRecentlyShown() && !isOpen) {
-      setIsOpen(true);
-      markAsShown();
-    }
-  }, [hasRecentlyShown, isOpen, markAsShown]);
-
+  // Trigger when cart closes (and has items)
   useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches || 'ontouchstart' in window;
-    
-    // Desktop: mouse leave from top
-    const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        triggerPopup();
+    // Detect cart closing: was open, now closed
+    if (wasCartOpen.current && !isCartOpen) {
+      // Only show if cart has items and hasn't been shown recently
+      if (items.length > 0 && !hasRecentlyShown() && !isOpen) {
+        // Small delay for smoother UX
+        setTimeout(() => {
+          setIsOpen(true);
+          markAsShown();
+        }, 300);
       }
-    };
-
-    // Mobile: scroll up after scrolling down significantly
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      
-      // Track max scroll position
-      if (currentY > maxScrollY.current) {
-        maxScrollY.current = currentY;
-        scrollUpCount.current = 0;
-      }
-      
-      // Only trigger if user has scrolled down at least 50% of viewport
-      const hasScrolledEnough = maxScrollY.current > viewportHeight * 0.5;
-      
-      // Detect scroll up
-      if (currentY < lastScrollY.current && hasScrolledEnough) {
-        scrollUpCount.current += lastScrollY.current - currentY;
-        
-        // Trigger if scrolled up more than 300px towards top
-        if (scrollUpCount.current > 300 && currentY < viewportHeight * 0.3) {
-          triggerPopup();
-        }
-      } else if (currentY > lastScrollY.current) {
-        scrollUpCount.current = 0;
-      }
-      
-      lastScrollY.current = currentY;
-    };
-
-    // Delay before enabling triggers (5 seconds)
-    const timer = setTimeout(() => {
-      if (isMobile) {
-        window.addEventListener("scroll", handleScroll, { passive: true });
-      } else {
-        document.addEventListener("mouseleave", handleMouseLeave);
-      }
-    }, 5000);
-
-    return () => {
-      clearTimeout(timer);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [triggerPopup]);
+    }
+    wasCartOpen.current = isCartOpen;
+  }, [isCartOpen, items.length, hasRecentlyShown, markAsShown, isOpen]);
 
   const handleClaim = () => {
     setShowCode(true);
