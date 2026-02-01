@@ -7,6 +7,7 @@ import { useCartSync } from "@/hooks/useCartSync";
 import { useFacebookPixel } from "@/hooks/useFacebookPixel";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { UpsellModal } from "@/components/UpsellModal";
+import { SocialProofPopup } from "@/components/SocialProofPopup";
 import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
@@ -34,6 +35,7 @@ const AppContent = () => {
       </Routes>
       <ExitIntentPopup />
       <UpsellModal />
+      <SocialProofPopup />
     </>
   );
 };

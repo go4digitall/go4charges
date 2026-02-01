@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, Star, Zap } from "lucide-react";
+import { ShoppingCart, Loader2, Star, Zap, AlertTriangle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { trackAddToCart } from "@/lib/facebookPixel";
 
@@ -43,6 +44,17 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   }
   
   const hasDiscount = compareAtPrice && compareAtPrice > price;
+
+  // Generate deterministic stock level based on product ID
+  const getStockLevel = (productId: string): number => {
+    const hash = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return 3 + (hash % 13); // Between 3 and 15
+  };
+  
+  const stockLevel = getStockLevel(node.id);
+  const stockPercentage = (stockLevel / 15) * 100;
+  const isLowStock = stockLevel < 5;
+  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -126,9 +138,18 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           </Badge>
         </div>
 
-        {/* Limited Stock Urgency Banner */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-sky-600 to-blue-600 text-white text-xs font-semibold py-1.5 px-2 text-center z-10">
-          ❄️ WINTER CLEARANCE - Limited Stock!
+        {/* Stock Level Indicator */}
+        <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
+          <div className="flex items-center gap-1.5 mb-1.5">
+            <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-red-500' : isMediumStock ? 'text-orange-500' : 'text-green-500'}`} />
+            <span className={`text-xs font-semibold ${isLowStock ? 'text-red-600' : isMediumStock ? 'text-orange-600' : 'text-green-600'}`}>
+              Only {stockLevel} left in stock!
+            </span>
+          </div>
+          <Progress 
+            value={stockPercentage} 
+            className={`h-1.5 ${isLowStock ? '[&>div]:bg-red-500' : isMediumStock ? '[&>div]:bg-orange-500' : '[&>div]:bg-green-500'}`}
+          />
         </div>
 
         <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>
