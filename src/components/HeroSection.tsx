@@ -141,6 +141,7 @@ export const HeroSection = () => {
             >
               <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-md animate-pulse">🏆 BEST VALUE</div>
               <div className="text-[10px] font-bold text-amber-700 mb-0.5 mt-1">Family Pack</div>
+              <div className="text-[9px] font-semibold text-amber-600 -mt-0.5 mb-0.5">3x Cables</div>
               <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
               <div className="text-lg font-black text-amber-600">$39.90</div>
               <div className="text-[10px] font-bold text-amber-500 bg-amber-100 rounded px-1">-73%</div>
@@ -152,6 +153,7 @@ export const HeroSection = () => {
             >
               <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">POPULAR</div>
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
+              <div className="text-[9px] font-medium text-blue-600 -mt-0.5 mb-0.5">2x Cables</div>
               <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
               <div className="text-base font-bold text-blue-600">$29.90</div>
               <div className="text-[10px] font-bold text-blue-500">-70%</div>
