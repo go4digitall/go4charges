@@ -112,22 +112,22 @@ export const UpsellModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-0">
+      <DialogContent className="w-[95vw] max-w-lg p-0 overflow-hidden border-0 mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 p-5 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+        <div className="bg-gradient-to-r from-amber-400 via-orange-500 to-amber-500 p-4 sm:p-5 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-16 sm:w-24 h-16 sm:h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           
           <div className="relative z-10 text-center">
-            <Badge className="bg-white text-amber-600 hover:bg-white mb-3 font-bold px-3 py-1">
+            <Badge className="bg-white text-amber-600 hover:bg-white mb-2 sm:mb-3 font-bold px-2 sm:px-3 py-1 text-xs">
               <Sparkles className="w-3 h-3 mr-1" />
               SMART UPGRADE
             </Badge>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-white text-center">
+              <DialogTitle className="text-xl sm:text-2xl font-bold text-white text-center">
                 🏆 Want to Save Even More?
               </DialogTitle>
-              <DialogDescription className="text-white/90 text-center mt-2">
+              <DialogDescription className="text-white/90 text-center mt-1 sm:mt-2 text-sm">
                 Upgrade to our best value pack!
               </DialogDescription>
             </DialogHeader>
@@ -135,9 +135,9 @@ export const UpsellModal = () => {
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-5">
-          {/* Product comparison */}
-          <div className="flex items-center gap-4">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+          {/* Product comparison - stacks on mobile */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             {/* Current item */}
             <div className="flex-1 p-3 bg-gray-50 rounded-lg opacity-60">
               <div className="text-xs text-gray-500 mb-1">You added:</div>
@@ -149,7 +149,7 @@ export const UpsellModal = () => {
               </div>
             </div>
 
-            <ArrowRight className="w-6 h-6 text-amber-500 flex-shrink-0" />
+            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 flex-shrink-0 rotate-90 sm:rotate-0 mx-auto sm:mx-0" />
 
             {/* Family Pack */}
             <div className="flex-1 p-3 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border-2 border-amber-400 relative">
@@ -159,44 +159,44 @@ export const UpsellModal = () => {
               <div className="text-xs text-amber-600 mb-1 font-medium">Upgrade to:</div>
               <div className="font-bold text-sm">Family Pack (3x)</div>
               <div className="flex items-baseline gap-2">
-                <span className="text-lg font-bold text-amber-600">${familyPrice.toFixed(2)}</span>
+                <span className="text-base sm:text-lg font-bold text-amber-600">${familyPrice.toFixed(2)}</span>
                 <span className="text-xs text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           {/* Benefits */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
+          <div className="space-y-1.5 sm:space-y-2">
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span>Save <strong className="text-amber-600">${savings.toFixed(2)}</strong> vs buying separately</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span>3 cables for all your devices</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span>Perfect for home, office & travel</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span><strong>70% OFF</strong> - Biggest discount available</span>
             </div>
           </div>
 
           {/* CTA Buttons */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             <Button
               onClick={handleUpgrade}
               disabled={isUpgrading || isLoading}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-base font-bold shadow-lg shadow-orange-500/30"
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-5 sm:py-6 text-sm sm:text-base font-bold shadow-lg shadow-orange-500/30"
             >
               {isUpgrading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  <Package className="w-5 h-5 mr-2" />
+                  <Package className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   YES! UPGRADE TO FAMILY PACK
                 </>
               )}
@@ -204,7 +204,7 @@ export const UpsellModal = () => {
             
             <button
               onClick={() => setIsOpen(false)}
-              className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors"
+              className="w-full text-xs sm:text-sm text-gray-400 hover:text-gray-600 transition-colors py-1"
             >
               No thanks, keep my current selection
             </button>
