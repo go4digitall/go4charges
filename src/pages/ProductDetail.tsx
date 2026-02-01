@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProduct } from "@/hooks/useProducts";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star } from "lucide-react";
+import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { ShopifyProduct } from "@/lib/shopify";
 import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Parse description into structured sections
 const parseDescription = (description: string) => {
@@ -39,6 +40,10 @@ const ProductDetail = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [showStickyButton, setShowStickyButton] = useState(false);
+  const [viewerCount, setViewerCount] = useState(() => Math.floor(Math.random() * 36) + 12); // 12-47
+  const addToCartButtonRef = useRef<HTMLButtonElement>(null);
+  const isMobile = useIsMobile();
 
   // Compute derived values (must be before hooks to maintain hook order)
   const images = product?.images?.edges || [];
@@ -85,6 +90,45 @@ const ProductDetail = () => {
       });
     }
   }, [product?.id]);
+
+  // Viewer count fluctuation effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setViewerCount(prev => {
+        const change = Math.floor(Math.random() * 7) - 3; // -3 to +3
+        const newCount = prev + change;
+        return Math.min(Math.max(newCount, 12), 47); // Keep between 12-47
+      });
+    }, 30000); // Every 30 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Sticky button visibility based on scroll
+  useEffect(() => {
+    if (!isMobile) {
+      setShowStickyButton(false);
+      return;
+    }
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowStickyButton(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    
+    const button = addToCartButtonRef.current;
+    if (button) {
+      observer.observe(button);
+    }
+    
+    return () => {
+      if (button) {
+        observer.unobserve(button);
+      }
+    };
+  }, [isMobile, product]);
 
   if (isLoading) {
     return (
@@ -314,6 +358,14 @@ const ProductDetail = () => {
               <span className="text-lg">❄️</span>
               <span className="font-medium">Winter Closeout - Final prices while supplies last!</span>
             </div>
+            
+            {/* Active Viewers Counter */}
+            <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <Eye className="h-4 w-4 text-amber-600 animate-pulse" />
+              <span className="font-medium text-amber-700">
+                <span className="font-bold">{viewerCount}</span> people are viewing this right now
+              </span>
+            </div>
 
             {/* Main Description */}
             {mainDescription && (
@@ -361,6 +413,7 @@ const ProductDetail = () => {
 
             {/* Add to Cart - Winter themed */}
             <Button
+              ref={addToCartButtonRef}
               size="lg"
               className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
               onClick={handleAddToCart}
@@ -421,6 +474,38 @@ const ProductDetail = () => {
           </div>
         </div>
       </main>
+      
+      {/* Sticky Add to Cart Button - Mobile Only */}
+      {showStickyButton && isMobile && selectedVariant && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border p-3 animate-fade-in">
+          <div className="container flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-lg font-bold text-primary">
+                {price.toFixed(2)} {currency}
+              </span>
+              {hasDiscount && (
+                <span className="text-xs text-muted-foreground line-through">
+                  {compareAtPrice.toFixed(2)} {currency}
+                </span>
+              )}
+            </div>
+            <Button
+              className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30"
+              onClick={handleAddToCart}
+              disabled={isAdding || !selectedVariant?.availableForSale}
+            >
+              {isAdding ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <>
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  ❄️ Add to Cart
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
