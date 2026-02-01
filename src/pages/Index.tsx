@@ -79,17 +79,24 @@ const Index = () => {
                 </div>
               ) : products && products.length > 0 ? (
                 <div className="flex flex-wrap justify-center items-stretch gap-6">
-                  {/* Sort products to put Duo Pack first */}
+                {/* Sort products: Family first, then Duo, then others */}
                   {[...products]
                     .sort((a, b) => {
-                      const aIsDuo = a.node.handle.toLowerCase().includes('duo');
-                      const bIsDuo = b.node.handle.toLowerCase().includes('duo');
+                      const aIsFamily = a.node.handle.toLowerCase().includes('family') || a.node.handle.toLowerCase().includes('3x');
+                      const bIsFamily = b.node.handle.toLowerCase().includes('family') || b.node.handle.toLowerCase().includes('3x');
+                      const aIsDuo = a.node.handle.toLowerCase().includes('duo') || a.node.handle.toLowerCase().includes('2x');
+                      const bIsDuo = b.node.handle.toLowerCase().includes('duo') || b.node.handle.toLowerCase().includes('2x');
+                      
+                      // Family pack first
+                      if (aIsFamily && !bIsFamily) return -1;
+                      if (!aIsFamily && bIsFamily) return 1;
+                      // Then Duo pack
                       if (aIsDuo && !bIsDuo) return -1;
                       if (!aIsDuo && bIsDuo) return 1;
                       return 0;
                     })
                     .map((product) => {
-                      const isFeatured = product.node.handle.toLowerCase().includes('duo');
+                      const isFeatured = product.node.handle.toLowerCase().includes('family') || product.node.handle.toLowerCase().includes('3x');
                       return (
                         <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm h-full">
                           <ProductCard product={product} isFeatured={isFeatured} />
