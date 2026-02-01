@@ -39,7 +39,7 @@ export const CountdownBanner = () => {
     <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary to-secondary text-white py-2 px-2 sm:py-3 sm:px-4 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center flex-wrap">
         <span className="font-bold text-xs sm:text-base">
-          🔥 UP TO 73% OFF 🔥
+          🔥 UP TO 70% OFF 🔥
         </span>
 
         <div className="flex items-center gap-1.5 sm:gap-2">

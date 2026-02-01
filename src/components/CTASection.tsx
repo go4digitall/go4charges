@@ -43,7 +43,7 @@ export const CTASection = () => {
 
         <div className="mt-8 p-6 bg-gradient-to-r from-red-50 to-amber-50 rounded-lg border-2 border-red-200 max-w-md mx-auto">
           <p className="text-red-600 font-bold text-xl mb-2">
-            ⚡ UP TO 73% OFF!
+            ⚡ UP TO 70% OFF!
           </p>
           <p className="text-sm text-red-500 font-medium">
             Extremely limited stock. These prices won't last. Order now!
