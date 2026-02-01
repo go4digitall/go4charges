@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -59,20 +60,57 @@ CONTACT:
 - Email: contact@go4charges.com
 `;
 
+// Initialize Supabase client for logging
+const getSupabaseClient = () => {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  
+  if (!supabaseUrl || !supabaseServiceKey) {
+    console.warn("Supabase credentials not found, logging disabled");
+    return null;
+  }
+  
+  return createClient(supabaseUrl, supabaseServiceKey);
+};
+
+// Log message to database
+const logMessage = async (sessionId: string, role: string, content: string) => {
+  const supabase = getSupabaseClient();
+  if (!supabase) return;
+  
+  try {
+    const { error } = await supabase
+      .from("chat_messages")
+      .insert({ session_id: sessionId, role, content });
+    
+    if (error) {
+      console.error("Failed to log message:", error);
+    }
+  } catch (err) {
+    console.error("Error logging message:", err);
+  }
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, sessionId } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log("Received chat request with", messages.length, "messages");
+    console.log("Received chat request with", messages.length, "messages, session:", sessionId);
+
+    // Log the user's latest message
+    const lastUserMessage = messages.filter((m: { role: string }) => m.role === "user").pop();
+    if (lastUserMessage && sessionId) {
+      await logMessage(sessionId, "user", lastUserMessage.content);
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -113,7 +151,41 @@ serve(async (req) => {
 
     console.log("Streaming response started");
 
-    return new Response(response.body, {
+    // Create a TransformStream to capture the response for logging
+    let fullResponse = "";
+    const transformStream = new TransformStream({
+      transform(chunk, controller) {
+        const text = new TextDecoder().decode(chunk);
+        
+        // Parse SSE to extract content
+        const lines = text.split("\n");
+        for (const line of lines) {
+          if (line.startsWith("data: ") && line !== "data: [DONE]") {
+            try {
+              const json = JSON.parse(line.slice(6));
+              const content = json.choices?.[0]?.delta?.content;
+              if (content) {
+                fullResponse += content;
+              }
+            } catch {
+              // Ignore parsing errors
+            }
+          }
+        }
+        
+        controller.enqueue(chunk);
+      },
+      async flush() {
+        // Log the complete assistant response
+        if (fullResponse && sessionId) {
+          await logMessage(sessionId, "assistant", fullResponse);
+        }
+      }
+    });
+
+    const transformedBody = response.body?.pipeThrough(transformStream);
+
+    return new Response(transformedBody, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (error) {
