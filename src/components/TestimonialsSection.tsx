@@ -7,8 +7,68 @@ import avatarNl from "@/assets/testimonials/avatar-n-l.avif";
 import avatarPa from "@/assets/testimonials/avatar-P-a.avif";
 import avatarSi from "@/assets/testimonials/avatar-s-i.avif";
 
+// Import new avatar images
+import avatarReview1 from "@/assets/testimonials/avatar-review-1.avif";
+import avatarReview2 from "@/assets/testimonials/avatar-review-2.avif";
+import avatarReview3 from "@/assets/testimonials/avatar-review-3.avif";
+import avatarReview4 from "@/assets/testimonials/avatar-review-4.avif";
+import avatarReview5 from "@/assets/testimonials/avatar-review-5.avif";
+
+// Import product review images
+import productReview1 from "@/assets/testimonials/product-review-1.avif";
+import productReview2 from "@/assets/testimonials/product-review-2.avif";
+import productReview3 from "@/assets/testimonials/product-review-3.avif";
+import productReview4 from "@/assets/testimonials/product-review-4.avif";
+import productReview5 from "@/assets/testimonials/product-review-5.avif";
+
 const testimonials = [
-  // Reviews with photos first
+  // New reviews with product photos first
+  {
+    name: "M***k",
+    date: "Jan 22, 2026",
+    rating: 5,
+    quote: "Incredible quality! The 240W charging is insanely fast, my MacBook charges in no time. Best cable I've ever owned!",
+    avatar: avatarReview1,
+    productImage: productReview1,
+    verified: true
+  },
+  {
+    name: "T***a",
+    date: "Jan 20, 2026",
+    rating: 5,
+    quote: "Perfect cable! The 90° angle is a game changer for using my phone while charging. Super durable too!",
+    avatar: avatarReview2,
+    productImage: productReview2,
+    verified: true
+  },
+  {
+    name: "R***n",
+    date: "Jan 18, 2026",
+    rating: 5,
+    quote: "Fast shipping, amazing product! The braided cable feels premium and charges my devices super fast. Highly recommend!",
+    avatar: avatarReview3,
+    productImage: productReview3,
+    verified: true
+  },
+  {
+    name: "J***e",
+    date: "Jan 15, 2026",
+    rating: 5,
+    quote: "Absolutely love it! Works perfectly with all my devices. The build quality is outstanding, worth every penny!",
+    avatar: avatarReview4,
+    productImage: productReview4,
+    verified: true
+  },
+  {
+    name: "D***s",
+    date: "Jan 12, 2026",
+    rating: 5,
+    quote: "Best purchase ever! The cable is so sturdy and the charging speed is incredible. Already ordered 2 more for my family!",
+    avatar: avatarReview5,
+    productImage: productReview5,
+    verified: true
+  },
+  // Existing reviews with photos
   {
     name: "P***a",
     date: "Jan 9, 2026",
@@ -40,35 +100,6 @@ const testimonials = [
     quote: "Amazing quality! Fast shipping too!",
     avatar: avatarLo,
     verified: true
-  },
-  // Reviews without photos
-  {
-    name: "Alex M.",
-    rating: 5,
-    quote: "Finally a cable that doesn't break after a month! The 90° design is genius.",
-    avatarColor: "bg-blue-500",
-    verified: false
-  },
-  {
-    name: "Sarah K.",
-    rating: 5,
-    quote: "The fast charging is incredible. My MacBook Pro charges so fast now.",
-    avatarColor: "bg-rose-500",
-    verified: false
-  },
-  {
-    name: "James L.",
-    rating: 5,
-    quote: "By far the best cable. The braided design feels premium.",
-    avatarColor: "bg-emerald-500",
-    verified: false
-  },
-  {
-    name: "Emily R.",
-    rating: 5,
-    quote: "Bought one for myself and three more for my family!",
-    avatarColor: "bg-purple-500",
-    verified: false
   }
 ];
 
@@ -137,19 +168,11 @@ export const TestimonialsSection = () => {
             >
               <CardContent className="p-3 md:p-5">
                 <div className="flex items-center gap-2 mb-2 md:mb-3">
-                  {testimonial.avatar ? (
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name}
-                      className="w-7 h-7 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0"
-                    />
-                  ) : (
-                    <div className={`w-7 h-7 md:w-10 md:h-10 rounded-full ${testimonial.avatarColor} flex items-center justify-center flex-shrink-0`}>
-                      <span className="text-white font-semibold text-xs md:text-sm">
-                        {testimonial.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
+                  <img 
+                    src={testimonial.avatar} 
+                    alt={testimonial.name}
+                    className="w-7 h-7 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0"
+                  />
                   <div className="min-w-0">
                     <h3 className="font-semibold text-foreground text-xs md:text-sm truncate">{testimonial.name}</h3>
                     {testimonial.verified && (
@@ -159,6 +182,15 @@ export const TestimonialsSection = () => {
                     )}
                   </div>
                 </div>
+                {'productImage' in testimonial && testimonial.productImage && (
+                  <div className="mb-2 rounded-lg overflow-hidden">
+                    <img 
+                      src={testimonial.productImage} 
+                      alt="Product review"
+                      className="w-full h-24 md:h-32 object-cover"
+                    />
+                  </div>
+                )}
                 <div className="flex gap-0.5 mb-2">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <TrustpilotStar key={i} filled={i < testimonial.rating} size="sm" />
