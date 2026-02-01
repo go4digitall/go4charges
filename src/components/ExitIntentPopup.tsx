@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,11 @@ export const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showCode, setShowCode] = useState(false);
   const [copied, setCopied] = useState(false);
+  
+  // Mobile scroll tracking
+  const lastScrollY = useRef(0);
+  const maxScrollY = useRef(0);
+  const scrollUpCount = useRef(0);
 
   const hasRecentlyShown = useCallback(() => {
     const lastShown = localStorage.getItem(POPUP_SHOWN_KEY);
@@ -30,23 +35,67 @@ export const ExitIntentPopup = () => {
     localStorage.setItem(POPUP_SHOWN_KEY, Date.now().toString());
   }, []);
 
+  const triggerPopup = useCallback(() => {
+    if (!hasRecentlyShown() && !isOpen) {
+      setIsOpen(true);
+      markAsShown();
+    }
+  }, [hasRecentlyShown, isOpen, markAsShown]);
+
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || 'ontouchstart' in window;
+    
+    // Desktop: mouse leave from top
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !hasRecentlyShown() && !isOpen) {
-        setIsOpen(true);
-        markAsShown();
+      if (e.clientY <= 0) {
+        triggerPopup();
       }
     };
 
+    // Mobile: scroll up after scrolling down significantly
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      
+      // Track max scroll position
+      if (currentY > maxScrollY.current) {
+        maxScrollY.current = currentY;
+        scrollUpCount.current = 0;
+      }
+      
+      // Only trigger if user has scrolled down at least 50% of viewport
+      const hasScrolledEnough = maxScrollY.current > viewportHeight * 0.5;
+      
+      // Detect scroll up
+      if (currentY < lastScrollY.current && hasScrolledEnough) {
+        scrollUpCount.current += lastScrollY.current - currentY;
+        
+        // Trigger if scrolled up more than 300px towards top
+        if (scrollUpCount.current > 300 && currentY < viewportHeight * 0.3) {
+          triggerPopup();
+        }
+      } else if (currentY > lastScrollY.current) {
+        scrollUpCount.current = 0;
+      }
+      
+      lastScrollY.current = currentY;
+    };
+
+    // Delay before enabling triggers (5 seconds)
     const timer = setTimeout(() => {
-      document.addEventListener("mouseleave", handleMouseLeave);
+      if (isMobile) {
+        window.addEventListener("scroll", handleScroll, { passive: true });
+      } else {
+        document.addEventListener("mouseleave", handleMouseLeave);
+      }
     }, 5000);
 
     return () => {
       clearTimeout(timer);
       document.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [hasRecentlyShown, markAsShown, isOpen]);
+  }, [triggerPopup]);
 
   const handleClaim = () => {
     setShowCode(true);
