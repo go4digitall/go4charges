@@ -27,24 +27,30 @@ export const UpsellModal = () => {
 
   // Listen for cart changes to detect new additions
   useEffect(() => {
-    const currentItemCount = items.length;
+    const currentTotalQty = items.reduce((sum, item) => sum + item.quantity, 0);
     
-    // Store previous count
-    const prevCount = parseInt(sessionStorage.getItem("cart-item-count") || "0");
-    sessionStorage.setItem("cart-item-count", currentItemCount.toString());
+    // Store previous total quantity
+    const prevTotalQty = parseInt(sessionStorage.getItem("cart-total-qty") || "0");
+    sessionStorage.setItem("cart-total-qty", currentTotalQty.toString());
     
-    // If item was added (not removed)
-    if (currentItemCount > prevCount && items.length > 0) {
+    // If quantity increased (item was added)
+    if (currentTotalQty > prevTotalQty && items.length > 0) {
       const newestItem = items[items.length - 1];
       
       // Don't show upsell if already added Family Pack
       const isAlreadyFamilyPack = newestItem.product.node.handle.toLowerCase().includes("family") ||
                                    newestItem.product.node.handle.toLowerCase().includes("3x");
       
+      // Also check if cart contains a Family Pack already
+      const cartHasFamilyPack = items.some(item => 
+        item.product.node.handle.toLowerCase().includes("family") ||
+        item.product.node.handle.toLowerCase().includes("3x")
+      );
+      
       // Check if user has already seen upsell in this session
       const hasSeenUpsell = sessionStorage.getItem("upsell-shown-session");
       
-      if (!isAlreadyFamilyPack && !hasSeenUpsell && familyPackProduct) {
+      if (!isAlreadyFamilyPack && !cartHasFamilyPack && !hasSeenUpsell && familyPackProduct) {
         setLastAddedItem(newestItem);
         // Small delay to let cart drawer close first
         setTimeout(() => {
