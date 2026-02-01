@@ -38,10 +38,12 @@ export const ExitIntentPopup = () => {
   useEffect(() => {
     // Detect cart closing: was open, now closed
     if (wasCartOpen.current && !isCartOpen) {
+      console.log('[ExitIntent] Cart closed. Items:', items.length, 'Recently shown:', hasRecentlyShown(), 'Popup open:', isOpen);
       // Only show if cart has items and hasn't been shown recently
       if (items.length > 0 && !hasRecentlyShown() && !isOpen) {
         // Small delay for smoother UX
         setTimeout(() => {
+          console.log('[ExitIntent] Triggering popup!');
           setIsOpen(true);
           markAsShown();
         }, 300);
