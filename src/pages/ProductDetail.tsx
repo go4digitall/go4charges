@@ -4,7 +4,8 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye } from "lucide-react";
+import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye, AlertTriangle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
@@ -43,6 +44,17 @@ const ProductDetail = () => {
   };
 
   const [selectedBundleId, setSelectedBundleId] = useState<string>(getInitialBundleId());
+
+  // Deterministic stock level based on bundle ID
+  const getStockLevel = (bundleId: string): number => {
+    const hash = bundleId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return (hash % 13) + 3; // Returns 3-15
+  };
+  
+  const stockLevel = getStockLevel(selectedBundleId);
+  const stockPercentage = (stockLevel / 15) * 100;
+  const isLowStock = stockLevel < 5;
+  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
   // Get currently selected bundle
   const selectedBundle: BundleOption | undefined = bundleOptions.find(b => b.id === selectedBundleId);
@@ -281,6 +293,50 @@ const ProductDetail = () => {
               <span className="font-medium text-amber-700">
                 <span className="font-bold">{viewerCount}</span> people are viewing this right now
               </span>
+            </div>
+
+            {/* Stock Level Indicator */}
+            <div className={`rounded-lg p-3 border ${
+              isLowStock 
+                ? 'bg-red-50 border-red-200' 
+                : isMediumStock 
+                  ? 'bg-amber-50 border-amber-200' 
+                  : 'bg-green-50 border-green-200'
+            }`}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  {isLowStock && <AlertTriangle className="h-4 w-4 text-red-500 animate-pulse" />}
+                  <span className={`text-sm font-semibold ${
+                    isLowStock 
+                      ? 'text-red-600' 
+                      : isMediumStock 
+                        ? 'text-amber-600' 
+                        : 'text-green-600'
+                  }`}>
+                    {isLowStock 
+                      ? `⚠️ Only ${stockLevel} left in stock!` 
+                      : isMediumStock 
+                        ? `${stockLevel} units available` 
+                        : `✓ In Stock (${stockLevel} units)`
+                    }
+                  </span>
+                </div>
+                {isLowStock && (
+                  <Badge className="bg-red-500 text-white text-xs animate-pulse">
+                    Selling Fast
+                  </Badge>
+                )}
+              </div>
+              <Progress 
+                value={stockPercentage} 
+                className={`h-2 ${
+                  isLowStock 
+                    ? '[&>div]:bg-red-500' 
+                    : isMediumStock 
+                      ? '[&>div]:bg-amber-500' 
+                      : '[&>div]:bg-green-500'
+                }`}
+              />
             </div>
 
             {/* Bundle Selector */}
