@@ -12,6 +12,7 @@ import { useCartStore, CartItem } from "@/stores/cartStore";
 import { useProducts } from "@/hooks/useProducts";
 import { ArrowRight, CheckCircle, Sparkles, Package, Loader2 } from "lucide-react";
 import { trackAddToCart } from "@/lib/facebookPixel";
+import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 
 export const UpsellModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,13 +83,22 @@ export const UpsellModal = () => {
           selectedOptions: familyVariant.selectedOptions || [],
         });
         
-        // Track upsell conversion
+        // Track upsell conversion - Facebook Pixel
         trackAddToCart({
           content_name: familyPackProduct.node.title,
           content_ids: [familyVariant.id],
           content_type: "product",
           value: parseFloat(familyVariant.price.amount),
           currency: familyVariant.price.currencyCode,
+        });
+        
+        // Track upsell conversion - Database analytics
+        trackAnalyticsEvent('add_to_cart', {
+          product_name: familyPackProduct.node.title,
+          bundle_type: 'family',
+          price: parseFloat(familyVariant.price.amount),
+          variant_id: familyVariant.id,
+          source: 'upsell_modal'
         });
       }
       

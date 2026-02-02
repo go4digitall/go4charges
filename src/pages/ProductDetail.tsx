@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
+import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useBundleProducts, BundleOption } from "@/hooks/useBundleProducts";
 import { BundleSelector } from "@/components/BundleSelector";
@@ -199,12 +200,21 @@ const ProductDetail = () => {
       
       useCartStore.getState().setIsOpen(true);
       
+      // Facebook Pixel tracking
       trackAddToCart({
         content_name: selectedBundle.name,
         content_ids: [selectedBundle.variantId],
         content_type: 'product',
         value: selectedBundle.price,
         currency: 'USD'
+      });
+      
+      // Database analytics tracking
+      trackAnalyticsEvent('add_to_cart', {
+        product_name: selectedBundle.name,
+        bundle_type: selectedBundle.id,
+        price: selectedBundle.price,
+        variant_id: selectedBundle.variantId
       });
     } catch (error) {
       toast.error("Error adding to cart");
