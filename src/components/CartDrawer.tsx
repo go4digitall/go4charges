@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { ShoppingCart, Minus, Plus, Trash2, Loader2, Lock, Truck, RotateCcw, CheckCircle, Clock } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { trackInitiateCheckout } from "@/lib/facebookPixel";
+import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import paymentBadges from "@/assets/payment-badges.png";
 
 const ORIGINAL_UNIT_PRICE = 49.90;
@@ -75,12 +76,21 @@ export const CartDrawer = () => {
     const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       const currency = items[0]?.price.currencyCode || 'EUR';
+      
+      // Facebook Pixel tracking
       trackInitiateCheckout({
         content_ids: items.map(item => item.variantId),
         content_type: 'product',
         value: totalPrice,
         currency: currency,
         num_items: totalItems
+      });
+      
+      // Database analytics tracking
+      trackAnalyticsEvent('checkout_start', {
+        total_value: totalPrice,
+        total_items: totalItems,
+        currency: currency
       });
       
       window.open(checkoutUrl, '_blank');
