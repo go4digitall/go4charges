@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye, AlertTriangle } from "lucide-react";
+import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye, AlertTriangle, Cable, Ruler, Palette } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import paymentBadges from "@/assets/payment-badges.png";
@@ -12,6 +12,34 @@ import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useBundleProducts, BundleOption } from "@/hooks/useBundleProducts";
 import { BundleSelector } from "@/components/BundleSelector";
+
+// Import review assets from testimonials
+import avatarReview1 from "@/assets/testimonials/avatar-review-1.avif";
+import avatarReview3 from "@/assets/testimonials/avatar-review-3.avif";
+import productReview1 from "@/assets/testimonials/product-review-1.avif";
+import productReview3 from "@/assets/testimonials/product-review-3.avif";
+
+// Product reviews data
+const productReviews = [
+  {
+    name: "M***k",
+    date: "Jan 22, 2026",
+    rating: 5,
+    quote: "Incredible quality, charges super fast!",
+    avatar: avatarReview1,
+    productImage: productReview1,
+    verified: true
+  },
+  {
+    name: "R***n",
+    date: "Jan 18, 2026",
+    rating: 5,
+    quote: "Premium feel, highly recommend!",
+    avatar: avatarReview3,
+    productImage: productReview3,
+    verified: true
+  }
+];
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -416,6 +444,101 @@ const ProductDetail = () => {
                   <p className="text-xs text-muted-foreground">Worldwide delivery</p>
                 </div>
               </div>
+            </div>
+
+            {/* Technical Specifications */}
+            <div className="pt-6 border-t border-border">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <Zap className="h-5 w-5 text-sky-500" />
+                Technical Specifications
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Zap className="h-5 w-5 text-sky-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Power Output</p>
+                    <p className="text-sm font-semibold text-foreground">Up to 240W</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Cable className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Connector</p>
+                    <p className="text-sm font-semibold text-foreground">Type-C to Type-C</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Ruler className="h-5 w-5 text-indigo-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Length</p>
+                    <p className="text-sm font-semibold text-foreground">1.5 Meters</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Palette className="h-5 w-5 text-purple-500 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Color</p>
+                    <p className="text-sm font-semibold text-foreground">Black</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <p className="text-xs text-muted-foreground mb-1">Material</p>
+                <p className="text-sm font-medium text-foreground">Alloy + TPE + Braided Wire (90° Angle Design)</p>
+              </div>
+            </div>
+
+            {/* Customer Reviews */}
+            <div className="pt-6 border-t border-border">
+              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
+                Customer Reviews
+              </h3>
+              <div className="space-y-4">
+                {productReviews.map((review, index) => (
+                  <div key={index} className="p-4 rounded-xl bg-card border border-border/50 shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <img 
+                        src={review.avatar} 
+                        alt={review.name}
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-sm text-foreground">{review.name}</span>
+                          {review.verified && (
+                            <Badge variant="secondary" className="text-[10px] bg-green-100 text-green-700 border-green-200">
+                              <Check className="w-2.5 h-2.5 mr-0.5" /> Verified
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="flex gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <div key={i} className="w-4 h-4 bg-green-500 flex items-center justify-center">
+                                <Star className="w-2.5 h-2.5 fill-white text-white" />
+                              </div>
+                            ))}
+                          </div>
+                          <span className="text-xs text-muted-foreground">{review.date}</span>
+                        </div>
+                        <p className="text-sm text-foreground mb-3">"{review.quote}"</p>
+                        <img 
+                          src={review.productImage} 
+                          alt="Product review"
+                          className="w-24 h-24 object-cover rounded-lg border border-border/50"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a 
+                href="/#testimonials" 
+                className="mt-4 inline-flex items-center text-sm text-sky-600 hover:text-sky-700 font-medium transition-colors"
+              >
+                See all 1,247 reviews →
+              </a>
             </div>
           </div>
         </div>
