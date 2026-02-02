@@ -65,6 +65,64 @@ export const ExitIntentPopup = () => {
     };
   }, [triggerPopup]);
 
+  // Trigger on visibility change (mobile: user switches app/tab)
+  useEffect(() => {
+    let timeOnPage = 0;
+    const minTimeBeforeTrigger = 10000; // 10 seconds minimum on page
+    
+    const interval = setInterval(() => {
+      timeOnPage += 1000;
+    }, 1000);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden' && timeOnPage >= minTimeBeforeTrigger) {
+        console.log('[ExitIntent] Tab/app hidden after', timeOnPage / 1000, 'seconds');
+        triggerPopup();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [triggerPopup]);
+
+  // Trigger on rapid scroll to top (mobile: user scrolling back up quickly)
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+    let hasScrolledDown = false;
+    const velocityThreshold = -50; // Fast upward scroll
+    const minScrollBeforeTrigger = 300; // Must have scrolled down at least 300px first
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      scrollVelocity = currentScrollY - lastScrollY;
+      
+      // Track if user has scrolled down enough
+      if (currentScrollY > minScrollBeforeTrigger) {
+        hasScrolledDown = true;
+      }
+      
+      // Trigger if scrolling up fast from a scrolled position and near the top
+      if (hasScrolledDown && scrollVelocity < velocityThreshold && currentScrollY < 100) {
+        console.log('[ExitIntent] Rapid scroll to top detected');
+        triggerPopup();
+        hasScrolledDown = false; // Reset to prevent multiple triggers
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [triggerPopup]);
+
   // Trigger when cart closes (and has items)
   useEffect(() => {
     // Detect cart closing: was open, now closed
