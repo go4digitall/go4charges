@@ -22,6 +22,7 @@ export const ExitIntentPopup = () => {
   
   const { isOpen: isCartOpen, items } = useCartStore();
   const wasCartOpen = useRef(false);
+  const hasTriggeredMouseLeave = useRef(false);
 
   const hasRecentlyShown = useCallback(() => {
     const lastShown = localStorage.getItem(POPUP_SHOWN_KEY);
@@ -34,6 +35,36 @@ export const ExitIntentPopup = () => {
     localStorage.setItem(POPUP_SHOWN_KEY, Date.now().toString());
   }, []);
 
+  const triggerPopup = useCallback(() => {
+    if (!hasRecentlyShown() && !isOpen) {
+      console.log('[ExitIntent] Triggering popup!');
+      setIsOpen(true);
+      markAsShown();
+    }
+  }, [hasRecentlyShown, isOpen, markAsShown]);
+
+  // Trigger on mouseleave (desktop exit intent)
+  useEffect(() => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Only trigger if mouse leaves from the top of the viewport (toward browser UI)
+      if (e.clientY <= 0 && !hasTriggeredMouseLeave.current) {
+        console.log('[ExitIntent] Mouse left viewport from top');
+        hasTriggeredMouseLeave.current = true;
+        triggerPopup();
+      }
+    };
+
+    // Only add on desktop (non-touch devices)
+    const isDesktop = !('ontouchstart' in window);
+    if (isDesktop) {
+      document.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [triggerPopup]);
+
   // Trigger when cart closes (and has items)
   useEffect(() => {
     // Detect cart closing: was open, now closed
@@ -43,14 +74,12 @@ export const ExitIntentPopup = () => {
       if (items.length > 0 && !hasRecentlyShown() && !isOpen) {
         // Small delay for smoother UX
         setTimeout(() => {
-          console.log('[ExitIntent] Triggering popup!');
-          setIsOpen(true);
-          markAsShown();
+          triggerPopup();
         }, 300);
       }
     }
     wasCartOpen.current = isCartOpen;
-  }, [isCartOpen, items.length, hasRecentlyShown, markAsShown, isOpen]);
+  }, [isCartOpen, items.length, hasRecentlyShown, isOpen, triggerPopup]);
 
   const handleClaim = () => {
     setShowCode(true);
