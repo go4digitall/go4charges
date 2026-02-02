@@ -1,14 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShopifyProduct } from "@/lib/shopify";
-import { useCartStore } from "@/stores/cartStore";
-import { ShoppingCart, Loader2, Star, Zap, AlertTriangle } from "lucide-react";
+import { Star, Zap, AlertTriangle, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { toast } from "sonner";
-import { trackAddToCart } from "@/lib/facebookPixel";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -16,8 +12,6 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) => {
-  const [isAdding, setIsAdding] = useState(false);
-  const addItem = useCartStore(state => state.addItem);
   const { node } = product;
   
   const image = node.images?.edges?.[0]?.node;
@@ -54,6 +48,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const stockLevel = getStockLevel(node.id);
   const stockPercentage = (stockLevel / 15) * 100;
   const isLowStock = stockLevel < 5;
+  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
   // Determine bundle type for unified product page navigation
   const getBundleType = (): string => {
@@ -66,42 +61,6 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   
   // All cards link to the unified product page with bundle pre-selection
   const productLink = `/product/chargestand-240w-90-fast-charging-cable?bundle=${bundleType}`;
-  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
-
-  const handleAddToCart = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (!firstVariant) return;
-    
-    setIsAdding(true);
-    try {
-      await addItem({
-        product,
-        variantId: firstVariant.id,
-        variantTitle: firstVariant.title,
-        price: firstVariant.price,
-        quantity: 1,
-        selectedOptions: firstVariant.selectedOptions || []
-      });
-      
-      // Open cart drawer instead of showing toast
-      useCartStore.getState().setIsOpen(true);
-      
-      // Track AddToCart event
-      trackAddToCart({
-        content_name: node.title,
-        content_ids: [firstVariant.id],
-        content_type: 'product',
-        value: price,
-        currency: currencyCode
-      });
-    } catch (error) {
-      toast.error("Error adding to cart");
-    } finally {
-      setIsAdding(false);
-    }
-  };
 
   return (
     <Link to={productLink} className="h-full">
@@ -206,21 +165,13 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
             <Button 
               size="sm" 
-              onClick={handleAddToCart}
-              disabled={isAdding || !firstVariant?.availableForSale}
               className={isFeatured 
                 ? "bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/30" 
                 : "bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700"
               }
             >
-              {isAdding ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  <ShoppingCart className="h-4 w-4 mr-1" />
-                  Add
-                </>
-              )}
+              Shop Now
+              <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </div>
         </CardContent>
