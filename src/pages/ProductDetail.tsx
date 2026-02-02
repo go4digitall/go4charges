@@ -491,7 +491,11 @@ const ProductDetail = () => {
             {/* Customer Reviews */}
             <div className="pt-4 md:pt-6 border-t border-border">
               <h3 className="text-base md:text-lg font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
-                <Star className="h-4 w-4 md:h-5 md:w-5 text-amber-400 fill-amber-400" />
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-3 w-3 md:h-4 md:w-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
                 Customer Reviews
               </h3>
               <div className="space-y-3 md:space-y-4">
