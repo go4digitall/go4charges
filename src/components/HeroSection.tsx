@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-before-after.jpg";
 
@@ -21,8 +21,8 @@ const Snowflake = ({ style, delay, duration, size }: { style: React.CSSPropertie
 export const HeroSection = () => {
   const navigate = useNavigate();
 
-  const scrollToProducts = () => {
-    document.getElementById("products")?.scrollIntoView({
+  const scrollToBundleSelector = () => {
+    document.getElementById("BundleSelector")?.scrollIntoView({
       behavior: "smooth"
     });
   };
@@ -123,11 +123,23 @@ export const HeroSection = () => {
           {/* CTA - Single prominent button */}
           <Button 
             size="lg" 
-            className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-xl shadow-blue-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 mb-5 w-full sm:w-auto" 
-            onClick={scrollToProducts}
+            className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-xl shadow-blue-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 mb-3 w-full sm:w-auto" 
+            onClick={scrollToBundleSelector}
           >
             ❄️ Shop Winter Sale - 70% OFF
           </Button>
+
+          {/* Animated arrow pointing down */}
+          <button 
+            onClick={scrollToBundleSelector}
+            className="flex flex-col items-center gap-0 mb-5 group cursor-pointer"
+            aria-label="Scroll to bundle selector"
+          >
+            <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
+              See all bundles
+            </span>
+            <ChevronDown className="h-6 w-6 text-primary animate-bounce" />
+          </button>
 
           {/* Price Preview - Family Pack first and highlighted */}
           <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
