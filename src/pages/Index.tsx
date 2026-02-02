@@ -71,18 +71,22 @@ const Index = () => {
                   Error loading product
                 </div>
               ) : products && products.length > 0 ? (
-                <div className="flex justify-center">
-                  {/* Single product card - Family Pack as featured */}
+              <div className="flex justify-center">
+                  {/* Single product card - Single Cable as entry point */}
                   {(() => {
-                    const familyProduct = products.find(p => 
-                      p.node.handle.toLowerCase().includes('family') || 
-                      p.node.handle.toLowerCase().includes('3x') ||
-                      p.node.handle.toLowerCase().includes('famille')
-                    ) || products[0];
+                    const singleProduct = products.find(p => {
+                      const handle = p.node.handle.toLowerCase();
+                      // Find the single cable (not duo, not family)
+                      return !handle.includes('duo') && 
+                             !handle.includes('2x') && 
+                             !handle.includes('family') && 
+                             !handle.includes('3x') &&
+                             !handle.includes('famille');
+                    }) || products[0];
                     
                     return (
                       <div className="w-full max-w-md">
-                        <ProductCard product={familyProduct} isFeatured={true} />
+                        <ProductCard product={singleProduct} isFeatured={false} />
                       </div>
                     );
                   })()}
