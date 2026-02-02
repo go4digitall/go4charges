@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { MarketingChatBot } from "@/components/admin/MarketingChatBot";
 import { MetaAdsImport, type MetaAdsData } from "@/components/admin/MetaAdsImport";
+import { SiteRecommendations } from "@/components/admin/SiteRecommendations";
 
 interface AnalyticsData {
   totalSessions: number;
@@ -420,6 +421,24 @@ const AdminAnalytics = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Recommendations Section */}
+        <SiteRecommendations 
+          analyticsData={{
+            sessions: data.totalSessions,
+            pageViews: data.totalPageViews,
+            clicks: data.totalClicks,
+            addToCart: data.totalAddToCart,
+            avgTimeOnPage: data.avgTimeOnPage,
+            avgScrollDepth: data.avgScrollDepth,
+          }}
+          salesData={{
+            totalRevenue: salesData?.totalRevenue || 0,
+            totalOrders: salesData?.totalOrders || 0,
+            avgOrderValue: salesData?.avgOrderValue || 0,
+          }}
+          metaAdsData={metaAdsData}
+        />
 
         {/* Charts */}
         <Tabs defaultValue="traffic" className="space-y-4">
