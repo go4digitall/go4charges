@@ -3,15 +3,15 @@ import { useCartStore } from "@/stores/cartStore";
 import { ShoppingBag, X } from "lucide-react";
 
 const NAMES = [
-  "Marie", "Sophie", "Pierre", "Lucas", "Emma", "Thomas", "Julie", "Nicolas",
-  "Camille", "Antoine", "Laura", "Maxime", "Léa", "Hugo", "Chloé", "Alexandre",
-  "Sarah", "David", "Anna", "Michael", "Lisa", "James", "Emily", "Robert"
+  "Mike", "Sarah", "John", "Emily", "David", "Jessica", "Chris", "Ashley",
+  "Matt", "Jennifer", "Josh", "Amanda", "Ryan", "Stephanie", "Brandon", "Nicole",
+  "Tyler", "Megan", "Kevin", "Lauren", "Justin", "Heather", "Andrew", "Rachel"
 ];
 
 const CITIES = [
-  "Paris", "Lyon", "London", "Berlin", "New York", "Toronto", "Amsterdam",
-  "Madrid", "Rome", "Brussels", "Vienna", "Munich", "Barcelona", "Milan",
-  "Dublin", "Stockholm", "Copenhagen", "Oslo", "Helsinki", "Zurich"
+  "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia",
+  "San Antonio", "San Diego", "Dallas", "Austin", "Miami", "Denver", "Seattle",
+  "Boston", "Atlanta", "Las Vegas", "Portland", "Nashville", "San Francisco", "Charlotte"
 ];
 
 const PRODUCTS = [
