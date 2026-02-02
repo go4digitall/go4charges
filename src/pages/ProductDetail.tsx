@@ -447,86 +447,86 @@ const ProductDetail = () => {
             </div>
 
             {/* Technical Specifications */}
-            <div className="pt-6 border-t border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Zap className="h-5 w-5 text-sky-500" />
+            <div className="pt-4 md:pt-6 border-t border-border">
+              <h3 className="text-base md:text-lg font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
+                <Zap className="h-4 w-4 md:h-5 md:w-5 text-sky-500" />
                 Technical Specifications
               </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
-                  <Zap className="h-5 w-5 text-sky-500 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Power Output</p>
-                    <p className="text-sm font-semibold text-foreground">Up to 240W</p>
+              <div className="grid grid-cols-2 gap-2 md:gap-3">
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Zap className="h-4 w-4 md:h-5 md:w-5 text-sky-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] md:text-xs text-muted-foreground">Power</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Up to 240W</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
-                  <Cable className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Connector</p>
-                    <p className="text-sm font-semibold text-foreground">Type-C to Type-C</p>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Cable className="h-4 w-4 md:h-5 md:w-5 text-blue-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] md:text-xs text-muted-foreground">Connector</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Type-C</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
-                  <Ruler className="h-5 w-5 text-indigo-500 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Length</p>
-                    <p className="text-sm font-semibold text-foreground">1.5 Meters</p>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Ruler className="h-4 w-4 md:h-5 md:w-5 text-indigo-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] md:text-xs text-muted-foreground">Length</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">1.5m</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
-                  <Palette className="h-5 w-5 text-purple-500 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Color</p>
-                    <p className="text-sm font-semibold text-foreground">Black</p>
+                <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
+                  <Palette className="h-4 w-4 md:h-5 md:w-5 text-purple-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] md:text-xs text-muted-foreground">Color</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Black</p>
                   </div>
                 </div>
               </div>
-              <div className="mt-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <p className="text-xs text-muted-foreground mb-1">Material</p>
-                <p className="text-sm font-medium text-foreground">Alloy + TPE + Braided Wire (90° Angle Design)</p>
+              <div className="mt-2 md:mt-3 p-2 md:p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <p className="text-[10px] md:text-xs text-muted-foreground mb-0.5 md:mb-1">Material</p>
+                <p className="text-xs md:text-sm font-medium text-foreground">Alloy + TPE + Braided Wire (90°)</p>
               </div>
             </div>
 
             {/* Customer Reviews */}
-            <div className="pt-6 border-t border-border">
-              <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Star className="h-5 w-5 text-amber-400 fill-amber-400" />
+            <div className="pt-4 md:pt-6 border-t border-border">
+              <h3 className="text-base md:text-lg font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
+                <Star className="h-4 w-4 md:h-5 md:w-5 text-amber-400 fill-amber-400" />
                 Customer Reviews
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {productReviews.map((review, index) => (
-                  <div key={index} className="p-4 rounded-xl bg-card border border-border/50 shadow-sm">
-                    <div className="flex items-start gap-3">
+                  <div key={index} className="p-3 md:p-4 rounded-xl bg-card border border-border/50 shadow-sm">
+                    <div className="flex items-start gap-2 md:gap-3">
                       <img 
                         src={review.avatar} 
                         alt={review.name}
-                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                        className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-sm text-foreground">{review.name}</span>
+                        <div className="flex items-center gap-1.5 md:gap-2 mb-1 flex-wrap">
+                          <span className="font-semibold text-xs md:text-sm text-foreground">{review.name}</span>
                           {review.verified && (
-                            <Badge variant="secondary" className="text-[10px] bg-green-100 text-green-700 border-green-200">
-                              <Check className="w-2.5 h-2.5 mr-0.5" /> Verified
+                            <Badge variant="secondary" className="text-[9px] md:text-[10px] px-1.5 py-0 bg-green-100 text-green-700 border-green-200">
+                              <Check className="w-2 h-2 md:w-2.5 md:h-2.5 mr-0.5" /> Verified
                             </Badge>
                           )}
                         </div>
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
                           <div className="flex gap-0.5">
                             {[...Array(5)].map((_, i) => (
-                              <div key={i} className="w-4 h-4 bg-green-500 flex items-center justify-center">
-                                <Star className="w-2.5 h-2.5 fill-white text-white" />
+                              <div key={i} className="w-3 h-3 md:w-4 md:h-4 bg-green-500 flex items-center justify-center">
+                                <Star className="w-2 h-2 md:w-2.5 md:h-2.5 fill-white text-white" />
                               </div>
                             ))}
                           </div>
-                          <span className="text-xs text-muted-foreground">{review.date}</span>
+                          <span className="text-[10px] md:text-xs text-muted-foreground">{review.date}</span>
                         </div>
-                        <p className="text-sm text-foreground mb-3">"{review.quote}"</p>
+                        <p className="text-xs md:text-sm text-foreground mb-2 md:mb-3">"{review.quote}"</p>
                         <img 
                           src={review.productImage} 
                           alt="Product review"
-                          className="w-24 h-24 object-cover rounded-lg border border-border/50"
+                          className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-lg border border-border/50"
                         />
                       </div>
                     </div>
@@ -535,7 +535,7 @@ const ProductDetail = () => {
               </div>
               <a 
                 href="/#testimonials" 
-                className="mt-4 inline-flex items-center text-sm text-sky-600 hover:text-sky-700 font-medium transition-colors"
+                className="mt-3 md:mt-4 inline-flex items-center text-xs md:text-sm text-sky-600 hover:text-sky-700 font-medium transition-colors"
               >
                 See all 1,247 reviews →
               </a>
