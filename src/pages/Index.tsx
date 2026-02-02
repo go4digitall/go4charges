@@ -48,24 +48,17 @@ const Index = () => {
                   
                   <div className="flex items-center justify-center gap-2 text-lg md:text-xl font-bold">
                     <span>❄️</span>
-                    <span>WINTER CLEARANCE - FINAL PRICES!</span>
+                    <span>WINTER CLEARANCE - UP TO 70% OFF!</span>
                     <span>❄️</span>
                   </div>
-                  <p className="text-sm mt-1 text-blue-100">Up to 70% OFF • Limited Winter Stock</p>
+                  <p className="text-sm mt-1 text-blue-100">Limited Winter Stock • Free Shipping Worldwide</p>
                 </div>
 
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-500 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-lg shadow-blue-500/30">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                  </span>
-                  URGENT: Very Limited Stock
-                </div>
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
-                  Our <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Premium</span> Products
+                  The <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">ChargeStand™</span>
                 </h2>
                 <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
-                  Grab these winter deals before they melt away!
+                  Ultra-fast charging cable with up to 240W power delivery
                 </p>
               </div>
               
@@ -75,40 +68,41 @@ const Index = () => {
                 </div>
               ) : error ? (
                 <div className="text-center py-12 text-destructive">
-                  Error loading products
+                  Error loading product
                 </div>
               ) : products && products.length > 0 ? (
-                <div className="flex flex-wrap justify-center items-stretch gap-6">
-                {/* Sort products: Family first, then Duo, then others */}
-                  {[...products]
-                    .sort((a, b) => {
-                      const aIsFamily = a.node.handle.toLowerCase().includes('family') || a.node.handle.toLowerCase().includes('3x');
-                      const bIsFamily = b.node.handle.toLowerCase().includes('family') || b.node.handle.toLowerCase().includes('3x');
-                      const aIsDuo = a.node.handle.toLowerCase().includes('duo') || a.node.handle.toLowerCase().includes('2x');
-                      const bIsDuo = b.node.handle.toLowerCase().includes('duo') || b.node.handle.toLowerCase().includes('2x');
-                      
-                      // Family pack first
-                      if (aIsFamily && !bIsFamily) return -1;
-                      if (!aIsFamily && bIsFamily) return 1;
-                      // Then Duo pack
-                      if (aIsDuo && !bIsDuo) return -1;
-                      if (!aIsDuo && bIsDuo) return 1;
-                      return 0;
-                    })
-                    .map((product) => {
-                      const isFeatured = product.node.handle.toLowerCase().includes('family') || product.node.handle.toLowerCase().includes('3x');
-                      return (
-                        <div key={product.node.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm h-full">
-                          <ProductCard product={product} isFeatured={isFeatured} />
-                        </div>
-                      );
-                    })}
+                <div className="flex justify-center">
+                  {/* Single product card - Family Pack as featured */}
+                  {(() => {
+                    const familyProduct = products.find(p => 
+                      p.node.handle.toLowerCase().includes('family') || 
+                      p.node.handle.toLowerCase().includes('3x') ||
+                      p.node.handle.toLowerCase().includes('famille')
+                    ) || products[0];
+                    
+                    return (
+                      <div className="w-full max-w-md">
+                        <ProductCard product={familyProduct} isFeatured={true} />
+                      </div>
+                    );
+                  })()}
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
                   No products available at the moment
                 </div>
               )}
+              
+              {/* See All Options CTA */}
+              <div className="text-center mt-8">
+                <p className="text-muted-foreground mb-3">Looking for a different pack size?</p>
+                <a 
+                  href="/product/chargestand-240w-90-fast-charging-cable?bundle=family" 
+                  className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 font-semibold transition-colors"
+                >
+                  View all bundle options →
+                </a>
+              </div>
             </div>
           </section>
 
