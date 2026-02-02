@@ -1,174 +1,182 @@
 
 
-# Plan : Implémentation de 4 Fonctionnalités de Conversion
+# Plan : Page Produit avec Bundle Selector
 
 ## Vue d'ensemble
 
-Ce plan couvre l'implémentation de 4 fonctionnalités pour améliorer le taux de conversion :
+Transformer l'architecture pour un flow simplifié :
+- **Homepage** : Un produit hero → CTA vers la page produit
+- **Page produit** : Bundle selector intégré permettant de choisir entre Single Cable, Duo Pack et Family Pack
 
-1. **Pop-ups de Preuve Sociale** - Notifications discrètes "X vient d'acheter..."
-2. **Sticky Add-to-Cart Mobile** - Bouton flottant sur la page produit
-3. **Indicateur de Stock Limité** - Barre de progression + "Only X left"
-4. **Compteur de Visiteurs Actifs** - "X personnes regardent ce produit"
+**Important** : Toutes les références au produit utiliseront "**Up to 240W**" (pas "240W" tout court).
 
 ---
 
-## 1. Pop-ups de Preuve Sociale
+## 1. Nouveau Composant : BundleSelector
 
-Notifications discrètes en bas de l'écran montrant des achats récents fictifs.
+### Fichier à créer : `src/components/BundleSelector.tsx`
 
-**Comportement :**
-- Apparaît toutes les 15-30 secondes (aléatoire)
-- Affiche un prénom + ville aléatoire + produit
-- Animation de slide-in depuis le bas gauche
-- Disparaît après 4 secondes
-- Ne s'affiche pas si le panier est ouvert
+**Design visuel :**
 
-**Exemple visuel :**
 ```text
-+------------------------------------------+
-| 🛒 Marie from Paris just purchased       |
-|    Family Pack (3x) • 2 minutes ago      |
-+------------------------------------------+
+┌────────────────────────────────────────────────────────┐
+│  ⏰ Bundle deal expires in 02:34:56                    │
+└────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────┐
+│ ○  Single Cable                              $24.90   │
+│    1x ChargeStand™ (Up to 240W)         was $49.90    │
+│                                             [-50%]    │
+└────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────┐
+│ ○  Duo Pack                       [POPULAR] $34.90   │
+│    2x ChargeStand™ (Up to 240W)         was $99.80    │
+│                                             [-65%]    │
+└────────────────────────────────────────────────────────┘
+
+┌─ ✓ SELECTED ───────────────────────────────────────────┐
+│ ◉  Family Pack      [BEST VALUE] [70% OFF]  $44.90   │
+│    3x ChargeStand™ (Up to 240W)        was $149.70    │
+│                                                        │
+│                               ⭐ Most Popular Choice   │
+└────────────────────────────────────────────────────────┘
 ```
 
-**Fichier à créer :**
-- `src/components/SocialProofPopup.tsx`
+**Comportement :**
+- Pré-sélection du Family Pack par défaut
+- Timer "Bundle deal expires in..." (compte à rebours minuit)
+- Animation pulse sur le badge "BEST VALUE"
+- Bordure différente pour l'option sélectionnée
+- Le bouton Add to Cart ajoute le produit Shopify correspondant
 
-**Fichier à modifier :**
-- `src/App.tsx` - Ajouter le composant global
+**Options des bundles :**
+
+| Pack | Nom affiché | Subtitle | Prix | Prix barré | Badges |
+|------|-------------|----------|------|------------|--------|
+| Single | Single Cable | 1x ChargeStand™ (Up to 240W) | $24.90 | $49.90 | -50% |
+| Duo | Duo Pack | 2x ChargeStand™ (Up to 240W) | $34.90 | $99.80 | POPULAR, -65% |
+| Family | Family Pack | 3x ChargeStand™ (Up to 240W) | $44.90 | $149.70 | BEST VALUE, 70% OFF |
 
 ---
 
-## 2. Sticky Add-to-Cart Mobile
+## 2. Hook pour charger les 3 produits
 
-Bouton flottant en bas de l'écran sur mobile quand l'utilisateur scroll vers le bas sur la page produit.
+### Fichier à créer : `src/hooks/useBundleProducts.ts`
 
-**Comportement :**
-- Visible uniquement sur mobile (< 768px)
-- Apparaît quand le bouton original sort de l'écran
-- Affiche le prix + bouton "Add to Cart"
-- Animation de slide-up smooth
+Ce hook charge les 3 produits Shopify en parallèle :
 
-**Exemple visuel :**
-```text
-+----------------------------------------+
-| $29.90        [❄️ ADD TO CART]         |
-+----------------------------------------+
+```typescript
+export function useBundleProducts() {
+  // Charge: Single, Duo Pack, Family Pack
+  // Retourne un objet avec les 3 produits mappés pour le BundleSelector
+  // Gestion des états loading/error
+}
 ```
 
-**Fichier à modifier :**
-- `src/pages/ProductDetail.tsx` - Ajouter le sticky button avec détection de scroll
+**Produits Shopify :**
+| Pack | Handle Shopify |
+|------|----------------|
+| Single | `chargestand-240w-90-fast-charging-cable` |
+| Duo | `pack-duo-2x-chargestand™-240w` |
+| Family | `pack-famille-3x-chargestand™-240w` |
 
 ---
 
-## 3. Indicateur de Stock Limité
+## 3. Modifications de la Page Produit
 
-Barre de progression et message "Only X left" sur les cartes produit.
+### Fichier : `src/pages/ProductDetail.tsx`
 
-**Comportement :**
-- Stock simulé entre 3 et 15 unités (basé sur product ID pour cohérence)
-- Barre de progression rouge/orange selon urgence
-- Badge "Low Stock" si < 5 unités
-- Message "Only X left in stock!"
+**Changements :**
 
-**Exemple visuel :**
-```text
-+------------------------------------------+
-| ⚠️ Only 7 left in stock!                 |
-| [████████░░░░░░░░] 47% remaining         |
-+------------------------------------------+
-```
+1. **Ajouter le BundleSelector** entre les badges et le bouton Add to Cart
+2. **Supprimer** le sélecteur d'options classique (ou le garder si couleurs/tailles)
+3. **Adapter le bouton Add to Cart** pour utiliser le produit/variant du bundle sélectionné
+4. **Conserver** :
+   - Le compteur de viewers actifs ✓
+   - Le sticky button mobile ✓
+   - Les trust badges ✓
+   - Les spécifications produit ✓
 
-**Fichier à modifier :**
-- `src/components/ProductCard.tsx` - Ajouter l'indicateur de stock
-
----
-
-## 4. Compteur de Visiteurs Actifs
-
-Nombre de personnes "regardant" le produit en temps réel (simulé).
-
-**Comportement :**
-- Affiché sur la page produit uniquement
-- Nombre entre 12 et 47 (fluctue légèrement toutes les 30s)
-- Icône d'œil animée
-- Message : "X people are viewing this right now"
-
-**Exemple visuel :**
-```text
-+------------------------------------------+
-| 👁️ 23 people are viewing this right now  |
-+------------------------------------------+
-```
-
-**Fichier à modifier :**
-- `src/pages/ProductDetail.tsx` - Ajouter le compteur de viewers
+**Flow utilisateur :**
+1. L'utilisateur arrive sur la page produit (depuis n'importe quel handle)
+2. Il voit le BundleSelector avec Family Pack pré-sélectionné
+3. Il peut cliquer sur un autre pack
+4. Le prix et le variant ajouté au panier changent dynamiquement
 
 ---
 
-## Résumé des Modifications
+## 4. Simplification de la Homepage (optionnel)
+
+### Fichier : `src/pages/Index.tsx`
+
+**Option recommandée :** Garder les 3 cartes produits comme "teasers" qui redirigent vers la page produit unifiée.
+
+Modification minimale :
+- Les cartes pointent toutes vers `/product/chargestand` (ou le handle principal)
+- Query param pour pré-sélectionner le bundle (ex: `?bundle=family`)
+
+---
+
+## Résumé des fichiers
 
 | Fichier | Action | Description |
 |---------|--------|-------------|
-| `src/components/SocialProofPopup.tsx` | Créer | Nouveau composant pour les notifications d'achat |
-| `src/App.tsx` | Modifier | Intégrer SocialProofPopup globalement |
-| `src/components/ProductCard.tsx` | Modifier | Ajouter indicateur de stock limité |
-| `src/pages/ProductDetail.tsx` | Modifier | Ajouter sticky button mobile + compteur viewers |
+| `src/components/BundleSelector.tsx` | Créer | Composant selector avec radio buttons stylés |
+| `src/hooks/useBundleProducts.ts` | Créer | Hook pour charger les 3 produits bundle |
+| `src/pages/ProductDetail.tsx` | Modifier | Intégrer BundleSelector, adapter Add to Cart |
+| `src/pages/Index.tsx` | Optionnel | Simplifier navigation vers page produit unique |
 
 ---
 
-## Détails Techniques
+## Détails techniques
 
-### SocialProofPopup.tsx
+### BundleSelector - Structure
 
 ```typescript
-// Données simulées
-const NAMES = ["Marie", "Sophie", "Pierre", "Lucas", "Emma", "Thomas", ...];
-const CITIES = ["Paris", "Lyon", "London", "Berlin", "New York", "Toronto", ...];
-const PRODUCTS = ["Family Pack (3x)", "Duo Pack (2x)", "ChargeStand™ 240W"];
+interface BundleOption {
+  id: string;           // "single", "duo", "family"
+  name: string;         // "Single Cable", "Duo Pack", "Family Pack"
+  subtitle: string;     // "1x ChargeStand™ (Up to 240W)"
+  price: number;
+  comparePrice: number;
+  discountPercent: number;
+  badges: string[];
+  productHandle: string;
+  variantId: string;
+  product: ShopifyProduct;
+}
 
-// Hook useInterval pour timing aléatoire (15-30s)
-// State: isVisible, currentNotification
-// Animation: animate-in slide-in-from-bottom + fade-out
+// State: selectedBundleId (default = "family")
 ```
 
-### Stock Limité (ProductCard)
+### Intégration panier
 
 ```typescript
-// Génération déterministe du stock basée sur product ID
-const getStockLevel = (productId: string) => {
-  const hash = productId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  return 3 + (hash % 13); // Entre 3 et 15
+const handleAddToCart = async () => {
+  const selectedBundle = bundleOptions.find(b => b.id === selectedBundleId);
+  await addItem({
+    product: selectedBundle.product,
+    variantId: selectedBundle.variantId,
+    variantTitle: selectedBundle.name,
+    price: { amount: selectedBundle.price.toString(), currencyCode: "USD" },
+    quantity: 1,
+    selectedOptions: []
+  });
 };
-
-// Couleur de la barre selon le niveau
-// < 5: red, < 10: orange, >= 10: green
 ```
 
-### Sticky Button (ProductDetail)
+### Timer Component (réutilisation)
 
-```typescript
-// Hook useInView ou IntersectionObserver
-// Détecte quand le bouton original sort de l'écran
-// Position: fixed bottom-0, z-50
-// Affichage conditionnel: isMobile && !isButtonVisible
-```
-
-### Compteur Viewers (ProductDetail)
-
-```typescript
-// État initial: Math.floor(12 + Math.random() * 35)
-// useEffect avec setInterval toutes les 30s
-// Fluctuation: ±1-3 personnes pour effet réaliste
-```
+Le timer compte jusqu'à minuit en réutilisant la même logique que le `CartDrawer`.
 
 ---
 
-## Résultat Attendu
+## Résultat attendu
 
-- **Preuve sociale** : Crée un sentiment de popularité et d'urgence
-- **Sticky button** : Réduit la friction sur mobile (pas besoin de scroller)
-- **Stock limité** : Urgence visuelle incitant à l'achat immédiat
-- **Viewers actifs** : Effet de troupeau ("si d'autres regardent, c'est bien")
+1. **Page produit unifiée** : Un seul endroit pour choisir son pack
+2. **Formulation correcte** : "Up to 240W" partout (déjà en place dans les badges existants)
+3. **Upsell intégré** : Family Pack pré-sélectionné = meilleur panier moyen
+4. **UX simplifiée** : Décision plus claire pour l'utilisateur
+5. **Conversion optimisée** : Timer + badges créent l'urgence dans le selector
 
