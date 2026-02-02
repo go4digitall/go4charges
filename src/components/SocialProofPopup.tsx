@@ -56,8 +56,8 @@ export const SocialProofPopup = () => {
   }, [isCartOpen]);
 
   useEffect(() => {
-    // Initial delay before first popup (5-10 seconds)
-    const initialDelay = Math.random() * 5000 + 5000;
+    // Initial delay before first popup (20-30 seconds)
+    const initialDelay = Math.random() * 10000 + 20000;
     
     let timeoutId: NodeJS.Timeout;
     let intervalId: NodeJS.Timeout;
@@ -65,11 +65,10 @@ export const SocialProofPopup = () => {
     timeoutId = setTimeout(() => {
       showNotification();
       
-      // Then show every 15-30 seconds
+      // Then show every 45-75 seconds (more authentic feel)
       intervalId = setInterval(() => {
-        const randomDelay = Math.random() * 15000 + 15000; // 15-30s
-        setTimeout(showNotification, randomDelay);
-      }, 20000); // Base interval
+        showNotification();
+      }, Math.random() * 30000 + 45000); // 45-75s
     }, initialDelay);
     
     return () => {
