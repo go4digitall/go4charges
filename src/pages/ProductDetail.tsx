@@ -1,110 +1,83 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useProduct } from "@/hooks/useProducts";
+import { useState, useEffect, useRef } from "react";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore } from "@/stores/cartStore";
 import { ShoppingCart, Loader2, ArrowLeft, Check, Zap, Shield, Truck, Star, Eye } from "lucide-react";
 import { toast } from "sonner";
-import { ShopifyProduct } from "@/lib/shopify";
 import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-// Parse description into structured sections
-const parseDescription = (description: string) => {
-  const lines = description.split(/[•\n]/).map(line => line.trim()).filter(Boolean);
-  const specs: { label: string; value: string }[] = [];
-  let mainDescription = "";
-
-  lines.forEach(line => {
-    if (line.includes(":")) {
-      const [label, ...valueParts] = line.split(":");
-      const value = valueParts.join(":").trim();
-      if (label && value) {
-        specs.push({ label: label.trim(), value });
-      }
-    } else if (line.length > 30) {
-      mainDescription = line;
-    }
-  });
-
-  return { specs, mainDescription };
-};
+import { useBundleProducts, BundleOption } from "@/hooks/useBundleProducts";
+import { BundleSelector } from "@/components/BundleSelector";
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
-  const { data: product, isLoading, error } = useProduct(handle || '');
+  const [searchParams] = useSearchParams();
+  const { bundleOptions, isLoading, error } = useBundleProducts();
   const addItem = useCartStore(state => state.addItem);
   const [isAdding, setIsAdding] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showStickyButton, setShowStickyButton] = useState(false);
-  const [viewerCount, setViewerCount] = useState(() => Math.floor(Math.random() * 36) + 12); // 12-47
+  const [viewerCount, setViewerCount] = useState(() => Math.floor(Math.random() * 36) + 12);
   const addToCartButtonRef = useRef<HTMLButtonElement>(null);
   const isMobile = useIsMobile();
 
-  // Compute derived values (must be before hooks to maintain hook order)
+  // Determine initial bundle selection based on URL handle or query param
+  const getInitialBundleId = (): 'single' | 'duo' | 'family' => {
+    const bundleParam = searchParams.get('bundle');
+    if (bundleParam && ['single', 'duo', 'family'].includes(bundleParam)) {
+      return bundleParam as 'single' | 'duo' | 'family';
+    }
+    
+    // Check current handle to pre-select appropriate bundle
+    if (handle) {
+      const h = handle.toLowerCase();
+      if (h.includes('duo') || h.includes('2x')) return 'duo';
+      if (h.includes('family') || h.includes('3x') || h.includes('famille')) return 'family';
+    }
+    
+    // Default to family for best conversion
+    return 'family';
+  };
+
+  const [selectedBundleId, setSelectedBundleId] = useState<string>(getInitialBundleId());
+
+  // Get currently selected bundle
+  const selectedBundle: BundleOption | undefined = bundleOptions.find(b => b.id === selectedBundleId);
+  const product = selectedBundle?.product?.node;
+
+  // Images from the selected bundle's product
   const images = product?.images?.edges || [];
   const currentImage = images[selectedImageIndex]?.node;
-  const options = product?.options || [];
-  
-  // Filter out "Title" option with only "Default Title"
-  const displayableOptions = options.filter(option => {
-    if (option.name === "Title" && option.values.length === 1 && option.values[0] === "Default Title") {
-      return false;
-    }
-    return true;
-  });
 
-  // Initialize selected options with first value of each option
-  const effectiveOptions = { ...selectedOptions };
-  options.forEach(option => {
-    if (!effectiveOptions[option.name] && option.values.length > 0) {
-      effectiveOptions[option.name] = option.values[0];
-    }
-  });
-
-  // Find matching variant based on selected options
-  const selectedVariant = product?.variants?.edges?.find(({ node }) => {
-    return node.selectedOptions.every(
-      opt => effectiveOptions[opt.name] === opt.value
-    );
-  })?.node || product?.variants?.edges?.[0]?.node;
-
-  const { specs, mainDescription } = parseDescription(product?.description || '');
-
-  // Track ViewContent when product loads
+  // Track ViewContent when bundle loads
   useEffect(() => {
-    if (product && selectedVariant) {
-      const productPrice = parseFloat(selectedVariant.price.amount || product.priceRange.minVariantPrice.amount);
-      const productCurrency = selectedVariant.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
-      
+    if (selectedBundle && product) {
       trackViewContent({
         content_name: product.title,
-        content_ids: [selectedVariant.id],
+        content_ids: [selectedBundle.variantId],
         content_type: 'product',
-        value: productPrice,
-        currency: productCurrency
+        value: selectedBundle.price,
+        currency: 'USD'
       });
     }
-  }, [product?.id]);
+  }, [selectedBundle?.id]);
 
-  // Viewer count fluctuation effect
+  // Viewer count fluctuation
   useEffect(() => {
     const interval = setInterval(() => {
       setViewerCount(prev => {
-        const change = Math.floor(Math.random() * 7) - 3; // -3 to +3
+        const change = Math.floor(Math.random() * 7) - 3;
         const newCount = prev + change;
-        return Math.min(Math.max(newCount, 12), 47); // Keep between 12-47
+        return Math.min(Math.max(newCount, 12), 47);
       });
-    }, 30000); // Every 30 seconds
-    
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  // Sticky button visibility based on scroll
+  // Sticky button visibility
   useEffect(() => {
     if (!isMobile) {
       setShowStickyButton(false);
@@ -130,6 +103,11 @@ const ProductDetail = () => {
     };
   }, [isMobile, product]);
 
+  // Reset image index when bundle changes
+  useEffect(() => {
+    setSelectedImageIndex(0);
+  }, [selectedBundleId]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
@@ -141,13 +119,13 @@ const ProductDetail = () => {
     );
   }
 
-  if (error || !product) {
+  if (error || bundleOptions.length === 0) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Product not found</h1>
+            <h1 className="text-2xl font-bold mb-4">Products not available</h1>
             <Link to="/">
               <Button variant="outline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -161,33 +139,27 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = async () => {
-    if (!selectedVariant) return;
+    if (!selectedBundle) return;
     
     setIsAdding(true);
     try {
-      const shopifyProduct: ShopifyProduct = {
-        node: product
-      };
-      
       await addItem({
-        product: shopifyProduct,
-        variantId: selectedVariant.id,
-        variantTitle: selectedVariant.title,
-        price: selectedVariant.price,
+        product: selectedBundle.product,
+        variantId: selectedBundle.variantId,
+        variantTitle: selectedBundle.name,
+        price: { amount: selectedBundle.price.toString(), currencyCode: 'USD' },
         quantity: 1,
-        selectedOptions: selectedVariant.selectedOptions || []
+        selectedOptions: []
       });
       
-      // Open cart drawer instead of showing toast
       useCartStore.getState().setIsOpen(true);
       
-      // Track AddToCart event
       trackAddToCart({
-        content_name: product.title,
-        content_ids: [selectedVariant.id],
+        content_name: selectedBundle.name,
+        content_ids: [selectedBundle.variantId],
         content_type: 'product',
-        value: parseFloat(selectedVariant.price.amount),
-        currency: selectedVariant.price.currencyCode
+        value: selectedBundle.price,
+        currency: 'USD'
       });
     } catch (error) {
       toast.error("Error adding to cart");
@@ -196,42 +168,9 @@ const ProductDetail = () => {
     }
   };
 
-  const price = parseFloat(selectedVariant?.price.amount || product.priceRange.minVariantPrice.amount);
-  const currency = selectedVariant?.price.currencyCode || product.priceRange.minVariantPrice.currencyCode;
-
-  // Calculate compare at price - use Shopify's compareAtPrice if available,
-  // otherwise calculate for bundles based on single unit price (49.90)
-  const SINGLE_UNIT_ORIGINAL_PRICE = 49.90;
-  let compareAtPrice: number | null = selectedVariant?.compareAtPrice 
-    ? parseFloat(selectedVariant.compareAtPrice.amount) 
-    : null;
-  
-  // For bundle products, calculate the compare price if not set in Shopify
-  if (!compareAtPrice) {
-    const handle = product.handle.toLowerCase();
-    if (handle.includes('duo') || handle.includes('2x')) {
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2; // 99.80
-    } else if (handle.includes('family') || handle.includes('3x')) {
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3; // 149.70
-    } else {
-      // For single products, use the original price
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE;
-    }
-  }
-  
-  const hasDiscount = compareAtPrice && compareAtPrice > price;
-  const discountPercent = hasDiscount ? Math.round((1 - price / compareAtPrice) * 100) : 0;
-
-  // Determine urgency message based on product type
-  const getUrgencyMessage = () => {
-    const handle = product.handle.toLowerCase();
-    if (handle.includes('family') || handle.includes('3x')) {
-      return "❄️ WINTER SALE - 70% OFF!";
-    } else if (handle.includes('duo') || handle.includes('2x')) {
-      return "❄️ WINTER SALE - 70% OFF!";
-    }
-    return "❄️ WINTER SALE - 60% OFF!";
-  };
+  const price = selectedBundle?.price || 0;
+  const compareAtPrice = selectedBundle?.comparePrice || 0;
+  const discountPercent = selectedBundle?.discountPercent || 0;
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/50 to-background">
@@ -252,7 +191,6 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
           {/* Images */}
           <div className="space-y-4">
-            {/* Winter Deal Badge on Image */}
             <div className="relative">
               <div className="absolute top-0 left-0 right-0 z-10">
                 <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
@@ -265,7 +203,7 @@ const ProductDetail = () => {
                 {currentImage ? (
                   <img
                     src={currentImage.url}
-                    alt={currentImage.altText || product.title}
+                    alt={currentImage.altText || product?.title || 'Product'}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
@@ -317,7 +255,9 @@ const ProductDetail = () => {
 
             {/* Title & Rating */}
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{product.title}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+                ChargeStand™ (Up to 240W)
+              </h1>
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -330,35 +270,11 @@ const ProductDetail = () => {
 
             {/* Winter Urgency Banner */}
             <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white font-bold py-3 px-4 rounded-lg text-center relative overflow-hidden">
-              {/* Snowflake decorations */}
               <div className="absolute top-1 left-3 text-white/20 text-sm">❄</div>
               <div className="absolute bottom-1 right-4 text-white/20 text-sm">❄</div>
-              <span className="relative z-10">{getUrgencyMessage()}</span>
+              <span className="relative z-10">❄️ WINTER SALE - UP TO 70% OFF!</span>
             </div>
 
-            {/* Price */}
-            <div className="flex items-baseline gap-3 flex-wrap">
-              <span className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
-                {price.toFixed(2)} {currency}
-              </span>
-              {hasDiscount && (
-                <>
-                  <span className="text-lg text-muted-foreground line-through">
-                    {compareAtPrice.toFixed(2)} {currency}
-                  </span>
-                  <Badge className="bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700 text-base px-3 py-1">
-                    -{discountPercent}%
-                  </Badge>
-                </>
-              )}
-            </div>
-            
-            {/* Limited Time Notice - Winter themed */}
-            <div className="flex items-center gap-2 text-sm text-sky-700 bg-sky-50 border border-sky-200 rounded-lg p-3">
-              <span className="text-lg">❄️</span>
-              <span className="font-medium">Winter Closeout - Final prices while supplies last!</span>
-            </div>
-            
             {/* Active Viewers Counter */}
             <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3">
               <Eye className="h-4 w-4 text-amber-600 animate-pulse" />
@@ -367,66 +283,42 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            {/* Main Description */}
-            {mainDescription && (
-              <p className="text-muted-foreground leading-relaxed">
-                {mainDescription}
-              </p>
-            )}
+            {/* Bundle Selector */}
+            <BundleSelector
+              options={bundleOptions}
+              selectedId={selectedBundleId}
+              onSelect={setSelectedBundleId}
+              isLoading={isLoading}
+            />
 
-            {/* Specifications */}
-            {specs.length > 0 && (
-              <div className="bg-sky-50/50 border border-sky-100 rounded-xl p-4 space-y-2">
-                <h3 className="font-semibold text-sm text-foreground mb-3">Specifications</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {specs.map((spec, index) => (
-                    <div key={index} className="flex flex-col">
-                      <span className="text-xs text-muted-foreground">{spec.label}</span>
-                      <span className="text-sm font-medium text-foreground">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Price Summary */}
+            <div className="flex items-baseline gap-3 flex-wrap bg-sky-50 border border-sky-100 rounded-lg p-4">
+              <span className="text-sm text-muted-foreground">Your price:</span>
+              <span className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+                ${price.toFixed(2)}
+              </span>
+              <span className="text-lg text-muted-foreground line-through">
+                ${compareAtPrice.toFixed(2)}
+              </span>
+              <Badge className="bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700 text-base px-3 py-1">
+                -{discountPercent}%
+              </Badge>
+            </div>
 
-            {/* Options */}
-            {displayableOptions.map((option) => (
-              <div key={option.name}>
-                <label className="block text-sm font-semibold mb-3 text-foreground">{option.name}</label>
-                <div className="flex flex-wrap gap-2">
-                  {option.values.map((value) => (
-                    <button
-                      key={value}
-                      onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: value }))}
-                      className={`px-5 py-2.5 rounded-lg border-2 text-sm font-medium transition-all duration-200 ${
-                        effectiveOptions[option.name] === value
-                          ? 'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20'
-                          : 'border-border bg-background hover:border-sky-300 text-foreground'
-                      }`}
-                    >
-                      {value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* Add to Cart - Winter themed */}
+            {/* Add to Cart */}
             <Button
               ref={addToCartButtonRef}
               size="lg"
               className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
               onClick={handleAddToCart}
-              disabled={isAdding || !selectedVariant?.availableForSale}
+              disabled={isAdding || !selectedBundle}
             >
               {isAdding ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
-              ) : !selectedVariant?.availableForSale ? (
-                "Out of stock"
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  ❄️ Add to Cart - Winter Sale
+                  ❄️ Add to Cart - {selectedBundle?.name}
                 </>
               )}
             </Button>
@@ -441,7 +333,7 @@ const ProductDetail = () => {
               <p className="text-xs text-muted-foreground">Secure checkout with encrypted payment</p>
             </div>
 
-            {/* Trust Features - Winter themed */}
+            {/* Trust Features */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
                 <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
@@ -476,23 +368,21 @@ const ProductDetail = () => {
       </main>
       
       {/* Sticky Add to Cart Button - Mobile Only */}
-      {showStickyButton && isMobile && selectedVariant && (
+      {showStickyButton && isMobile && selectedBundle && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border p-3 animate-fade-in">
           <div className="container flex items-center justify-between gap-4">
             <div className="flex flex-col">
               <span className="text-lg font-bold text-primary">
-                {price.toFixed(2)} {currency}
+                ${price.toFixed(2)}
               </span>
-              {hasDiscount && (
-                <span className="text-xs text-muted-foreground line-through">
-                  {compareAtPrice.toFixed(2)} {currency}
-                </span>
-              )}
+              <span className="text-xs text-muted-foreground line-through">
+                ${compareAtPrice.toFixed(2)}
+              </span>
             </div>
             <Button
               className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30"
               onClick={handleAddToCart}
-              disabled={isAdding || !selectedVariant?.availableForSale}
+              disabled={isAdding}
             >
               {isAdding ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
