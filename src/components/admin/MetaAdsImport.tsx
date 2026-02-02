@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { Upload, FileSpreadsheet, X, AlertCircle, CheckCircle } from "lucide-react";
+import { useState, useCallback, useRef } from "react";
+import { Upload, FileSpreadsheet, X, AlertCircle, CheckCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -392,9 +392,26 @@ export const MetaAdsImport = ({ onDataImported, importedData }: MetaAdsImportPro
                 <CheckCircle className="h-5 w-5" />
                 <span className="text-sm font-medium">Données importées</span>
               </div>
-              <Button variant="ghost" size="sm" onClick={clearData}>
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-1">
+                <label>
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    disabled={isProcessing}
+                  />
+                  <Button variant="ghost" size="sm" disabled={isProcessing} asChild>
+                    <span className="flex items-center gap-1">
+                      <RefreshCw className={`h-4 w-4 ${isProcessing ? 'animate-spin' : ''}`} />
+                      {isProcessing ? "..." : "Réimporter"}
+                    </span>
+                  </Button>
+                </label>
+                <Button variant="ghost" size="sm" onClick={clearData}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Summary Cards */}
