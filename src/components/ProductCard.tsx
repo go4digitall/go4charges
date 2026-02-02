@@ -54,6 +54,18 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const stockLevel = getStockLevel(node.id);
   const stockPercentage = (stockLevel / 15) * 100;
   const isLowStock = stockLevel < 5;
+
+  // Determine bundle type for unified product page navigation
+  const getBundleType = (): string => {
+    const handle = node.handle.toLowerCase();
+    if (handle.includes('family') || handle.includes('3x') || handle.includes('famille')) return 'family';
+    if (handle.includes('duo') || handle.includes('2x')) return 'duo';
+    return 'single';
+  };
+  const bundleType = getBundleType();
+  
+  // All cards link to the unified product page with bundle pre-selection
+  const productLink = `/product/chargestand-240w-90-fast-charging-cable?bundle=${bundleType}`;
   const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
@@ -92,7 +104,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   };
 
   return (
-    <Link to={`/product/${node.handle}`} className="h-full">
+    <Link to={productLink} className="h-full">
       <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col ${
         isFeatured 
           ? 'border-2 border-amber-500 shadow-xl shadow-amber-500/30 hover:shadow-2xl hover:shadow-amber-500/40 ring-4 ring-amber-500/30 scale-[1.02]' 
