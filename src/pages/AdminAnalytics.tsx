@@ -9,7 +9,8 @@ import {
 } from "recharts";
 import { 
   Users, Eye, MousePointer, ShoppingCart, Clock, 
-  Smartphone, Monitor, Tablet, TrendingUp, ArrowDown
+  Smartphone, Monitor, Tablet, TrendingUp, ArrowDown,
+  DollarSign, Package, CreditCard
 } from "lucide-react";
 
 interface AnalyticsData {
@@ -34,15 +35,36 @@ interface AnalyticsData {
   }>;
 }
 
+interface SalesData {
+  totalRevenue: number;
+  totalOrders: number;
+  avgOrderValue: number;
+  currency: string;
+  recentOrders: Array<{
+    id: string;
+    order_number: string;
+    total_price: number;
+    currency: string;
+    financial_status: string;
+    items_count: number;
+    customer_data: { first_name?: string; city?: string; country?: string };
+    created_at: string;
+  }>;
+  dailyRevenue: { date: string; revenue: number; orders: number }[];
+  topProducts: { name: string; quantity: number; revenue: number }[];
+}
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 const AdminAnalytics = () => {
   const [data, setData] = useState<AnalyticsData | null>(null);
+  const [salesData, setSalesData] = useState<SalesData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'today' | '7days' | '30days'>('7days');
 
   useEffect(() => {
     fetchAnalytics();
+    fetchSalesData();
   }, [dateRange]);
 
   const getDateFilter = () => {
@@ -190,6 +212,88 @@ const AdminAnalytics = () => {
     }
   };
 
+  const fetchSalesData = async () => {
+    try {
+      const startDate = getDateFilter();
+      
+      const { data: orders, error } = await supabase
+        .from('shopify_orders')
+        .select('*')
+        .gte('created_at', startDate)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (!orders || orders.length === 0) {
+        setSalesData({
+          totalRevenue: 0,
+          totalOrders: 0,
+          avgOrderValue: 0,
+          currency: 'USD',
+          recentOrders: [],
+          dailyRevenue: [],
+          topProducts: [],
+        });
+        return;
+      }
+
+      // Calculate totals
+      const totalRevenue = orders.reduce((sum, o) => sum + (parseFloat(String(o.total_price)) || 0), 0);
+      const totalOrders = orders.length;
+      const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+      const currency = orders[0]?.currency || 'USD';
+
+      // Daily revenue
+      const dailyMap: Record<string, { revenue: number; orders: number }> = {};
+      orders.forEach(o => {
+        const date = new Date(o.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+        if (!dailyMap[date]) dailyMap[date] = { revenue: 0, orders: 0 };
+        dailyMap[date].revenue += parseFloat(String(o.total_price)) || 0;
+        dailyMap[date].orders += 1;
+      });
+      const dailyRevenue = Object.entries(dailyMap)
+        .map(([date, data]) => ({ date, ...data }))
+        .reverse();
+
+      // Top products
+      const productMap: Record<string, { quantity: number; revenue: number }> = {};
+      orders.forEach(o => {
+        const lineItems = o.line_items as Array<{ title: string; quantity: number; price: string }> || [];
+        lineItems.forEach(item => {
+          const name = item.title || 'Unknown';
+          if (!productMap[name]) productMap[name] = { quantity: 0, revenue: 0 };
+          productMap[name].quantity += item.quantity || 1;
+          productMap[name].revenue += (parseFloat(item.price) || 0) * (item.quantity || 1);
+        });
+      });
+      const topProducts = Object.entries(productMap)
+        .map(([name, data]) => ({ name, ...data }))
+        .sort((a, b) => b.revenue - a.revenue)
+        .slice(0, 5);
+
+      setSalesData({
+        totalRevenue,
+        totalOrders,
+        avgOrderValue,
+        currency,
+        recentOrders: orders.slice(0, 10).map(o => ({
+          id: o.id,
+          order_number: o.order_number || '',
+          total_price: parseFloat(String(o.total_price)) || 0,
+          currency: o.currency || 'USD',
+          financial_status: o.financial_status || '',
+          items_count: o.items_count || 0,
+          customer_data: o.customer_data as { first_name?: string; city?: string; country?: string } || {},
+          created_at: o.created_at,
+        })),
+        dailyRevenue,
+        topProducts,
+      });
+    } catch (error) {
+      console.error('Error fetching sales data:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -301,11 +405,155 @@ const AdminAnalytics = () => {
         {/* Charts */}
         <Tabs defaultValue="traffic" className="space-y-4">
           <TabsList>
+            <TabsTrigger value="sales">💰 Ventes</TabsTrigger>
             <TabsTrigger value="traffic">Trafic</TabsTrigger>
             <TabsTrigger value="behavior">Comportement</TabsTrigger>
             <TabsTrigger value="funnel">Funnel</TabsTrigger>
             <TabsTrigger value="events">Événements</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="sales" className="space-y-6">
+            {/* Sales KPIs */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 text-green-600 mb-2">
+                    <DollarSign className="h-5 w-5" />
+                    <span className="text-sm font-medium">Revenu Total</span>
+                  </div>
+                  <p className="text-3xl font-bold text-foreground">
+                    {salesData?.currency || '$'} {(salesData?.totalRevenue || 0).toFixed(2)}
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 text-blue-600 mb-2">
+                    <Package className="h-5 w-5" />
+                    <span className="text-sm font-medium">Commandes</span>
+                  </div>
+                  <p className="text-3xl font-bold text-foreground">{salesData?.totalOrders || 0}</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 text-purple-600 mb-2">
+                    <CreditCard className="h-5 w-5" />
+                    <span className="text-sm font-medium">Panier Moyen (AOV)</span>
+                  </div>
+                  <p className="text-3xl font-bold text-foreground">
+                    {salesData?.currency || '$'} {(salesData?.avgOrderValue || 0).toFixed(2)}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Daily Revenue Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Revenu Journalier</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {salesData?.dailyRevenue && salesData.dailyRevenue.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={salesData.dailyRevenue}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="date" />
+                        <YAxis />
+                        <Tooltip 
+                          formatter={(value: number, name: string) => [
+                            name === 'revenue' ? `$${value.toFixed(2)}` : value,
+                            name === 'revenue' ? 'Revenu' : 'Commandes'
+                          ]}
+                        />
+                        <Bar dataKey="revenue" fill="#10b981" name="revenue" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                      <p>Aucune donnée de vente disponible</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Top Products */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Top Produits</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {salesData?.topProducts && salesData.topProducts.length > 0 ? (
+                    <div className="space-y-4">
+                      {salesData.topProducts.map((product, index) => (
+                        <div key={product.name} className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg font-bold text-muted-foreground">#{index + 1}</span>
+                            <div>
+                              <p className="font-medium truncate max-w-[200px]">{product.name}</p>
+                              <p className="text-xs text-muted-foreground">{product.quantity} vendus</p>
+                            </div>
+                          </div>
+                          <span className="font-bold text-green-600">${product.revenue.toFixed(2)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-muted-foreground">
+                      <p>Aucune donnée de produit disponible</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Recent Orders */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Commandes Récentes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {salesData?.recentOrders && salesData.recentOrders.length > 0 ? (
+                  <div className="space-y-3">
+                    {salesData.recentOrders.map((order) => (
+                      <div key={order.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                        <div className="flex items-center gap-4">
+                          <div>
+                            <p className="font-medium">{order.order_number}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {order.customer_data?.first_name || 'Client'} 
+                              {order.customer_data?.city && ` • ${order.customer_data.city}`}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">{order.currency} {order.total_price.toFixed(2)}</p>
+                          <div className="flex items-center gap-2">
+                            <Badge 
+                              variant={order.financial_status === 'paid' ? 'default' : 'secondary'}
+                              className="text-xs"
+                            >
+                              {order.financial_status}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-8 text-center text-muted-foreground">
+                    <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>Aucune commande reçue</p>
+                    <p className="text-sm mt-2">Configurez le webhook Shopify pour recevoir les commandes</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="traffic" className="grid md:grid-cols-2 gap-6">
             <Card>

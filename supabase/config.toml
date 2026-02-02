@@ -2,3 +2,6 @@ project_id = "ymddfsjvaxjpvrpuokgo"
 
 [functions.chat]
 verify_jwt = false
+
+[functions.shopify-webhook]
+verify_jwt = false
