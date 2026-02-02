@@ -130,17 +130,16 @@ export const HeroSection = () => {
             ❄️ Shop Winter Sale - 70% OFF
           </Button>
 
-          {/* Animated arrow pointing down */}
-          <button 
-            onClick={scrollToBundleSelector}
-            className="flex flex-col items-center gap-0 mb-5 group cursor-pointer"
-            aria-label="Scroll to bundle selector"
-          >
-            <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
-              See all bundles
-            </span>
-            <ChevronDown className="h-6 w-6 text-primary animate-bounce" />
-          </button>
+          {/* Animated arrow pointing down - centered */}
+          <div className="flex justify-center mb-4">
+            <button 
+              onClick={scrollToBundleSelector}
+              className="p-2 rounded-full hover:bg-primary/10 transition-colors cursor-pointer"
+              aria-label="Scroll to bundle selector"
+            >
+              <ChevronDown className="h-8 w-8 text-primary animate-bounce" />
+            </button>
+          </div>
 
           {/* Price Preview - Family Pack first and highlighted */}
           <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
