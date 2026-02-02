@@ -76,7 +76,10 @@ export function BundleSelector({
       {/* Radio Group */}
       <RadioGroup
         value={selectedId}
-        onValueChange={onSelect}
+        onValueChange={(value) => {
+          console.log(`[Click] BundleSelector option selected: ${value}`);
+          onSelect(value);
+        }}
         className="space-y-3"
       >
         {options.map((option) => {

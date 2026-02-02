@@ -57,24 +57,31 @@ export const useAnalyticsTracking = () => {
     }
   }, [trackEvent]);
 
-  // Track scroll depth
+  // Track scroll depth at 25% increments
   useEffect(() => {
+    const trackedThresholds = new Set<number>();
+    
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      
+      if (docHeight <= 0) return;
+      
       const scrollPercent = Math.round((scrollTop / docHeight) * 100);
       
       if (scrollPercent > maxScrollDepth.current) {
         maxScrollDepth.current = scrollPercent;
-        
-        // Track at 25%, 50%, 75%, 90% thresholds
-        const thresholds = [25, 50, 75, 90];
-        thresholds.forEach(threshold => {
-          if (scrollPercent >= threshold && maxScrollDepth.current < threshold + 5) {
-            trackEvent('scroll_depth', { depth: threshold });
-          }
-        });
       }
+      
+      // Track at 25%, 50%, 75%, 90% thresholds - only once per threshold
+      const thresholds = [25, 50, 75, 90];
+      thresholds.forEach(threshold => {
+        if (scrollPercent >= threshold && !trackedThresholds.has(threshold)) {
+          trackedThresholds.add(threshold);
+          console.log(`[Analytics] Scroll depth reached: ${threshold}%`);
+          trackEvent('scroll_depth', { depth: threshold });
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

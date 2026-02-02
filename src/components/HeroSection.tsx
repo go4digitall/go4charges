@@ -22,6 +22,7 @@ export const HeroSection = () => {
   const navigate = useNavigate();
 
   const scrollToBundleSelector = () => {
+    console.log('[Click] Shop Now CTA clicked - scrolling to #BundleSelector');
     document.getElementById("BundleSelector")?.scrollIntoView({
       behavior: "smooth"
     });
@@ -145,7 +146,10 @@ export const HeroSection = () => {
           <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
             {/* Family Pack - Most Prominent */}
             <button 
-              onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
+              onClick={() => {
+                console.log('[Click] Hero Price Preview: Family Pack');
+                navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family");
+              }}
               className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-400 rounded-lg px-2 py-2 shadow-lg shadow-amber-500/20 text-center relative hover:scale-105 hover:shadow-xl hover:border-amber-500 transition-all duration-200 cursor-pointer ring-2 ring-amber-400/30"
             >
               <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-md animate-pulse">🏆 BEST VALUE</div>
@@ -157,7 +161,10 @@ export const HeroSection = () => {
             </button>
             {/* Duo Pack */}
             <button 
-              onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=duo")}
+              onClick={() => {
+                console.log('[Click] Hero Price Preview: Duo Pack');
+                navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=duo");
+              }}
               className="bg-blue-50 border-2 border-blue-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-blue-400 transition-all duration-200 cursor-pointer"
             >
               <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">POPULAR</div>
@@ -169,7 +176,10 @@ export const HeroSection = () => {
             </button>
             {/* Single Cable */}
             <button 
-              onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=single")}
+              onClick={() => {
+                console.log('[Click] Hero Price Preview: Single Cable');
+                navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=single");
+              }}
               className="bg-white border-2 border-sky-200 rounded-lg px-2 py-2 shadow-md text-center hover:scale-105 hover:shadow-lg hover:border-sky-400 transition-all duration-200 cursor-pointer"
             >
               <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">1x Cable</div>
