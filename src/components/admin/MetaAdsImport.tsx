@@ -138,28 +138,66 @@ const parseNumericValue = (value: string | undefined): number => {
 const normalizeColumnName = (name: string): string => {
   const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   
-  // Map common variations from Meta Ads exports (French and English)
-  // Campaign name variations
-  if (normalized.includes("campagne") || normalized.includes("campaign") || normalized.includes("nomdelacampagne") || normalized.includes("campaignname")) return "campaign_name";
+  // IMPORTANT: Order matters! More specific patterns must come first
+  // to avoid matching partial keywords in longer column names
   
-  // Impressions
-  if (normalized.includes("impression")) return "impressions";
+  // Campaign name - exact patterns
+  if (normalized === "nomdelacampagne" || normalized === "campaignname" || normalized === "campagne" || normalized === "campaign") {
+    return "campaign_name";
+  }
   
-  // Clicks - handle "clicssurlelien" (link clicks) and variations
-  if (normalized.includes("clic") || normalized.includes("click")) return "clicks";
+  // Impressions - must be exact "impressions", not "cpm(coutpour1000impressions)"
+  if (normalized === "impressions") {
+    return "impressions";
+  }
   
-  // Spend/Cost - handle "montantdepense", "cout", "amount spent", etc.
-  if (normalized.includes("depense") || normalized.includes("spent") || normalized.includes("spend") || normalized.includes("cout") || normalized.includes("cost") || normalized.includes("montant") || normalized.includes("budget")) return "spend";
+  // Clicks - prefer "clicssurunlien" (link clicks) over "clics(tous)" (all clicks)
+  if (normalized === "clicssurunlien" || normalized === "linkclicks") {
+    return "clicks";
+  }
+  // Fallback to all clicks if link clicks not found
+  if (normalized === "clicstous" || normalized === "clicks" || normalized === "allclicks") {
+    return "clicks_all";
+  }
   
-  // Conversions - handle "achat", "purchase", "resultats", etc.
-  if (normalized.includes("conversion") || normalized.includes("achat") || normalized.includes("purchase") || normalized.includes("resultat") || normalized.includes("result")) return "conversions";
+  // Spend - must be "montantdepense" or "amountspent", not other cost columns
+  if (normalized.startsWith("montantdepense") || normalized.startsWith("amountspent") || normalized === "spend" || normalized === "depenses") {
+    return "spend";
+  }
   
-  // Other metrics
-  if (normalized.includes("ctr")) return "ctr";
-  if (normalized.includes("cpc") || normalized.includes("coutparclic")) return "cpc";
-  if (normalized.includes("roas") || normalized.includes("retour")) return "roas";
+  // Conversions/Results - must be exactly "resultats" or "results", not "indicateurderesultats"
+  if (normalized === "resultats" || normalized === "results" || normalized === "conversions" || normalized === "purchases" || normalized === "achats") {
+    return "conversions";
+  }
   
-  console.log('[MetaAdsImport] Unknown column:', name, '-> normalized:', normalized);
+  // CTR - link CTR preferred
+  if (normalized.includes("ctrtauxdeclicssurlelien") || normalized === "linkctr") {
+    return "ctr";
+  }
+  
+  // CPC - cost per link click preferred
+  if (normalized.startsWith("cpccoutparclicsurunlien") || normalized === "costperlinkclick") {
+    return "cpc";
+  }
+  
+  // ROAS
+  if (normalized.includes("roas") || normalized.includes("returnonadspend")) {
+    return "roas";
+  }
+  
+  // Campaign status
+  if (normalized === "diffusiondescampagnes" || normalized === "campaigndelivery" || normalized === "status") {
+    return "campaign_status";
+  }
+  
+  // Skip logging for known unneeded columns
+  const ignoredPatterns = ['debut', 'fin', 'rapport', 'attribution', 'couverture', 'repetition', 'budget', 'type', 'cpm', 'vuesdepage', 'indicateur', 'parametr'];
+  const isIgnored = ignoredPatterns.some(p => normalized.includes(p));
+  
+  if (!isIgnored) {
+    console.log('[MetaAdsImport] Unmapped column:', name, '-> normalized:', normalized);
+  }
+  
   return normalized;
 };
 
@@ -198,13 +236,20 @@ export const MetaAdsImport = ({ onDataImported, importedData }: MetaAdsImportPro
 
       normalizedRows.forEach((row, idx) => {
         const impressions = parseNumericValue(row.impressions);
-        const clicks = parseNumericValue(row.clicks);
+        // Prefer link clicks, fallback to all clicks
+        const clicks = parseNumericValue(row.clicks) || parseNumericValue(row.clicks_all);
         const spend = parseNumericValue(row.spend);
         const conversions = parseNumericValue(row.conversions);
 
         if (idx < 3) {
           console.log('[MetaAdsImport] Parsed row', idx, ':', {
-            raw: { impressions: row.impressions, clicks: row.clicks, spend: row.spend, conversions: row.conversions },
+            raw: { 
+              campaign: row.campaign_name,
+              impressions: row.impressions, 
+              clicks: row.clicks || row.clicks_all, 
+              spend: row.spend, 
+              conversions: row.conversions 
+            },
             parsed: { impressions, clicks, spend, conversions }
           });
         }
