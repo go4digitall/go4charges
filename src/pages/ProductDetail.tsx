@@ -315,9 +315,7 @@ const ProductDetail = () => {
                   }`}>
                     {isLowStock 
                       ? `⚠️ Only ${stockLevel} left in stock!` 
-                      : isMediumStock 
-                        ? `${stockLevel} units available` 
-                        : `✓ In Stock (${stockLevel} units)`
+                      : `Only ${stockLevel} in stock`
                     }
                   </span>
                 </div>
