@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,6 +12,8 @@ import {
   Smartphone, Monitor, Tablet, TrendingUp, ArrowDown,
   DollarSign, Package, CreditCard
 } from "lucide-react";
+import { MarketingChatBot } from "@/components/admin/MarketingChatBot";
+import { MetaAdsImport, type MetaAdsData } from "@/components/admin/MetaAdsImport";
 
 interface AnalyticsData {
   totalSessions: number;
@@ -59,8 +61,25 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 const AdminAnalytics = () => {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [salesData, setSalesData] = useState<SalesData | null>(null);
+  const [metaAdsData, setMetaAdsData] = useState<MetaAdsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'today' | '7days' | '30days'>('7days');
+
+  // Build context for the marketing chatbot
+  const analyticsContext = useMemo(() => ({
+    sessions: data?.totalSessions || 0,
+    pageViews: data?.totalPageViews || 0,
+    addToCart: data?.totalAddToCart || 0,
+    avgTimeOnPage: data?.avgTimeOnPage || 0,
+    avgScrollDepth: data?.avgScrollDepth || 0,
+    totalRevenue: salesData?.totalRevenue || 0,
+    totalOrders: salesData?.totalOrders || 0,
+    avgOrderValue: salesData?.avgOrderValue || 0,
+    conversionRate: data?.totalPageViews && data.totalPageViews > 0 
+      ? `${((data.totalAddToCart / data.totalPageViews) * 100).toFixed(1)}%` 
+      : "0%",
+    metaAdsData: metaAdsData,
+  }), [data, salesData, metaAdsData]);
 
   useEffect(() => {
     fetchAnalytics();
@@ -406,6 +425,7 @@ const AdminAnalytics = () => {
         <Tabs defaultValue="traffic" className="space-y-4">
           <TabsList>
             <TabsTrigger value="sales">💰 Ventes</TabsTrigger>
+            <TabsTrigger value="meta">📱 Meta Ads</TabsTrigger>
             <TabsTrigger value="traffic">Trafic</TabsTrigger>
             <TabsTrigger value="behavior">Comportement</TabsTrigger>
             <TabsTrigger value="funnel">Funnel</TabsTrigger>
@@ -553,6 +573,106 @@ const AdminAnalytics = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Meta Ads Tab */}
+          <TabsContent value="meta" className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Import Component */}
+              <MetaAdsImport 
+                onDataImported={setMetaAdsData} 
+                importedData={metaAdsData} 
+              />
+
+              {/* Meta Ads Analysis */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">📊 Analyse Meta Ads</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {metaAdsData ? (
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Utilisez l'assistant MarketingGPT (bouton violet en bas à droite) pour obtenir une analyse détaillée de vos données Meta Ads !
+                      </p>
+                      
+                      <div className="p-4 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/20">
+                        <p className="text-sm font-medium mb-2">Performance globale</p>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Coût/conversion:</span>
+                            <span className="font-bold ml-2">
+                              ${metaAdsData.conversions > 0 
+                                ? (metaAdsData.spend / metaAdsData.conversions).toFixed(2) 
+                                : "N/A"}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Taux conv.:</span>
+                            <span className="font-bold ml-2">
+                              {metaAdsData.clicks > 0 
+                                ? ((metaAdsData.conversions / metaAdsData.clicks) * 100).toFixed(2) 
+                                : 0}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {metaAdsData.roas >= 2 ? (
+                        <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                          <p className="text-sm text-green-600">
+                            ✅ ROAS de {metaAdsData.roas}x - Vos campagnes sont rentables !
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                          <p className="text-sm text-yellow-600">
+                            ⚠️ ROAS de {metaAdsData.roas}x - Optimisation recommandée
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <p>Importez vos données Meta Ads pour voir l'analyse</p>
+                      <p className="text-xs mt-2">
+                        Exportez vos données depuis Meta Business Suite → Rapports → Exporter en CSV
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Campaign Performance Chart */}
+            {metaAdsData?.campaigns && metaAdsData.campaigns.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Performance par campagne</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={metaAdsData.campaigns}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="name" 
+                        tick={{ fontSize: 10 }} 
+                        interval={0}
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                      />
+                      <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+                      <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+                      <Tooltip />
+                      <Legend />
+                      <Bar yAxisId="left" dataKey="spend" fill="#8884d8" name="Dépenses ($)" />
+                      <Bar yAxisId="right" dataKey="conversions" fill="#82ca9d" name="Conversions" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="traffic" className="grid md:grid-cols-2 gap-6">
@@ -744,6 +864,9 @@ const AdminAnalytics = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Marketing ChatBot */}
+      <MarketingChatBot analyticsContext={analyticsContext} />
     </div>
   );
 };
