@@ -74,6 +74,57 @@ export type Database = {
         }
         Relationships: []
       }
+      shopify_orders: {
+        Row: {
+          created_at: string
+          currency: string | null
+          customer_data: Json | null
+          email: string | null
+          financial_status: string | null
+          fulfillment_status: string | null
+          id: string
+          items_count: number | null
+          line_items: Json | null
+          order_number: string | null
+          processed_at: string | null
+          shipping_address: Json | null
+          shopify_order_id: string
+          total_price: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          customer_data?: Json | null
+          email?: string | null
+          financial_status?: string | null
+          fulfillment_status?: string | null
+          id?: string
+          items_count?: number | null
+          line_items?: Json | null
+          order_number?: string | null
+          processed_at?: string | null
+          shipping_address?: Json | null
+          shopify_order_id: string
+          total_price?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          customer_data?: Json | null
+          email?: string | null
+          financial_status?: string | null
+          fulfillment_status?: string | null
+          id?: string
+          items_count?: number | null
+          line_items?: Json | null
+          order_number?: string | null
+          processed_at?: string | null
+          shipping_address?: Json | null
+          shopify_order_id?: string
+          total_price?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
