@@ -485,27 +485,39 @@ const AdminAnalytics = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={280}>
                     <PieChart>
                       <Pie
-                        data={data.trafficSources}
+                        data={data.trafficSources.slice(0, 5)}
                         cx="50%"
-                        cy="50%"
+                        cy="45%"
                         labelLine={false}
-                        label={({ source, percent }) => `${(percent * 100).toFixed(0)}%`}
-                        outerRadius={100}
+                        outerRadius={70}
                         fill="#8884d8"
                         dataKey="visits"
                         nameKey="source"
                       >
-                        {data.trafficSources.map((_, index) => (
+                        {data.trafficSources.slice(0, 5).map((_, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip />
-                      <Legend />
+                      <Tooltip formatter={(value: number) => [`${value} visites`, 'Visites']} />
                     </PieChart>
                   </ResponsiveContainer>
+                  {/* Légende custom sans chevauchement */}
+                  <div className="flex flex-wrap justify-center gap-2 mt-2">
+                    {data.trafficSources.slice(0, 5).map((source, index) => (
+                      <div key={source.source} className="flex items-center gap-1.5 text-xs">
+                        <div 
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <span className="truncate max-w-[80px]" title={source.source}>
+                          {source.source.length > 12 ? source.source.slice(0, 12) + '...' : source.source}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
 
@@ -686,14 +698,32 @@ const AdminAnalytics = () => {
                 </Card>
               </>
             ) : (
-              <Card>
-                <CardContent className="py-12 text-center">
-                  <Package className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-                  <h3 className="text-lg font-medium mb-2">Aucune commande reçue</h3>
-                  <p className="text-muted-foreground text-sm max-w-md mx-auto">
-                    Configurez le webhook Shopify pour recevoir vos commandes automatiquement.
-                    Allez dans Shopify Admin → Settings → Notifications → Webhooks.
+              <Card className="border-2 border-dashed border-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-orange-500/5">
+                <CardContent className="py-8 text-center">
+                  <Package className="h-12 w-12 mx-auto mb-4 text-yellow-600" />
+                  <h3 className="text-lg font-medium mb-2">⚙️ Configuration requise</h3>
+                  <p className="text-muted-foreground text-sm max-w-lg mx-auto mb-4">
+                    Pour recevoir automatiquement vos commandes Shopify, vous devez configurer un webhook dans votre boutique.
                   </p>
+                  
+                  <div className="bg-muted rounded-lg p-4 text-left max-w-xl mx-auto space-y-3 text-sm">
+                    <p className="font-semibold text-foreground">📋 Instructions :</p>
+                    <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                      <li>Ouvrez <a href="https://admin.shopify.com/store/gu1ybs-es/settings/notifications/webhooks" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">Shopify Admin → Notifications → Webhooks</a></li>
+                      <li>Cliquez sur "Create webhook"</li>
+                      <li>Sélectionnez l'événement: <code className="bg-background px-1.5 py-0.5 rounded text-xs">Order creation</code></li>
+                      <li>Format: <code className="bg-background px-1.5 py-0.5 rounded text-xs">JSON</code></li>
+                      <li>URL du webhook:</li>
+                    </ol>
+                    <div className="mt-2">
+                      <code className="block bg-background p-2 rounded text-xs break-all border select-all">
+                        {import.meta.env.VITE_SUPABASE_URL}/functions/v1/shopify-webhook
+                      </code>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      💡 Les futures commandes apparaîtront automatiquement ici !
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             )}
