@@ -92,6 +92,11 @@ const ProductDetail = () => {
   const images = product?.images?.edges || [];
   const currentImage = images[selectedImageIndex]?.node;
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Track ViewContent when bundle loads
   useEffect(() => {
     if (selectedBundle && product) {
