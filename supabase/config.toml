@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.analytics-chat]
 verify_jwt = false
+
+[functions.site-recommendations]
+verify_jwt = false
