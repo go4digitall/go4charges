@@ -35,39 +35,131 @@ const EXPECTED_COLUMNS = [
   "conversions",
 ];
 
+// Parse CSV handling both comma and semicolon as field separators
+// Also handles quoted fields that may contain the separator
 const parseCSV = (text: string): Array<Record<string, string>> => {
   const lines = text.trim().split("\n");
   if (lines.length < 2) return [];
 
-  // Handle both comma and semicolon separators
-  const separator = lines[0].includes(";") ? ";" : ",";
-  const headers = lines[0].split(separator).map(h => 
-    h.trim().toLowerCase().replace(/["\s]/g, "").replace(/[àáâãäå]/g, "a").replace(/[èéêë]/g, "e")
-  );
+  // Detect separator - prefer semicolon if present (common in EU exports)
+  const firstLine = lines[0];
+  const semicolonCount = (firstLine.match(/;/g) || []).length;
+  const commaCount = (firstLine.match(/,/g) || []).length;
+  const separator = semicolonCount > commaCount ? ";" : ",";
+  
+  console.log('[MetaAdsImport] Detected separator:', separator, 'semicolons:', semicolonCount, 'commas:', commaCount);
+  console.log('[MetaAdsImport] First line:', firstLine);
 
-  return lines.slice(1).map(line => {
-    const values = line.split(separator).map(v => v.trim().replace(/"/g, ""));
+  // Parse a single CSV line handling quoted fields
+  const parseLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === separator && !inQuotes) {
+        result.push(current.trim().replace(/^"|"$/g, ''));
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim().replace(/^"|"$/g, ''));
+    return result;
+  };
+
+  const headers = parseLine(lines[0]).map(h => 
+    h.toLowerCase()
+      .replace(/["\s]/g, "")
+      .replace(/[àáâãäå]/g, "a")
+      .replace(/[èéêë]/g, "e")
+      .replace(/[ùúûü]/g, "u")
+      .replace(/[ôö]/g, "o")
+  );
+  
+  console.log('[MetaAdsImport] Parsed headers:', headers);
+
+  const rows = lines.slice(1).map((line, idx) => {
+    const values = parseLine(line);
     const row: Record<string, string> = {};
     headers.forEach((h, i) => {
       row[h] = values[i] || "";
     });
+    if (idx < 3) {
+      console.log('[MetaAdsImport] Row', idx, ':', row);
+    }
     return row;
   });
+
+  return rows;
+};
+
+// Parse numeric value handling EU format (comma as decimal, space as thousand separator)
+const parseNumericValue = (value: string | undefined): number => {
+  if (!value) return 0;
+  
+  // Remove currency symbols, spaces, and normalize
+  let cleaned = value
+    .replace(/[$€£\s]/g, '') // Remove currency symbols and spaces
+    .replace(/\u00A0/g, '')  // Remove non-breaking spaces
+    .trim();
+  
+  // Handle EU format: 1.234,56 or 1 234,56
+  // If there's a comma and it's the decimal separator (after a dot or near the end)
+  if (cleaned.includes(',')) {
+    // If format is like 1.234,56 (EU thousands with comma decimal)
+    if (cleaned.includes('.') && cleaned.lastIndexOf(',') > cleaned.lastIndexOf('.')) {
+      cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+    } 
+    // If format is like 1234,56 (no thousands, comma decimal)
+    else if (!cleaned.includes('.') && cleaned.match(/,\d{1,2}$/)) {
+      cleaned = cleaned.replace(',', '.');
+    }
+    // If format is like 1,234.56 (US thousands with period decimal) - leave as is but remove commas
+    else if (cleaned.includes('.') && cleaned.lastIndexOf('.') > cleaned.lastIndexOf(',')) {
+      cleaned = cleaned.replace(/,/g, '');
+    }
+    // Default: treat comma as decimal
+    else {
+      cleaned = cleaned.replace(',', '.');
+    }
+  }
+  
+  // Remove any remaining non-numeric chars except decimal point and minus
+  cleaned = cleaned.replace(/[^\d.\-]/g, '');
+  
+  const result = parseFloat(cleaned);
+  return isNaN(result) ? 0 : result;
 };
 
 const normalizeColumnName = (name: string): string => {
   const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   
-  // Map common variations
-  if (normalized.includes("campagne") || normalized.includes("campaign")) return "campaign_name";
+  // Map common variations from Meta Ads exports (French and English)
+  // Campaign name variations
+  if (normalized.includes("campagne") || normalized.includes("campaign") || normalized.includes("nomdelacampagne") || normalized.includes("campaignname")) return "campaign_name";
+  
+  // Impressions
   if (normalized.includes("impression")) return "impressions";
+  
+  // Clicks - handle "clicssurlelien" (link clicks) and variations
   if (normalized.includes("clic") || normalized.includes("click")) return "clicks";
-  if (normalized.includes("depense") || normalized.includes("spend") || normalized.includes("cout") || normalized.includes("cost")) return "spend";
-  if (normalized.includes("conversion") || normalized.includes("achat") || normalized.includes("purchase")) return "conversions";
+  
+  // Spend/Cost - handle "montantdepense", "cout", "amount spent", etc.
+  if (normalized.includes("depense") || normalized.includes("spent") || normalized.includes("spend") || normalized.includes("cout") || normalized.includes("cost") || normalized.includes("montant") || normalized.includes("budget")) return "spend";
+  
+  // Conversions - handle "achat", "purchase", "resultats", etc.
+  if (normalized.includes("conversion") || normalized.includes("achat") || normalized.includes("purchase") || normalized.includes("resultat") || normalized.includes("result")) return "conversions";
+  
+  // Other metrics
   if (normalized.includes("ctr")) return "ctr";
-  if (normalized.includes("cpc")) return "cpc";
+  if (normalized.includes("cpc") || normalized.includes("coutparclic")) return "cpc";
   if (normalized.includes("roas") || normalized.includes("retour")) return "roas";
   
+  console.log('[MetaAdsImport] Unknown column:', name, '-> normalized:', normalized);
   return normalized;
 };
 
@@ -104,11 +196,18 @@ export const MetaAdsImport = ({ onDataImported, importedData }: MetaAdsImportPro
       let totalConversions = 0;
       const campaigns: MetaAdsData["campaigns"] = [];
 
-      normalizedRows.forEach(row => {
-        const impressions = parseFloat(row.impressions?.replace(/[^\d.-]/g, "") || "0");
-        const clicks = parseFloat(row.clicks?.replace(/[^\d.-]/g, "") || "0");
-        const spend = parseFloat(row.spend?.replace(/[^\d.-]/g, "") || "0");
-        const conversions = parseFloat(row.conversions?.replace(/[^\d.-]/g, "") || "0");
+      normalizedRows.forEach((row, idx) => {
+        const impressions = parseNumericValue(row.impressions);
+        const clicks = parseNumericValue(row.clicks);
+        const spend = parseNumericValue(row.spend);
+        const conversions = parseNumericValue(row.conversions);
+
+        if (idx < 3) {
+          console.log('[MetaAdsImport] Parsed row', idx, ':', {
+            raw: { impressions: row.impressions, clicks: row.clicks, spend: row.spend, conversions: row.conversions },
+            parsed: { impressions, clicks, spend, conversions }
+          });
+        }
 
         totalImpressions += impressions;
         totalClicks += clicks;
@@ -125,6 +224,8 @@ export const MetaAdsImport = ({ onDataImported, importedData }: MetaAdsImportPro
           });
         }
       });
+
+      console.log('[MetaAdsImport] Totals:', { totalImpressions, totalClicks, totalSpend, totalConversions });
 
       // Calculate derived metrics
       const ctr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
