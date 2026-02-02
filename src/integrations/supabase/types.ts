@@ -74,6 +74,147 @@ export type Database = {
         }
         Relationships: []
       }
+      lovable_analytics_countries: {
+        Row: {
+          country_code: string
+          created_at: string
+          id: string
+          period_end: string
+          period_start: string
+          visits: number
+        }
+        Insert: {
+          country_code: string
+          created_at?: string
+          id?: string
+          period_end: string
+          period_start: string
+          visits?: number
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          id?: string
+          period_end?: string
+          period_start?: string
+          visits?: number
+        }
+        Relationships: []
+      }
+      lovable_analytics_daily: {
+        Row: {
+          bounce_rate: number | null
+          created_at: string
+          date: string
+          id: string
+          pageviews: number
+          pageviews_per_visit: number | null
+          session_duration_seconds: number | null
+          visitors: number
+        }
+        Insert: {
+          bounce_rate?: number | null
+          created_at?: string
+          date: string
+          id?: string
+          pageviews?: number
+          pageviews_per_visit?: number | null
+          session_duration_seconds?: number | null
+          visitors?: number
+        }
+        Update: {
+          bounce_rate?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          pageviews?: number
+          pageviews_per_visit?: number | null
+          session_duration_seconds?: number | null
+          visitors?: number
+        }
+        Relationships: []
+      }
+      lovable_analytics_devices: {
+        Row: {
+          created_at: string
+          device_type: string
+          id: string
+          period_end: string
+          period_start: string
+          visits: number
+        }
+        Insert: {
+          created_at?: string
+          device_type: string
+          id?: string
+          period_end: string
+          period_start: string
+          visits?: number
+        }
+        Update: {
+          created_at?: string
+          device_type?: string
+          id?: string
+          period_end?: string
+          period_start?: string
+          visits?: number
+        }
+        Relationships: []
+      }
+      lovable_analytics_pages: {
+        Row: {
+          created_at: string
+          id: string
+          page_path: string
+          period_end: string
+          period_start: string
+          views: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page_path: string
+          period_end: string
+          period_start: string
+          views?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page_path?: string
+          period_end?: string
+          period_start?: string
+          views?: number
+        }
+        Relationships: []
+      }
+      lovable_analytics_sources: {
+        Row: {
+          created_at: string
+          id: string
+          period_end: string
+          period_start: string
+          source_name: string
+          visits: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          period_end: string
+          period_start: string
+          source_name: string
+          visits?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          period_end?: string
+          period_start?: string
+          source_name?: string
+          visits?: number
+        }
+        Relationships: []
+      }
       shopify_orders: {
         Row: {
           created_at: string
