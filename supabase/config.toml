@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.site-recommendations]
 verify_jwt = false
+
+[functions.sync-shopify-orders]
+verify_jwt = false
