@@ -142,7 +142,7 @@ export const HeroSection = () => {
           </div>
 
           {/* Price Preview - Family Pack first and highlighted */}
-          <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-4">
+          <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-3">
             {/* Family Pack - Most Prominent */}
             <button 
               onClick={() => {
@@ -187,6 +187,19 @@ export const HeroSection = () => {
               <div className="text-[10px] font-bold text-sky-500">-50%</div>
             </button>
           </div>
+
+          {/* Lightning variant link */}
+          <button
+            onClick={() => {
+              console.log('[Click] Hero: Lightning variant link clicked');
+              navigate("/product/chargestand-240w-90-fast-charging-cable?type=lightning&bundle=family");
+            }}
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors bg-muted/50 hover:bg-muted px-4 py-2 rounded-full border border-border/50 hover:border-border"
+          >
+            <span className="text-base">🍎</span>
+            <span>Also available for <strong className="text-foreground">iPhone 5-14 (Lightning)</strong></span>
+            <span className="text-xs">→</span>
+          </button>
         </div>
       </div>
 
