@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Sparkles, RefreshCw, Copy, Check, ChevronDown, ChevronUp,
-  TrendingUp, AlertTriangle, Lightbulb, Zap
+  TrendingUp, AlertTriangle, Lightbulb, Zap, EyeOff, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +47,21 @@ interface MetaAdsContext {
   roas: number;
 }
 
+const IGNORED_RECS_KEY = "ignored_recommendations";
+
+const getIgnoredRecs = (): string[] => {
+  try {
+    const stored = localStorage.getItem(IGNORED_RECS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveIgnoredRecs = (ids: string[]) => {
+  localStorage.setItem(IGNORED_RECS_KEY, JSON.stringify(ids));
+};
+
 interface SiteRecommendationsProps {
   analyticsData: AnalyticsContext;
   salesData: SalesContext;
@@ -76,6 +91,35 @@ export const SiteRecommendations = ({
   const [isLoading, setIsLoading] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [ignoredIds, setIgnoredIds] = useState<string[]>([]);
+  const [showIgnored, setShowIgnored] = useState(false);
+
+  useEffect(() => {
+    setIgnoredIds(getIgnoredRecs());
+  }, []);
+
+  const ignoreRecommendation = (id: string, title: string) => {
+    const newIgnored = [...ignoredIds, id];
+    setIgnoredIds(newIgnored);
+    saveIgnoredRecs(newIgnored);
+    toast.success(`"${title}" ignorée`);
+  };
+
+  const restoreRecommendation = (id: string, title: string) => {
+    const newIgnored = ignoredIds.filter(i => i !== id);
+    setIgnoredIds(newIgnored);
+    saveIgnoredRecs(newIgnored);
+    toast.success(`"${title}" restaurée`);
+  };
+
+  const clearAllIgnored = () => {
+    setIgnoredIds([]);
+    saveIgnoredRecs([]);
+    toast.success("Toutes les recommandations restaurées");
+  };
+
+  const visibleRecs = recommendations?.recommendations.filter(r => !ignoredIds.includes(r.id)) || [];
+  const ignoredRecs = recommendations?.recommendations.filter(r => ignoredIds.includes(r.id)) || [];
 
   const generateRecommendations = async () => {
     setIsLoading(true);
@@ -166,8 +210,33 @@ export const SiteRecommendations = ({
               <p className="text-sm">{recommendations.summary}</p>
             </div>
 
-            {/* Refresh Button */}
-            <div className="flex justify-end">
+            {/* Actions Row */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                {ignoredRecs.length > 0 && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowIgnored(!showIgnored)}
+                      className="text-muted-foreground"
+                    >
+                      {showIgnored ? <EyeOff className="h-4 w-4 mr-1" /> : <Eye className="h-4 w-4 mr-1" />}
+                      {ignoredRecs.length} ignorée{ignoredRecs.length > 1 ? 's' : ''}
+                    </Button>
+                    {showIgnored && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearAllIgnored}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        Tout restaurer
+                      </Button>
+                    )}
+                  </>
+                )}
+              </div>
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -179,9 +248,17 @@ export const SiteRecommendations = ({
               </Button>
             </div>
 
-            {/* Recommendations List */}
+            {/* Visible Recommendations */}
             <div className="space-y-3">
-              {recommendations.recommendations.map((rec, index) => (
+              {visibleRecs.length === 0 && !showIgnored && (
+                <p className="text-center text-muted-foreground py-4">
+                  Toutes les recommandations ont été ignorées. 
+                  <button onClick={() => setShowIgnored(true)} className="text-primary ml-1 underline">
+                    Voir les ignorées
+                  </button>
+                </p>
+              )}
+              {visibleRecs.map((rec, index) => (
                 <div 
                   key={rec.id} 
                   className="border rounded-xl overflow-hidden bg-card"
@@ -265,11 +342,54 @@ export const SiteRecommendations = ({
                           👆 Copiez ce prompt et collez-le dans le chat Lovable pour appliquer cette modification
                         </p>
                       </div>
+
+                      {/* Ignore Button */}
+                      <div className="pt-2 border-t">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => ignoreRecommendation(rec.id, rec.title)}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          <EyeOff className="h-4 w-4 mr-2" />
+                          Ignorer cette recommandation
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
               ))}
             </div>
+
+            {/* Ignored Recommendations */}
+            {showIgnored && ignoredRecs.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm font-medium text-muted-foreground mb-3">
+                  Recommandations ignorées ({ignoredRecs.length})
+                </p>
+                <div className="space-y-2">
+                  {ignoredRecs.map((rec) => (
+                    <div 
+                      key={rec.id}
+                      className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border border-dashed"
+                    >
+                      <div className="flex items-center gap-2">
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">{rec.title}</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => restoreRecommendation(rec.id, rec.title)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Restaurer
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </CardContent>
