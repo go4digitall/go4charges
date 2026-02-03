@@ -8,7 +8,11 @@ import {
 const faqs = [
   {
     question: "What devices are compatible with the ChargeStand™?",
-    answer: "The ChargeStand™ is universally compatible with all USB-C devices including MacBooks, iPads, iPhones 15+, Samsung Galaxy phones, Nintendo Switch, and most modern laptops and tablets. With up to 240W power delivery, it ensures fast charging for all your devices."
+    answer: "We have two versions! The USB-C version (up to 240W) works with MacBooks, iPads, iPhones 15+, Samsung Galaxy, Nintendo Switch, and all USB-C devices. For older iPhones (5-14), iPads with Lightning port, and AirPods, we have our Lightning version (up to 30W). Same premium quality, same prices!"
+  },
+  {
+    question: "What's the difference between USB-C and Lightning versions?",
+    answer: "The USB-C version supports up to 240W power delivery for the fastest charging on modern devices. The Lightning version supports up to 30W, which is the maximum for Lightning devices. Both feature the same 90° angle design, braided nylon construction, and 1.5m length."
   },
   {
     question: "Why is the 90° angle design better?",
@@ -16,11 +20,11 @@ const faqs = [
   },
   {
     question: "How fast is the charging?",
-    answer: "With up to 240W power delivery (max), you can charge a MacBook Pro from 0 to 50% in about 30 minutes. For phones, you'll get hours of battery life in just minutes of charging. It's currently the fastest USB-C charging standard available."
+    answer: "With our USB-C version (up to 240W), you can charge a MacBook Pro from 0 to 50% in about 30 minutes. For the Lightning version (up to 30W), you'll get optimal fast charging for all compatible iPhones and iPads. It's currently the fastest charging available for each connector type."
   },
   {
     question: "What's included in the package?",
-    answer: "Each ChargeStand™ cable comes with the premium braided USB-C cable, a protective carrying pouch, and our comprehensive warranty card. Everything you need for reliable charging on the go."
+    answer: "Each ChargeStand™ cable comes with the premium braided cable (USB-C or Lightning), a protective carrying pouch, and our comprehensive warranty card. Everything you need for reliable charging on the go."
   },
   {
     question: "How can I track my order?",
@@ -39,8 +43,8 @@ const faqs = [
     answer: "Our cables feature premium braided nylon construction with reinforced connectors. They're tested to withstand over 10,000 bend cycles, making them significantly more durable than standard cables."
   },
   {
-    question: "Why is this launch offer so good?",
-    answer: "This is our launch sale! We're offering 50% off to introduce more customers to the ChargeStand™ experience. Stock is limited and the offer ends tonight!"
+    question: "Why is this Winter Clearance offer so good?",
+    answer: "This is our Winter Clearance sale! We're offering up to 70% off on bundle packs to clear our winter stock. Single cables are 50% off, Duo Packs 65% off, and Family Packs 70% off. Stock is limited!"
   }
 ];
 
