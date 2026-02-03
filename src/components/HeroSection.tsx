@@ -21,11 +21,9 @@ const Snowflake = ({ style, delay, duration, size }: { style: React.CSSPropertie
 export const HeroSection = () => {
   const navigate = useNavigate();
 
-  const scrollToBundleSelector = () => {
-    console.log('[Click] Shop Now CTA clicked - scrolling to #BundleSelector');
-    document.getElementById("BundleSelector")?.scrollIntoView({
-      behavior: "smooth"
-    });
+  const goToFamilyBundle = () => {
+    console.log('[Click] Shop Winter Sale CTA clicked - navigating to Family Pack');
+    navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family");
   };
 
 
@@ -125,7 +123,7 @@ export const HeroSection = () => {
           <Button 
             size="lg" 
             className="text-base md:text-lg px-6 md:px-12 py-6 md:py-7 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-xl shadow-blue-500/40 font-bold tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 mb-3 w-full sm:w-auto" 
-            onClick={scrollToBundleSelector}
+            onClick={goToFamilyBundle}
           >
             ❄️ Shop Winter Sale - 70% OFF
           </Button>
@@ -133,9 +131,9 @@ export const HeroSection = () => {
           {/* Animated arrow pointing down - centered */}
           <div className="flex justify-center mb-4">
             <button 
-              onClick={scrollToBundleSelector}
+              onClick={goToFamilyBundle}
               className="p-2 rounded-full hover:bg-primary/10 transition-colors cursor-pointer"
-              aria-label="Scroll to bundle selector"
+              aria-label="Go to Family Pack"
             >
               <ChevronDown className="h-8 w-8 text-primary animate-bounce" />
             </button>
