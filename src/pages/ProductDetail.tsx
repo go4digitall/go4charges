@@ -316,7 +316,7 @@ const ProductDetail = () => {
             <div className="flex flex-wrap gap-2">
               <Badge className="bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20">
                 <Zap className="h-3 w-3 mr-1" />
-                Up to 240W
+                Up to {cableType === 'lightning' ? '30W' : '240W'}
               </Badge>
               <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 border-blue-500/20">
                 <Truck className="h-3 w-3 mr-1" />
@@ -330,7 +330,7 @@ const ProductDetail = () => {
             {/* Title & Rating */}
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
-                ChargeStand™ (Up to 240W)
+                ChargeStand™ (Up to {cableType === 'lightning' ? '30W' : '240W'})
               </h1>
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex gap-0.5">
@@ -462,7 +462,7 @@ const ProductDetail = () => {
                   <Check className="h-5 w-5 text-sky-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">Up to 240W</p>
+                  <p className="text-sm font-medium text-foreground">Up to {cableType === 'lightning' ? '30W' : '240W'}</p>
                   <p className="text-xs text-muted-foreground">Ultra-fast charging</p>
                 </div>
               </div>
@@ -497,7 +497,7 @@ const ProductDetail = () => {
                   <Zap className="h-4 w-4 md:h-5 md:w-5 text-sky-500 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[10px] md:text-xs text-muted-foreground">Power</p>
-                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Up to 240W</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Up to {cableType === 'lightning' ? '30W' : '240W'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
@@ -569,11 +569,13 @@ const ProductDetail = () => {
                           <span className="text-[10px] md:text-xs text-muted-foreground">{review.date}</span>
                         </div>
                         <p className="text-xs md:text-sm text-foreground mb-2 md:mb-3">"{review.quote}"</p>
-                        <img 
-                          src={review.productImage} 
-                          alt="Product review"
-                          className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-lg border border-border/50"
-                        />
+                        {cableType !== 'lightning' && (
+                          <img 
+                            src={review.productImage} 
+                            alt="Product review"
+                            className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-lg border border-border/50"
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
