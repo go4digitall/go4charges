@@ -10,7 +10,8 @@ import {
 import { 
   Users, Eye, Clock, 
   Smartphone, Monitor, Tablet, TrendingUp, TrendingDown,
-  DollarSign, Package, CreditCard, Globe, ExternalLink, MapPin
+  DollarSign, Package, CreditCard, Globe, ExternalLink, MapPin,
+  ShoppingCart, MousePointerClick
 } from "lucide-react";
 import { MarketingChatBot } from "@/components/admin/MarketingChatBot";
 import { MetaAdsImport, type MetaAdsData } from "@/components/admin/MetaAdsImport";
@@ -22,6 +23,8 @@ interface LovableAnalyticsData {
   avgSessionDuration: number;
   bounceRate: number;
   avgPageviewsPerVisit: number;
+  addToCartCount: number;
+  checkoutStartCount: number;
   dailyTraffic: { date: string; visitors: number; pageviews: number }[];
   deviceBreakdown: { name: string; value: number }[];
   topPages: { page: string; views: number }[];
@@ -60,7 +63,8 @@ const AdminAnalytics = () => {
   const analyticsContext = useMemo(() => ({
     sessions: data?.totalVisitors || 0,
     pageViews: data?.totalPageViews || 0,
-    addToCart: 0, // Not tracked in Lovable Analytics
+    addToCart: data?.addToCartCount || 0,
+    checkoutStarts: data?.checkoutStartCount || 0,
     avgTimeOnPage: data?.avgSessionDuration || 0,
     avgScrollDepth: 0, // Not tracked in Lovable Analytics
     totalRevenue: salesData?.totalRevenue || 0,
@@ -132,11 +136,23 @@ const AdminAnalytics = () => {
       const realtimeDeviceMap: Record<string, number> = {};
       const realtimePageMap: Record<string, number> = {};
       
+      // Count add_to_cart and checkout_start events (from ALL real-time data, not just after historical date)
+      let addToCartCount = 0;
+      let checkoutStartCount = 0;
+      
       realtimeEvents?.forEach(event => {
+        // Count funnel events from all data
+        if (event.event_type === 'add_to_cart') {
+          addToCartCount++;
+        }
+        if (event.event_type === 'checkout_start') {
+          checkoutStartCount++;
+        }
+        
         const eventDate = new Date(event.created_at);
         const dateKey = eventDate.toISOString().split('T')[0];
         
-        // Only count events after the last historical date
+        // Only count page/device/page events after the last historical date
         if (eventDate > lastHistoricalDate) {
           if (!realtimeDailyMap[dateKey]) {
             realtimeDailyMap[dateKey] = { visitors: new Set(), pageviews: 0 };
@@ -228,6 +244,8 @@ const AdminAnalytics = () => {
         avgSessionDuration: Math.round(avgSessionDuration),
         bounceRate: Math.round(bounceRate),
         avgPageviewsPerVisit: parseFloat(avgPageviewsPerVisit.toFixed(2)),
+        addToCartCount,
+        checkoutStartCount,
         dailyTraffic: combinedTraffic.map(d => ({
           date: d.date,
           visitors: d.visitors,
@@ -375,7 +393,7 @@ const AdminAnalytics = () => {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4">
           <Card>
             <CardContent className="p-3 md:p-4">
               <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -392,6 +410,24 @@ const AdminAnalytics = () => {
                 <span className="text-xs">Pages vues</span>
               </div>
               <p className="text-xl md:text-2xl font-bold">{data.totalPageViews.toLocaleString()}</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="text-xs">Ajouts panier</span>
+              </div>
+              <p className="text-xl md:text-2xl font-bold text-amber-700 dark:text-amber-300">{data.addToCartCount}</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
+                <MousePointerClick className="h-4 w-4" />
+                <span className="text-xs">Checkout</span>
+              </div>
+              <p className="text-xl md:text-2xl font-bold text-blue-700 dark:text-blue-300">{data.checkoutStartCount}</p>
             </CardContent>
           </Card>
           <Card>
