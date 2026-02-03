@@ -32,10 +32,10 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-[40px] sm:top-[52px] z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-md shadow-sm">
-      <div className="container flex h-20 md:h-24 items-center justify-between">
+    <header className="sticky top-[32px] sm:top-[44px] z-40 w-full border-b border-border/50 bg-background/80 backdrop-blur-md shadow-sm">
+      <div className="container flex h-14 md:h-20 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Go4charges" className="h-14 md:h-20 w-auto" />
+          <img src={logo} alt="Go4charges" className="h-10 md:h-16 w-auto" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
