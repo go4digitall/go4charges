@@ -471,8 +471,8 @@ const AdminAnalytics = () => {
           analyticsData={{
             sessions: data.totalVisitors,
             pageViews: data.totalPageViews,
-            clicks: 0,
-            addToCart: 0,
+            clicks: data.checkoutStartCount,
+            addToCart: data.addToCartCount,
             avgTimeOnPage: data.avgSessionDuration,
             avgScrollDepth: 0,
           }}
