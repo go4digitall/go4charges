@@ -518,15 +518,21 @@ const AdminAnalytics = () => {
             {/* Daily Traffic Chart */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Évolution du trafic</CardTitle>
+                <CardTitle className="text-lg">Évolution du trafic (par jour)</CardTitle>
               </CardHeader>
               <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Total période: <span className="font-semibold text-foreground">{data.totalVisitors.toLocaleString()} visiteurs</span> • <span className="font-semibold text-foreground">{data.totalPageViews.toLocaleString()} pages vues</span>
+                </p>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={data.dailyTraffic}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                    <YAxis />
-                    <Tooltip />
+                    <YAxis tickFormatter={(value) => value.toLocaleString()} />
+                    <Tooltip 
+                      formatter={(value: number, name: string) => [value.toLocaleString(), name]}
+                      labelFormatter={(label) => `Date: ${label}`}
+                    />
                     <Legend />
                     <Area type="monotone" dataKey="visitors" stackId="1" stroke="#0088FE" fill="#0088FE" fillOpacity={0.6} name="Visiteurs" />
                     <Area type="monotone" dataKey="pageviews" stackId="2" stroke="#00C49F" fill="#00C49F" fillOpacity={0.4} name="Pages vues" />
