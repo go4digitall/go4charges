@@ -38,28 +38,30 @@ export const HeroSection = () => {
 
   return (
     <section className="flex flex-col">
-      {/* WINTER SALE BANNER - Above Hero Image */}
-      <div className="w-full bg-gradient-to-b from-sky-100 to-blue-50 pt-4 md:pt-6 pb-2">
+      {/* WINTER SALE BANNER - Above Hero Image - Compact on mobile */}
+      <div className="w-full bg-gradient-to-b from-sky-100 to-blue-50 pt-2 md:pt-6 pb-1 md:pb-2">
         <div className="container mx-auto px-4 text-center">
-          <div className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-lg mx-auto">
-            {/* Animated snowflakes inside banner */}
-            {snowflakes.slice(0, 6).map((flake) => (
-              <Snowflake
-                key={flake.id}
-                style={{ left: flake.left, top: '-20px' }}
-                delay={flake.delay}
-                duration={flake.duration}
-                size={flake.size}
-              />
-            ))}
+          <div className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-2 md:py-4 px-4 md:px-6 rounded-lg md:rounded-xl shadow-lg shadow-blue-500/30 max-w-lg mx-auto">
+            {/* Animated snowflakes inside banner - hidden on mobile for cleaner look */}
+            <div className="hidden md:block">
+              {snowflakes.slice(0, 6).map((flake) => (
+                <Snowflake
+                  key={flake.id}
+                  style={{ left: flake.left, top: '-20px' }}
+                  delay={flake.delay}
+                  duration={flake.duration}
+                  size={flake.size}
+                />
+              ))}
+            </div>
             
-            <div className="text-xs md:text-sm font-semibold tracking-wider mb-1 text-sky-200">
+            <div className="text-[10px] md:text-sm font-semibold tracking-wider mb-0.5 md:mb-1 text-sky-200">
               ❄️ WINTER CLOSEOUT ❄️
             </div>
-            <div className="text-2xl md:text-3xl font-black tracking-tight">
+            <div className="text-lg md:text-3xl font-black tracking-tight">
               SPECIAL SALE - 70% OFF
             </div>
-            <div className="text-xs md:text-sm font-medium mt-1 text-blue-100">
+            <div className="text-[10px] md:text-sm font-medium mt-0.5 md:mt-1 text-blue-100">
               Final Winter Prices • While Supplies Last
             </div>
           </div>
@@ -67,7 +69,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Hero Image - With falling snowflakes */}
-      <div className="w-full bg-gradient-to-b from-blue-50 to-white py-4 md:py-6 relative overflow-hidden">
+      <div className="w-full bg-gradient-to-b from-blue-50 to-white py-2 md:py-6 relative overflow-hidden">
         {/* Falling snowflakes over entire hero section */}
         {snowflakes.map((flake) => (
           <Snowflake
@@ -102,7 +104,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Content Below Image */}
-      <div className="bg-background py-6 md:py-10">
+      <div className="bg-background py-4 md:py-10">
         <div className="container mx-auto px-4 text-center">
           {/* Trustpilot-style Rating */}
           <div className="flex flex-col items-center gap-1.5 mb-5">
