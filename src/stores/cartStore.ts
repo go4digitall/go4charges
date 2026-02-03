@@ -11,6 +11,7 @@ import {
   formatCheckoutUrl,
   isCartNotFoundError
 } from '@/lib/shopify';
+import { trackAnalyticsEvent } from '@/hooks/useAnalyticsTracking';
 
 export interface CartItem {
   lineId: string | null;
@@ -130,6 +131,14 @@ export const useCartStore = create<CartStore>()(
                 checkoutUrl: result.checkoutUrl,
                 items: [{ ...item, lineId: result.lineId }]
               });
+              // Track add to cart event
+              trackAnalyticsEvent('add_to_cart', {
+                product_name: item.product.node.title,
+                variant_id: item.variantId,
+                price: parseFloat(item.price.amount),
+                quantity: item.quantity,
+                currency: item.price.currencyCode
+              });
             }
           } else if (existingItem) {
             const newQuantity = existingItem.quantity + item.quantity;
@@ -141,6 +150,14 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: currentItems.map(i => i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i) });
+              // Track add to cart event (quantity update)
+              trackAnalyticsEvent('add_to_cart', {
+                product_name: item.product.node.title,
+                variant_id: item.variantId,
+                price: parseFloat(item.price.amount),
+                quantity: item.quantity,
+                currency: item.price.currencyCode
+              });
             } else if (result.cartNotFound) {
               clearCart();
             }
@@ -149,6 +166,14 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: [...currentItems, { ...item, lineId: result.lineId ?? null }] });
+              // Track add to cart event
+              trackAnalyticsEvent('add_to_cart', {
+                product_name: item.product.node.title,
+                variant_id: item.variantId,
+                price: parseFloat(item.price.amount),
+                quantity: item.quantity,
+                currency: item.price.currencyCode
+              });
             } else if (result.cartNotFound) {
               clearCart();
             }
