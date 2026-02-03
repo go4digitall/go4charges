@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const CountdownBanner = () => {
+  const navigate = useNavigate();
+  
   const [endDate] = useState(() => {
     const end = new Date();
     end.setHours(23, 59, 59, 999);
@@ -28,11 +31,8 @@ export const CountdownBanner = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const scrollToProducts = () => {
-    const productsSection = document.getElementById("products");
-    if (productsSection) {
-      productsSection.scrollIntoView({ behavior: "smooth" });
-    }
+  const goToFamilyBundle = () => {
+    navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family");
   };
 
   return (
@@ -65,7 +65,7 @@ export const CountdownBanner = () => {
           </div>
 
           <button
-            onClick={scrollToProducts}
+            onClick={goToFamilyBundle}
             className="bg-amber-500 hover:bg-amber-600 text-white px-2 sm:px-4 py-0.5 sm:py-1.5 rounded-md text-[9px] sm:text-sm font-semibold transition-colors whitespace-nowrap"
           >
             Shop Now
