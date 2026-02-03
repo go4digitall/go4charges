@@ -81,11 +81,17 @@ const AdminAnalytics = () => {
   const fetchLovableAnalytics = async () => {
     setLoading(true);
     try {
-      // Fetch daily analytics data
+      // Fetch historical daily analytics data
       const { data: dailyData, error: dailyError } = await supabase
         .from('lovable_analytics_daily')
         .select('*')
         .order('date', { ascending: true });
+
+      // Fetch real-time analytics events to supplement historical data
+      const { data: realtimeEvents, error: realtimeError } = await supabase
+        .from('analytics_events')
+        .select('*')
+        .order('created_at', { ascending: false });
 
       // Fetch traffic sources
       const { data: sourcesData, error: sourcesError } = await supabase
@@ -111,14 +117,83 @@ const AdminAnalytics = () => {
         .select('*')
         .order('views', { ascending: false });
 
-      if (dailyError || sourcesError || devicesError || countriesError || pagesError) {
-        console.error('Error fetching analytics:', { dailyError, sourcesError, devicesError, countriesError, pagesError });
+      if (dailyError || sourcesError || devicesError || countriesError || pagesError || realtimeError) {
+        console.error('Error fetching analytics:', { dailyError, sourcesError, devicesError, countriesError, pagesError, realtimeError });
         throw new Error('Failed to fetch analytics data');
       }
 
-      // Calculate totals from daily data
-      const totalVisitors = dailyData?.reduce((sum, d) => sum + (d.visitors || 0), 0) || 0;
-      const totalPageViews = dailyData?.reduce((sum, d) => sum + (d.pageviews || 0), 0) || 0;
+      // Get the last date from historical data
+      const lastHistoricalDate = dailyData && dailyData.length > 0 
+        ? new Date(dailyData[dailyData.length - 1].date) 
+        : new Date('2026-01-01');
+
+      // Process real-time events to get daily counts for dates AFTER historical data
+      const realtimeDailyMap: Record<string, { visitors: Set<string>; pageviews: number }> = {};
+      const realtimeDeviceMap: Record<string, number> = {};
+      const realtimePageMap: Record<string, number> = {};
+      
+      realtimeEvents?.forEach(event => {
+        const eventDate = new Date(event.created_at);
+        const dateKey = eventDate.toISOString().split('T')[0];
+        
+        // Only count events after the last historical date
+        if (eventDate > lastHistoricalDate) {
+          if (!realtimeDailyMap[dateKey]) {
+            realtimeDailyMap[dateKey] = { visitors: new Set(), pageviews: 0 };
+          }
+          
+          if (event.event_type === 'page_view') {
+            realtimeDailyMap[dateKey].visitors.add(event.session_id);
+            realtimeDailyMap[dateKey].pageviews += 1;
+          }
+          
+          // Track devices from real-time data
+          if (event.device_type) {
+            realtimeDeviceMap[event.device_type] = (realtimeDeviceMap[event.device_type] || 0) + 1;
+          }
+          
+          // Track pages from real-time data
+          if (event.page_url && event.event_type === 'page_view') {
+            realtimePageMap[event.page_url] = (realtimePageMap[event.page_url] || 0) + 1;
+          }
+        }
+      });
+
+      // Convert real-time daily map to array format
+      const realtimeDailyData = Object.entries(realtimeDailyMap)
+        .map(([date, data]) => ({
+          date,
+          visitors: data.visitors.size,
+          pageviews: data.pageviews,
+        }))
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      // Combine historical and real-time daily traffic
+      const historicalTraffic = dailyData?.map(d => ({
+        date: new Date(d.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
+        rawDate: d.date,
+        visitors: d.visitors || 0,
+        pageviews: d.pageviews || 0,
+      })) || [];
+
+      const realtimeTraffic = realtimeDailyData.map(d => ({
+        date: new Date(d.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
+        rawDate: d.date,
+        visitors: d.visitors,
+        pageviews: d.pageviews,
+      }));
+
+      const combinedTraffic = [...historicalTraffic, ...realtimeTraffic];
+
+      // Calculate totals from both historical and real-time
+      const historicalVisitors = dailyData?.reduce((sum, d) => sum + (d.visitors || 0), 0) || 0;
+      const historicalPageViews = dailyData?.reduce((sum, d) => sum + (d.pageviews || 0), 0) || 0;
+      const realtimeVisitors = realtimeDailyData.reduce((sum, d) => sum + d.visitors, 0);
+      const realtimePageViews = realtimeDailyData.reduce((sum, d) => sum + d.pageviews, 0);
+
+      const totalVisitors = historicalVisitors + realtimeVisitors;
+      const totalPageViews = historicalPageViews + realtimePageViews;
+
       const avgSessionDuration = dailyData && dailyData.length > 0
         ? dailyData.reduce((sum, d) => sum + (parseFloat(String(d.session_duration_seconds)) || 0), 0) / dailyData.length
         : 0;
@@ -129,25 +204,43 @@ const AdminAnalytics = () => {
         ? dailyData.reduce((sum, d) => sum + (parseFloat(String(d.pageviews_per_visit)) || 0), 0) / dailyData.length
         : 0;
 
+      // Combine device breakdown (historical + real-time)
+      const combinedDevices: Record<string, number> = {};
+      devicesData?.forEach(d => {
+        combinedDevices[d.device_type] = (combinedDevices[d.device_type] || 0) + d.visits;
+      });
+      Object.entries(realtimeDeviceMap).forEach(([device, count]) => {
+        combinedDevices[device] = (combinedDevices[device] || 0) + count;
+      });
+
+      // Combine page views (historical + real-time)
+      const combinedPages: Record<string, number> = {};
+      pagesData?.forEach(p => {
+        combinedPages[p.page_path] = (combinedPages[p.page_path] || 0) + p.views;
+      });
+      Object.entries(realtimePageMap).forEach(([page, count]) => {
+        combinedPages[page] = (combinedPages[page] || 0) + count;
+      });
+
       setData({
         totalVisitors,
         totalPageViews,
         avgSessionDuration: Math.round(avgSessionDuration),
         bounceRate: Math.round(bounceRate),
         avgPageviewsPerVisit: parseFloat(avgPageviewsPerVisit.toFixed(2)),
-        dailyTraffic: dailyData?.map(d => ({
-          date: new Date(d.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
-          visitors: d.visitors || 0,
-          pageviews: d.pageviews || 0,
-        })) || [],
-        deviceBreakdown: devicesData?.map(d => ({
-          name: d.device_type,
-          value: d.visits,
-        })) || [],
-        topPages: pagesData?.map(p => ({
-          page: p.page_path,
-          views: p.views,
-        })) || [],
+        dailyTraffic: combinedTraffic.map(d => ({
+          date: d.date,
+          visitors: d.visitors,
+          pageviews: d.pageviews,
+        })),
+        deviceBreakdown: Object.entries(combinedDevices).map(([name, value]) => ({
+          name,
+          value,
+        })),
+        topPages: Object.entries(combinedPages)
+          .map(([page, views]) => ({ page, views }))
+          .sort((a, b) => b.views - a.views)
+          .slice(0, 10),
         trafficSources: sourcesData?.map(s => ({
           source: s.source_name,
           visits: s.visits,
