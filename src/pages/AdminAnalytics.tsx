@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { MarketingChatBot } from "@/components/admin/MarketingChatBot";
 import { MetaAdsImport, type MetaAdsData } from "@/components/admin/MetaAdsImport";
+import { MetaAdsAnalysis } from "@/components/admin/MetaAdsAnalysis";
 import { SiteRecommendations } from "@/components/admin/SiteRecommendations";
 
 interface LovableAnalyticsData {
@@ -926,63 +927,65 @@ const AdminAnalytics = () => {
           {/* Meta Ads Tab */}
           <TabsContent value="meta" className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
-              <MetaAdsImport 
-                onDataImported={setMetaAdsData} 
-                importedData={metaAdsData} 
-              />
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">📊 Analyse Meta Ads</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {metaAdsData ? (
-                    <div className="space-y-4">
-                      <div className="p-4 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/20">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Coût/conversion:</span>
-                            <span className="font-bold ml-2">
-                              ${metaAdsData.conversions > 0 
-                                ? (metaAdsData.spend / metaAdsData.conversions).toFixed(2) 
-                                : "N/A"}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Taux conv.:</span>
-                            <span className="font-bold ml-2">
-                              {metaAdsData.clicks > 0 
-                                ? ((metaAdsData.conversions / metaAdsData.clicks) * 100).toFixed(2) 
-                                : 0}%
-                            </span>
+              <div className="space-y-4">
+                <MetaAdsImport 
+                  onDataImported={setMetaAdsData} 
+                  importedData={metaAdsData} 
+                />
+                
+                {/* Quick Stats Card */}
+                {metaAdsData && (
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">📊 Métriques clés</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="p-4 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/20">
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">Coût/conversion:</span>
+                              <span className="font-bold ml-2">
+                                ${metaAdsData.conversions > 0 
+                                  ? (metaAdsData.spend / metaAdsData.conversions).toFixed(2) 
+                                  : "N/A"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Taux conv.:</span>
+                              <span className="font-bold ml-2">
+                                {metaAdsData.clicks > 0 
+                                  ? ((metaAdsData.conversions / metaAdsData.clicks) * 100).toFixed(2) 
+                                  : 0}%
+                              </span>
+                            </div>
                           </div>
                         </div>
+
+                        {metaAdsData.roas >= 2 ? (
+                          <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                            <p className="text-sm text-green-600">
+                              ✅ ROAS de {metaAdsData.roas}x - Vos campagnes sont rentables !
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                            <p className="text-sm text-yellow-600">
+                              ⚠️ ROAS de {metaAdsData.roas}x - Optimisation recommandée
+                            </p>
+                          </div>
+                        )}
                       </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
 
-                      {metaAdsData.roas >= 2 ? (
-                        <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                          <p className="text-sm text-green-600">
-                            ✅ ROAS de {metaAdsData.roas}x - Vos campagnes sont rentables !
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                          <p className="text-sm text-yellow-600">
-                            ⚠️ ROAS de {metaAdsData.roas}x - Optimisation recommandée
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <p>Importez vos données Meta Ads</p>
-                      <p className="text-xs mt-2">
-                        Meta Business Suite → Rapports → Exporter CSV
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              {/* Analysis & Recommendations */}
+              <MetaAdsAnalysis 
+                currentData={metaAdsData} 
+                onHistorySelect={setMetaAdsData}
+              />
             </div>
 
             {metaAdsData?.campaigns && metaAdsData.campaigns.length > 0 && (
