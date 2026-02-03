@@ -485,12 +485,32 @@ const AdminAnalytics = () => {
         />
 
         {/* Charts */}
-        <Tabs defaultValue="traffic" className="space-y-4">
-          <TabsList className="flex-wrap h-auto gap-1">
-            <TabsTrigger value="traffic" className="text-xs md:text-sm">📈 Trafic</TabsTrigger>
-            <TabsTrigger value="sources" className="text-xs md:text-sm">🔗 Sources</TabsTrigger>
-            <TabsTrigger value="sales" className="text-xs md:text-sm">💰 Ventes</TabsTrigger>
-            <TabsTrigger value="meta" className="text-xs md:text-sm">📱 Meta Ads</TabsTrigger>
+        <Tabs defaultValue="traffic" className="space-y-6">
+          <TabsList className="w-full grid grid-cols-4 h-14 p-1.5 bg-muted/80 border border-border rounded-xl shadow-sm">
+            <TabsTrigger 
+              value="traffic" 
+              className="text-sm md:text-base font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-lg transition-all"
+            >
+              📈 Trafic
+            </TabsTrigger>
+            <TabsTrigger 
+              value="sources" 
+              className="text-sm md:text-base font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-lg transition-all"
+            >
+              🔗 Sources
+            </TabsTrigger>
+            <TabsTrigger 
+              value="sales" 
+              className="text-sm md:text-base font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-lg transition-all"
+            >
+              💰 Ventes
+            </TabsTrigger>
+            <TabsTrigger 
+              value="meta" 
+              className="text-sm md:text-base font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-lg transition-all"
+            >
+              📱 Meta Ads
+            </TabsTrigger>
           </TabsList>
 
           {/* Traffic Tab */}
