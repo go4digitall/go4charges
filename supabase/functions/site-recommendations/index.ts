@@ -5,34 +5,58 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Current site structure for context
+// Current site structure for context - UPDATED JANUARY 2026
 const SITE_STRUCTURE = `
-STRUCTURE DU SITE GO4CHARGES:
+STRUCTURE DU SITE GO4CHARGES (état actuel):
 
 PAGE PRINCIPALE (/):
-- Header: Logo, navigation, bouton panier sticky
-- CountdownBanner: Bannière d'urgence avec timer "Winter Closeout"
-- HeroSection: Image Before/After, titre principal, CTA "Shop Now"
-- AsSeenSection: Logos de confiance (médias)
-- BenefitsSection: Vidéo et liste des avantages du produit (90° angle, 240W, durabilité)
-- TestimonialsSection: Avis clients avec photos et notes 5 étoiles
-- BundleSelector: Choix des packs (Single $24.90, Duo $34.90, Family $44.90)
-- TrustBadgeSection: Badges de confiance (livraison gratuite, garantie 30j, 2 ans warranty)
-- FAQSection: Questions fréquentes avec accordéon
-- CTASection: Call-to-action final
-- Footer: Liens légaux, contact
+- Header: Logo Go4Charges, navigation sticky, icône panier avec badge quantité
+- CountdownBanner: Bannière d'urgence "WINTER CLEARANCE - UP TO 70% OFF" avec timer
+- HeroSection: Image Before/After, titre "ChargeStand™", CTA "Shop Now", badges de confiance inline (Free Shipping, 2-Year Warranty, 30-Day Returns)
+- AsSeenSection: Logos médias de confiance
+- BenefitsSection: Vidéos démonstration, liste des avantages (90° angle, 240W, durabilité)
+- ProductSection: ProductCard unique (Single Cable comme point d'entrée), lien vers bundles
+- TrustBadgeSection: Bande de confiance avec 4 badges (30-Day Money-Back, Secure Checkout, FREE Shipping, 24/7 Support)
+- TestimonialsSection: Avis clients avec photos, notes 5 étoiles, images produit
+- FAQSection: Questions fréquentes en accordéon
+- CTASection: Call-to-action final avec image et boutons
+- Footer: Liens légaux, badges de paiement (Visa, Mastercard, PayPal, Apple Pay)
 
-COMPOSANTS INTERACTIFS:
-- CartDrawer: Panier latéral avec produits et checkout Shopify
+PAGE PRODUIT (/product/:handle):
+- Galerie images produit
+- BundleSelector: Choix des packs (Single $24.90, Duo $34.90, Family $44.90) avec économies affichées
+- Badges de paiement sous le bouton Add to Cart
+- Description produit, spécifications techniques
+- Section avis clients
+
+COMPOSANTS INTERACTIFS (DÉJÀ IMPLÉMENTÉS):
+- CartDrawer: Panier latéral avec:
+  * Bannière urgence "OFFER ENDS IN" avec countdown
+  * Badges "In Stock" sur chaque produit
+  * Bannière d'économies calculées dynamiquement
+  * Section checkout sécurisé avec icône cadenas
+  * Logos de paiement (Visa, PayPal, Mastercard, Apple Pay)
+  * Grille de badges confiance (Secure, Free Shipping, 30-Day Return)
+  * Bouton checkout avec redirection Shopify
 - ChatBot: Assistant IA "Max" pour support client
 - ExitIntentPopup: Popup de rétention à la sortie
-- UpsellModal: Modal d'upsell après ajout panier
+- UpsellModal: Modal d'upsell après ajout panier proposant pack supérieur
 - SocialProofPopup: Notifications "X vient d'acheter..."
 
 PRODUIT:
 - ChargeStand™ Premium USB-C Cable
 - Prix: Single $24.90 (50% off), Duo $34.90 (65% off), Family $44.90 (70% off)
+- Prix barré original: $49.90 par câble
 - USPs: 90° angle, 240W, 1.5m, braided nylon, 10,000+ bend cycles
+
+ÉLÉMENTS DE CONFIANCE DÉJÀ EN PLACE:
+- Badges de paiement (Footer, ProductDetail, CartDrawer)
+- Badges confiance (Hero, TrustBadgeSection, CartDrawer)
+- Avis clients avec photos
+- Countdown timers (bannière, panier)
+- Stock indicators
+- Garantie 2 ans mentionnée
+- Livraison gratuite affichée partout
 `;
 
 const RECOMMENDATIONS_PROMPT = `Tu es un expert en CRO (Conversion Rate Optimization) et en e-commerce. Tu analyses les données de performance d'un site et tu génères des recommandations précises et actionnables.
