@@ -22,6 +22,10 @@ export const BenefitsSection = () => {
             <img 
               src={benefitsBanner} 
               alt="Go4Charges - Up to 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable" 
+              loading="lazy"
+              decoding="async"
+              width={800}
+              height={600}
               className="w-full h-full object-cover rounded-xl shadow-lg"
             />
           </div>
@@ -35,6 +39,7 @@ export const BenefitsSection = () => {
                 loop 
                 muted 
                 playsInline
+                preload="metadata"
                 className="w-full h-full object-cover rounded-xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
@@ -50,6 +55,7 @@ export const BenefitsSection = () => {
                 loop 
                 muted 
                 playsInline
+                preload="metadata"
                 className="w-full h-full object-cover rounded-xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />

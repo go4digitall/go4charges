@@ -128,6 +128,10 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             <img
               src={image.url}
               alt={image.altText || node.title}
+              loading="lazy"
+              decoding="async"
+              width={400}
+              height={400}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (

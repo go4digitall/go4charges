@@ -10,7 +10,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img src={logo} alt="Go4charges" className="h-14 w-auto" />
+              <img src={logo} alt="Go4charges" loading="lazy" decoding="async" width={100} height={56} className="h-14 w-auto" />
             </div>
             <p className="text-sm text-muted-foreground">
               Premium charging cables for all your devices. Fast, reliable, and built to last.
@@ -100,6 +100,10 @@ export const Footer = () => {
             <img 
               src={paymentBadges} 
               alt="Secure payment methods: Visa, Mastercard, American Express, PayPal, Google Pay" 
+              loading="lazy"
+              decoding="async"
+              width={300}
+              height={40}
               className="h-8 md:h-10 w-auto opacity-80"
             />
           </div>

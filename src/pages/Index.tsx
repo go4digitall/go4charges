@@ -1,18 +1,21 @@
+import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { AsSeenSection } from "@/components/AsSeenSection";
 import { BenefitsSection } from "@/components/BenefitsSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
-import { FAQSection } from "@/components/FAQSection";
-import { TrustBadgeSection } from "@/components/TrustBadgeSection";
-import { CTASection } from "@/components/CTASection";
 import { CountdownBanner } from "@/components/CountdownBanner";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
-import { ChatBot } from "@/components/ChatBot";
 import { useProducts } from "@/hooks/useProducts";
 import { useHashScroll } from "@/hooks/useHashScroll";
 import { Loader2 } from "lucide-react";
+
+// Lazy load below-the-fold components for better performance
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection").then(m => ({ default: m.TestimonialsSection })));
+const FAQSection = lazy(() => import("@/components/FAQSection").then(m => ({ default: m.FAQSection })));
+const TrustBadgeSection = lazy(() => import("@/components/TrustBadgeSection").then(m => ({ default: m.TrustBadgeSection })));
+const CTASection = lazy(() => import("@/components/CTASection").then(m => ({ default: m.CTASection })));
+const ChatBot = lazy(() => import("@/components/ChatBot").then(m => ({ default: m.ChatBot })));
 
 const Index = () => {
   const { data: products, isLoading, error } = useProducts();
@@ -110,13 +113,23 @@ const Index = () => {
             </div>
           </section>
 
-          <TrustBadgeSection />
-          <TestimonialsSection />
-          <FAQSection />
-          <CTASection />
+          <Suspense fallback={<div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>}>
+            <TrustBadgeSection />
+          </Suspense>
+          <Suspense fallback={<div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>}>
+            <TestimonialsSection />
+          </Suspense>
+          <Suspense fallback={<div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>}>
+            <FAQSection />
+          </Suspense>
+          <Suspense fallback={<div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>}>
+            <CTASection />
+          </Suspense>
         </main>
         <Footer />
-        <ChatBot />
+        <Suspense fallback={null}>
+          <ChatBot />
+        </Suspense>
       </div>
     </div>
   );
