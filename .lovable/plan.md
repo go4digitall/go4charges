@@ -1,109 +1,136 @@
 
-# Plan : Ajouter le ChargeStand™ USB-C vers Lightning
+# Plan d'Optimisation PageSpeed - Go4Charges
 
-## Contexte
-Tu souhaites proposer la même gamme ChargeStand™ mais avec une connexion **USB-C vers Lightning** pour les utilisateurs d'iPhone 14 et antérieurs (iPhone 5 à 14, SE, iPad avec port Lightning).
+## Analyse des Problèmes Identifiés
 
----
+Après analyse du code, voici les principaux problèmes qui impactent les scores PageSpeed mobile:
 
-## Ce que je vais faire
+### 1. Images Non Optimisées
+- **Hero image** (`hero-before-after.jpg`): Pas de `loading="lazy"`, pas de `fetchpriority="high"`
+- **Vidéos autoplay** dans BenefitsSection: 2 vidéos MP4 se chargent immédiatement
+- **Images testimonials** (AVIF): Aucun lazy loading
+- **Images produits**: Pas d'optimisation du chargement
 
-### 1. Créer les 3 produits Lightning dans Shopify
+### 2. Largest Contentful Paint (LCP) - Critique
+- L'image Hero est l'élément LCP mais n'a pas `fetchpriority="high"`
+- Pas de preload pour les ressources critiques dans `index.html`
 
-| Produit | Prix | Prix barré | Réduction |
-|---------|------|------------|-----------|
-| **Single Cable (Lightning)** | $24.90 | $49.90 | -50% |
-| **Duo Pack (Lightning)** | $34.90 | $99.80 | -65% |
-| **Family Pack (Lightning)** | $44.90 | $149.70 | -70% |
+### 3. JavaScript Bloquant
+- Aucun lazy loading des composants (pas de `React.lazy()`)
+- Toutes les sections se chargent immédiatement
 
-- Utilisation de la même image que le câble USB-C single actuel
-- Titre incluant "Lightning" pour différencier
-- Description adaptée mentionnant la compatibilité iPhone 5-14
+### 4. Cumulative Layout Shift (CLS)
+- Images sans dimensions explicites sur certains composants
+- Polices web sans `font-display: swap`
 
-### 2. Ajouter un sélecteur de type de câble sur le site
-
-**Sur la page produit (`ProductDetail.tsx`)** :
-- Nouveau composant de sélection "Type de câble" avec deux options visuelles :
-  - **USB-C vers USB-C** : "For iPhone 15+, MacBook, iPad Pro, Android"
-  - **USB-C vers Lightning** : "For iPhone 5-14, iPad, AirPods"
-- Le sélecteur de bundles s'adapte au type choisi
-- URL avec paramètre `?type=lightning` ou `?type=usbc`
-
-**Sur la page d'accueil (`HeroSection.tsx`)** :
-- Ajout d'un indicateur visuel "Also available for Lightning (iPhone 5-14)" sous les prix
-- Lien direct vers la version Lightning
-
-### 3. Mettre à jour le hook `useBundleProducts`
-
-- Nouveau hook `useBundleProductsWithType(type: 'usbc' | 'lightning')`
-- Configuration des handles Shopify pour les deux gammes
-- Gestion des deux sets de produits
+### 5. Animations Coûteuses
+- Snowflakes avec animations CSS continues (15 flocons)
+- Marquee animations dans plusieurs sections
 
 ---
 
-## Structure visuelle du sélecteur
+## Plan d'Implémentation
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│  Choisissez votre type de câble :                       │
-├──────────────────────┬──────────────────────────────────┤
-│  ⚡ USB-C to USB-C   │  🍎 USB-C to Lightning           │
-│  ─────────────────   │  ─────────────────               │
-│  iPhone 15+          │  iPhone 5-14                     │
-│  MacBook, iPad Pro   │  iPad, AirPods                   │
-│  Android devices     │                                  │
-│  [SELECTED]          │                                  │
-└──────────────────────┴──────────────────────────────────┘
+### Phase 1: Optimisations Critiques (LCP & FCP)
+
+**1.1 Preload des Ressources Critiques**
+Modifier `index.html` pour ajouter:
+- Preload de l'image Hero
+- Preload de la police principale
+- Preconnect aux domaines externes (Shopify CDN)
+
+**1.2 Hero Image - Priorité Haute**
+Modifier `HeroSection.tsx`:
+- Ajouter `fetchpriority="high"` sur l'image Hero
+- Ajouter `loading="eager"` (opposé de lazy)
+- Garder les dimensions explicites existantes
+
+**1.3 Optimisation des Vidéos**
+Modifier `BenefitsSection.tsx`:
+- Ajouter `preload="none"` ou `preload="metadata"` sur les vidéos
+- Utiliser l'attribut `poster` avec une image statique
+- Ne charger les vidéos que quand visibles (Intersection Observer)
+
+### Phase 2: Lazy Loading des Images
+
+**2.1 Images Below the Fold**
+Ajouter `loading="lazy"` sur:
+- `BenefitsSection.tsx`: Image banner
+- `TestimonialsSection.tsx`: Avatars et images produits
+- `ProductCard.tsx`: Images produits Shopify
+- `Footer.tsx`: Logo et badges de paiement
+
+**2.2 Images avec Dimensions Explicites**
+Ajouter `width` et `height` sur toutes les images pour éviter le CLS
+
+### Phase 3: Code Splitting & Lazy Loading des Composants
+
+**3.1 Lazy Load des Sections Non-Critiques**
+Modifier `App.tsx` et `Index.tsx`:
+- Utiliser `React.lazy()` pour les pages secondaires
+- Lazy load des composants below-the-fold:
+  - `FAQSection`
+  - `TestimonialsSection`
+  - `ChatBot`
+  - `ExitIntentPopup`
+  - `UpsellModal`
+  - `SocialProofPopup`
+
+### Phase 4: Réduction des Animations
+
+**4.1 Simplifier les Snowflakes**
+Modifier `HeroSection.tsx`:
+- Réduire de 15 à 5 flocons sur mobile
+- Utiliser `will-change: transform` pour optimiser le GPU
+- Désactiver les animations sur `prefers-reduced-motion`
+
+**4.2 Optimiser les Marquees**
+- Utiliser `will-change: transform` sur les éléments animés
+- Pause des animations quand hors viewport
+
+### Phase 5: Optimisations HTML & Métadonnées
+
+**5.1 index.html**
+```html
+<!-- Preconnect to external domains -->
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+<!-- Preload critical hero image -->
+<link rel="preload" as="image" href="/src/assets/hero-before-after.jpg" fetchpriority="high">
+
+<!-- Font display swap -->
+<style>
+  @font-face {
+    font-display: swap;
+  }
+</style>
 ```
 
 ---
 
-## Fichiers concernés
+## Résumé des Fichiers à Modifier
 
-| Fichier | Modification |
-|---------|--------------|
-| **Shopify** | Création de 3 nouveaux produits Lightning |
-| `src/hooks/useBundleProducts.ts` | Ajout des handles Lightning + logique type |
-| `src/pages/ProductDetail.tsx` | Sélecteur de type + URL params |
-| `src/components/HeroSection.tsx` | Indicateur "Also for Lightning" |
-| `src/components/BundleSelector.tsx` | Affichage du type sélectionné |
-
----
-
-## Détails techniques
-
-### Nouveaux produits Shopify à créer
-1. `chargestand-lightning-240w` - Single Cable Lightning ($24.90)
-2. `pack-duo-2x-chargestand-lightning-240w` - Duo Pack Lightning ($34.90)
-3. `pack-famille-3x-chargestand-lightning-240w` - Family Pack Lightning ($44.90)
-
-### Structure des handles dans le hook
-```typescript
-const BUNDLE_HANDLES = {
-  usbc: {
-    single: 'chargestand-240w-90-fast-charging-cable',
-    duo: 'pack-duo-2x-chargestand™-240w',
-    family: 'pack-famille-3x-chargestand™-240w',
-  },
-  lightning: {
-    single: 'chargestand-lightning-240w',
-    duo: 'pack-duo-2x-chargestand-lightning-240w',
-    family: 'pack-famille-3x-chargestand-lightning-240w',
-  },
-};
-```
-
-### Paramètres URL
-- `/product/chargestand?type=usbc&bundle=family` (défaut)
-- `/product/chargestand?type=lightning&bundle=family`
+| Fichier | Modifications |
+|---------|---------------|
+| `index.html` | Preload, preconnect, font-display |
+| `src/components/HeroSection.tsx` | fetchpriority, réduction snowflakes |
+| `src/components/BenefitsSection.tsx` | Lazy video, poster images |
+| `src/components/TestimonialsSection.tsx` | Lazy loading images |
+| `src/components/ProductCard.tsx` | Lazy loading + dimensions |
+| `src/components/Footer.tsx` | Lazy loading |
+| `src/pages/Index.tsx` | React.lazy pour sections |
+| `src/App.tsx` | React.lazy pour pages & popups |
+| `src/index.css` | will-change, reduced-motion |
 
 ---
 
-## Résultat attendu
+## Impact Attendu
 
-✅ 3 nouveaux produits Lightning dans Shopify  
-✅ Sélecteur de type de câble visible et intuitif  
-✅ Compatibilité iPhone clairement affichée  
-✅ Même structure de prix et bundles  
-✅ Navigation fluide entre les deux versions
+| Métrique | Avant (estimé) | Après (cible) |
+|----------|----------------|---------------|
+| LCP | > 4s | < 2.5s |
+| FCP | > 2s | < 1.8s |
+| TBT | Élevé | Réduit de 40% |
+| CLS | Variable | < 0.1 |
+| Performance Score | ~40-60 | ~75-85 |
 
