@@ -1,11 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchProductByHandle, ShopifyProduct } from '@/lib/shopify';
 
-// Bundle product handles
+// Cable type
+export type CableType = 'usbc' | 'lightning';
+
+// Bundle product handles by cable type
 const BUNDLE_HANDLES = {
-  single: 'chargestand-240w-90-fast-charging-cable',
-  duo: 'pack-duo-2x-chargestand™-240w',
-  family: 'pack-famille-3x-chargestand™-240w',
+  usbc: {
+    single: 'chargestand-240w-90-fast-charging-cable',
+    duo: 'pack-duo-2x-chargestand™-240w',
+    family: 'pack-famille-3x-chargestand™-240w',
+  },
+  lightning: {
+    single: 'chargestand-lightning-up-to-240w',
+    duo: 'duo-pack-2x-chargestand™-lightning',
+    family: 'family-pack-3x-chargestand™-lightning',
+  },
 } as const;
 
 export interface BundleOption {
@@ -21,8 +31,8 @@ export interface BundleOption {
   product: ShopifyProduct;
 }
 
-// Static bundle configuration
-const BUNDLE_CONFIG: Record<string, Omit<BundleOption, 'price' | 'variantId' | 'product'>> = {
+// Static bundle configuration (same for both cable types)
+const BUNDLE_CONFIG: Record<string, Omit<BundleOption, 'price' | 'variantId' | 'product' | 'productHandle'>> = {
   single: {
     id: 'single',
     name: 'Single Cable',
@@ -30,7 +40,6 @@ const BUNDLE_CONFIG: Record<string, Omit<BundleOption, 'price' | 'variantId' | '
     comparePrice: 49.90,
     discountPercent: 50,
     badges: ['-50%'],
-    productHandle: BUNDLE_HANDLES.single,
   },
   duo: {
     id: 'duo',
@@ -39,7 +48,6 @@ const BUNDLE_CONFIG: Record<string, Omit<BundleOption, 'price' | 'variantId' | '
     comparePrice: 99.80,
     discountPercent: 65,
     badges: ['POPULAR', '-65%'],
-    productHandle: BUNDLE_HANDLES.duo,
   },
   family: {
     id: 'family',
@@ -48,16 +56,17 @@ const BUNDLE_CONFIG: Record<string, Omit<BundleOption, 'price' | 'variantId' | '
     comparePrice: 149.70,
     discountPercent: 70,
     badges: ['BEST VALUE', '70% OFF'],
-    productHandle: BUNDLE_HANDLES.family,
   },
 };
 
-async function fetchBundleProducts() {
+async function fetchBundleProductsByType(cableType: CableType) {
+  const handles = BUNDLE_HANDLES[cableType];
+  
   // Fetch all 3 products in parallel
   const [single, duo, family] = await Promise.all([
-    fetchProductByHandle(BUNDLE_HANDLES.single),
-    fetchProductByHandle(BUNDLE_HANDLES.duo),
-    fetchProductByHandle(BUNDLE_HANDLES.family),
+    fetchProductByHandle(handles.single),
+    fetchProductByHandle(handles.duo),
+    fetchProductByHandle(handles.family),
   ]);
 
   const products: Record<string, ShopifyProduct['node'] | null> = {
@@ -69,15 +78,16 @@ async function fetchBundleProducts() {
   return products;
 }
 
-export function useBundleProducts() {
+export function useBundleProducts(cableType: CableType = 'usbc') {
   const query = useQuery({
-    queryKey: ['bundle-products'],
-    queryFn: fetchBundleProducts,
+    queryKey: ['bundle-products', cableType],
+    queryFn: () => fetchBundleProductsByType(cableType),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   // Transform products into BundleOption array
   const bundleOptions: BundleOption[] = [];
+  const handles = BUNDLE_HANDLES[cableType];
 
   if (query.data) {
     const order: Array<'single' | 'duo' | 'family'> = ['single', 'duo', 'family'];
@@ -93,6 +103,7 @@ export function useBundleProducts() {
         bundleOptions.push({
           ...config,
           price,
+          productHandle: handles[key],
           variantId: variant?.id || '',
           product: { node: productNode },
         });
@@ -104,5 +115,22 @@ export function useBundleProducts() {
     bundleOptions,
     isLoading: query.isLoading,
     error: query.error,
+    cableType,
   };
 }
+
+// Helper to get display info for cable types
+export const CABLE_TYPE_INFO = {
+  usbc: {
+    label: 'USB-C to USB-C',
+    shortLabel: 'USB-C',
+    icon: '⚡',
+    compatibility: 'iPhone 15+, MacBook, iPad Pro, Android',
+  },
+  lightning: {
+    label: 'USB-C to Lightning',
+    shortLabel: 'Lightning',
+    icon: '🍎',
+    compatibility: 'iPhone 5-14, iPad, AirPods',
+  },
+} as const;

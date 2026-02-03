@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, Link, useSearchParams } from "react-router-dom";
+import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +11,9 @@ import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useBundleProducts, BundleOption } from "@/hooks/useBundleProducts";
+import { useBundleProducts, BundleOption, CableType, CABLE_TYPE_INFO } from "@/hooks/useBundleProducts";
 import { BundleSelector } from "@/components/BundleSelector";
+import { CableTypeSelector } from "@/components/CableTypeSelector";
 
 // Import review assets from testimonials
 import avatarReview1 from "@/assets/testimonials/avatar-review-1.avif";
@@ -44,8 +45,18 @@ const productReviews = [
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
-  const [searchParams] = useSearchParams();
-  const { bundleOptions, isLoading, error } = useBundleProducts();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  // Determine initial cable type from URL
+  const getInitialCableType = (): CableType => {
+    const typeParam = searchParams.get('type');
+    if (typeParam === 'lightning') return 'lightning';
+    return 'usbc';
+  };
+  
+  const [cableType, setCableType] = useState<CableType>(getInitialCableType());
+  const { bundleOptions, isLoading, error } = useBundleProducts(cableType);
   const addItem = useCartStore(state => state.addItem);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -53,6 +64,14 @@ const ProductDetail = () => {
   const [viewerCount, setViewerCount] = useState(() => Math.floor(Math.random() * 36) + 12);
   const addToCartButtonRef = useRef<HTMLButtonElement>(null);
   const isMobile = useIsMobile();
+
+  // Handle cable type change with URL update
+  const handleCableTypeChange = (newType: CableType) => {
+    setCableType(newType);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('type', newType);
+    setSearchParams(newParams, { replace: true });
+  };
 
   // Determine initial bundle selection based on URL handle or query param
   const getInitialBundleId = (): 'single' | 'duo' | 'family' => {
@@ -380,6 +399,12 @@ const ProductDetail = () => {
               />
             </div>
 
+            {/* Cable Type Selector */}
+            <CableTypeSelector
+              selectedType={cableType}
+              onSelect={handleCableTypeChange}
+            />
+
             {/* Bundle Selector */}
             <BundleSelector
               options={bundleOptions}
@@ -479,7 +504,9 @@ const ProductDetail = () => {
                   <Cable className="h-4 w-4 md:h-5 md:w-5 text-blue-500 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[10px] md:text-xs text-muted-foreground">Connector</p>
-                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">Type-C</p>
+                    <p className="text-xs md:text-sm font-semibold text-foreground truncate">
+                      {cableType === 'lightning' ? 'USB-C to Lightning' : 'Type-C to Type-C'}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-muted/50 border border-border/50">
