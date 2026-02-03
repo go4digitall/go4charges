@@ -169,6 +169,10 @@ export const TestimonialsSection = () => {
                   <img 
                     src={testimonial.avatar} 
                     alt={testimonial.name}
+                    loading="lazy"
+                    decoding="async"
+                    width={40}
+                    height={40}
                     className="w-7 h-7 md:w-10 md:h-10 rounded-full object-cover flex-shrink-0"
                   />
                   <div className="min-w-0">
@@ -187,6 +191,10 @@ export const TestimonialsSection = () => {
                         key={imgIndex}
                         src={img} 
                         alt="Product review"
+                        loading="lazy"
+                        decoding="async"
+                        width={200}
+                        height={150}
                         className={`w-full object-cover rounded ${testimonial.productImages.length === 1 ? 'col-span-2 h-24 md:h-32' : 'h-16 md:h-20'}`}
                       />
                     ))}

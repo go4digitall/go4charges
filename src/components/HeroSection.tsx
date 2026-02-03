@@ -27,8 +27,8 @@ export const HeroSection = () => {
   };
 
 
-  // Generate random snowflakes
-  const snowflakes = Array.from({ length: 15 }, (_, i) => ({
+  // Generate random snowflakes - reduced to 6 for performance
+  const snowflakes = Array.from({ length: 6 }, (_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
     delay: Math.random() * 5,
@@ -84,12 +84,15 @@ export const HeroSection = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="relative group">
             {/* Enhanced image with stronger visual presence */}
-            <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-primary/30 ring-1 ring-primary/10">
+          <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-primary/30 ring-1 ring-primary/10">
               <img 
                 src={heroImage} 
                 alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
                 width={1200}
                 height={800}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
                 className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-[1.02] animate-fade-in contrast-[1.05] saturate-[1.1]" 
               />
               {/* Dynamic gradient overlay for depth */}

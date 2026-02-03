@@ -154,9 +154,16 @@
     }
   }
 
-  /* Snowfall Animation */
+  /* Snowfall Animation - GPU optimized */
   .animate-snowfall {
     animation: snowfall linear infinite;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-snowfall {
+      animation: none;
+    }
   }
 
   @keyframes snowfall {
@@ -173,6 +180,17 @@
     100% {
       transform: translateY(400px) rotate(360deg);
       opacity: 0;
+    }
+  }
+
+  /* Marquee Animation - GPU optimized */
+  .animate-marquee {
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
     }
   }
 }
