@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.sync-shopify-orders]
 verify_jwt = false
+
+[functions.analyze-meta-ads]
+verify_jwt = false
