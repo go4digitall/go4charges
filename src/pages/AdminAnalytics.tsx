@@ -303,17 +303,24 @@ const AdminAnalytics = () => {
       const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
       const currency = orders[0]?.currency || 'USD';
 
-      // Daily revenue
-      const dailyMap: Record<string, { revenue: number; orders: number }> = {};
+      // Daily revenue - use ISO date as key for proper sorting
+      const dailyMap: Record<string, { revenue: number; orders: number; rawDate: string }> = {};
       orders.forEach(o => {
-        const date = new Date(o.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-        if (!dailyMap[date]) dailyMap[date] = { revenue: 0, orders: 0 };
-        dailyMap[date].revenue += parseFloat(String(o.total_price)) || 0;
-        dailyMap[date].orders += 1;
+        const orderDate = new Date(o.processed_at || o.created_at);
+        const rawDate = orderDate.toISOString().split('T')[0]; // YYYY-MM-DD for sorting
+        const displayDate = orderDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+        if (!dailyMap[rawDate]) dailyMap[rawDate] = { revenue: 0, orders: 0, rawDate };
+        dailyMap[rawDate].revenue += parseFloat(String(o.total_price)) || 0;
+        dailyMap[rawDate].orders += 1;
       });
       const dailyRevenue = Object.entries(dailyMap)
-        .map(([date, data]) => ({ date, ...data }))
-        .reverse();
+        .sort(([a], [b]) => a.localeCompare(b)) // Sort by ISO date ascending
+        .map(([rawDate, data]) => ({ 
+          date: new Date(rawDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
+          rawDate,
+          revenue: data.revenue, 
+          orders: data.orders 
+        }));
 
       // Top products
       const productMap: Record<string, { quantity: number; revenue: number }> = {};
@@ -750,20 +757,52 @@ const AdminAnalytics = () => {
 
             {salesData?.recentOrders && salesData.recentOrders.length > 0 ? (
               <>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <Card>
+                <div className="space-y-6">
+                  <Card className="md:col-span-2">
                     <CardHeader>
-                      <CardTitle className="text-lg">Revenu Journalier</CardTitle>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-green-600" />
+                        Évolution des Ventes
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={salesData.dailyRevenue}>
+                        <AreaChart data={salesData.dailyRevenue}>
+                          <defs>
+                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#00C49F" stopOpacity={0.3}/>
+                              <stop offset="95%" stopColor="#00C49F" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
                           <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis />
-                          <Tooltip />
-                          <Bar dataKey="revenue" fill="#00C49F" name="Revenu ($)" />
-                        </BarChart>
+                          <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                          <YAxis yAxisId="left" orientation="left" stroke="#00C49F" />
+                          <YAxis yAxisId="right" orientation="right" stroke="#0088FE" />
+                          <Tooltip 
+                            formatter={(value: number, name: string) => [
+                              name === 'revenue' ? `$${value.toFixed(2)}` : value,
+                              name === 'revenue' ? 'Revenu' : 'Commandes'
+                            ]}
+                          />
+                          <Legend />
+                          <Area 
+                            yAxisId="left"
+                            type="monotone" 
+                            dataKey="revenue" 
+                            stroke="#00C49F" 
+                            fill="url(#colorRevenue)" 
+                            name="Revenu ($)"
+                          />
+                          <Line 
+                            yAxisId="right"
+                            type="monotone" 
+                            dataKey="orders" 
+                            stroke="#0088FE" 
+                            strokeWidth={2}
+                            dot={{ r: 4 }}
+                            name="Commandes"
+                          />
+                        </AreaChart>
                       </ResponsiveContainer>
                     </CardContent>
                   </Card>
