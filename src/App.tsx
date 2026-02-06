@@ -12,7 +12,6 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load non-critical pages and popups
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const WallChargerDetail = lazy(() => import("./pages/WallChargerDetail"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsConditions = lazy(() => import("./pages/TermsConditions"));
 const ShippingReturns = lazy(() => import("./pages/ShippingReturns"));
@@ -35,7 +34,6 @@ const AppContent = () => {
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>}>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/product/wall-charger-240w-gan" element={<WallChargerDetail />} />
           <Route path="/product/:handle" element={<ProductDetail />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsConditions />} />

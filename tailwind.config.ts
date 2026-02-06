@@ -133,14 +133,6 @@ export default {
             transform: "translateX(calc(-100% - 3rem))",
           },
         },
-        "shimmer": {
-          "0%": {
-            transform: "translateX(-100%)",
-          },
-          "100%": {
-            transform: "translateX(100%)",
-          },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -150,7 +142,6 @@ export default {
         "shine": "shine 3s ease-in-out infinite",
         "subtle-zoom": "subtle-zoom 8s ease-in-out infinite",
         "marquee": "marquee 10s linear infinite",
-        "shimmer": "shimmer 2.5s ease-in-out infinite",
       },
     },
   },
