@@ -99,6 +99,21 @@ export const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/5 pointer-events-none" />
               {/* Subtle vignette effect */}
               <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] pointer-events-none" />
+              
+              {/* FREE CHARGER Badge - Bottom right of image */}
+              <button
+                onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
+                className="absolute bottom-3 right-3 md:bottom-4 md:right-4 bg-gradient-to-r from-emerald-500 to-green-500 text-white px-3 py-2 md:px-4 md:py-2.5 rounded-lg shadow-lg shadow-emerald-500/40 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group/badge"
+              >
+                <div className="flex items-center gap-1.5 md:gap-2">
+                  <span className="text-lg md:text-xl">🎁</span>
+                  <div className="text-left">
+                    <div className="text-[10px] md:text-xs font-bold leading-tight">FREE WALL CHARGER</div>
+                    <div className="text-[8px] md:text-[10px] font-medium text-emerald-100">with Family Pack ($19.90 value)</div>
+                  </div>
+                  <span className="text-white/80 group-hover/badge:translate-x-1 transition-transform">→</span>
+                </div>
+              </button>
             </div>
             {/* Decorative glow behind image */}
             <div className="absolute -inset-4 bg-gradient-to-r from-sky-400/20 via-blue-500/15 to-indigo-500/20 rounded-3xl blur-2xl -z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
