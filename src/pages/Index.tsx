@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { FreeChargerBanner } from "@/components/FreeChargerBanner";
 import { AsSeenSection } from "@/components/AsSeenSection";
 import { BenefitsSection } from "@/components/BenefitsSection";
 import { CountdownBanner } from "@/components/CountdownBanner";
@@ -29,6 +30,8 @@ const Index = () => {
         <Header />
         <main className="flex-1">
           <HeroSection />
+          
+          <FreeChargerBanner />
           
           <AsSeenSection />
           
