@@ -7,7 +7,7 @@ import wallChargerImage from "@/assets/wall-charger-240w.webp";
 
 export const WallChargerCard = () => {
   return (
-    <Link to="/product/chargestand-240w-90-fast-charging-cable?bundle=family" className="block">
+    <Link to="/product/wall-charger-240w-gan" className="block">
       <Card className="group overflow-hidden transition-all duration-300 bg-card backdrop-blur border-2 border-emerald-400 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 relative">
         {/* FREE Banner */}
         <div className="absolute top-0 left-0 right-0 z-10">
