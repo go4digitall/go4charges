@@ -6,6 +6,7 @@ import { ShoppingCart, Minus, Plus, Trash2, Loader2, Lock, Truck, RotateCcw, Che
 import { useCartStore } from "@/stores/cartStore";
 import { trackInitiateCheckout } from "@/lib/facebookPixel";
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
+import { CartWallChargerUpsell } from "@/components/CartWallChargerUpsell";
 import paymentBadges from "@/assets/payment-badges.png";
 
 const ORIGINAL_UNIT_PRICE = 49.90;
@@ -217,6 +218,9 @@ export const CartDrawer = () => {
 
               {/* Bottom Section */}
               <div className="flex-shrink-0 space-y-3 pt-3 border-t bg-background">
+                {/* Wall Charger Upsell */}
+                <CartWallChargerUpsell cartItems={items} />
+
                 {/* Winter Savings Banner */}
                 {totalSavings > 0 && (
                   <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
