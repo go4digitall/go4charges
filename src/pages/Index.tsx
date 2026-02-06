@@ -6,6 +6,7 @@ import { BenefitsSection } from "@/components/BenefitsSection";
 import { CountdownBanner } from "@/components/CountdownBanner";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
+import { WallChargerCard } from "@/components/WallChargerCard";
 import { useProducts } from "@/hooks/useProducts";
 import { useHashScroll } from "@/hooks/useHashScroll";
 import { Loader2 } from "lucide-react";
@@ -74,25 +75,31 @@ const Index = () => {
                   Error loading product
                 </div>
               ) : products && products.length > 0 ? (
-              <div className="flex justify-center">
-                  {/* Single product card - Single Cable as entry point */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                  {/* Single Cable as entry point */}
                   {(() => {
                     const singleProduct = products.find(p => {
                       const handle = p.node.handle.toLowerCase();
-                      // Find the single cable (not duo, not family)
+                      // Find the single cable (not duo, not family, not wall-charger)
                       return !handle.includes('duo') && 
                              !handle.includes('2x') && 
                              !handle.includes('family') && 
                              !handle.includes('3x') &&
-                             !handle.includes('famille');
+                             !handle.includes('famille') &&
+                             !handle.includes('wall-charger');
                     }) || products[0];
                     
                     return (
-                      <div className="w-full max-w-md">
+                      <div className="w-full">
                         <ProductCard product={singleProduct} isFeatured={false} />
                       </div>
                     );
                   })()}
+                  
+                  {/* Wall Charger Card */}
+                  <div className="w-full">
+                    <WallChargerCard />
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
