@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import paymentBadges from "@/assets/payment-badges.png";
 import { trackViewContent, trackAddToCart } from "@/lib/facebookPixel";
-import { WallChargerUpsell } from "@/components/WallChargerUpsell";
+
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useBundleProducts, BundleOption, CableType, CABLE_TYPE_INFO } from "@/hooks/useBundleProducts";
@@ -414,10 +414,6 @@ const ProductDetail = () => {
               isLoading={isLoading}
             />
 
-            {/* Wall Charger Upsell */}
-            <WallChargerUpsell
-              selectedBundleId={selectedBundleId as "single" | "duo" | "family"}
-            />
 
             {/* Price Summary */}
             <div className="flex items-baseline gap-3 flex-wrap bg-sky-50 border border-sky-100 rounded-lg p-4">
