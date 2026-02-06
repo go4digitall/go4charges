@@ -13,6 +13,35 @@ import {
 } from '@/lib/shopify';
 import { trackAnalyticsEvent } from '@/hooks/useAnalyticsTracking';
 
+// Helper to check if a product is a wall charger
+const isWallCharger = (product: ShopifyProduct): boolean => {
+  const handle = product.node.handle?.toLowerCase() || '';
+  const title = product.node.title?.toLowerCase() || '';
+  return handle.includes('wall-charger') || title.includes('wall charger');
+};
+
+// Helper to check if a product is a cable/bundle
+const isCableProduct = (product: ShopifyProduct): boolean => {
+  const handle = product.node.handle?.toLowerCase() || '';
+  const title = product.node.title?.toLowerCase() || '';
+  return handle.includes('cable') || handle.includes('chargestand') || 
+         title.includes('cable') || title.includes('chargestand');
+};
+
+// Get total cable/bundle quantity in cart (each pack counts as 1)
+const getTotalCableQuantity = (items: CartItem[]): number => {
+  return items
+    .filter(item => isCableProduct(item.product))
+    .reduce((sum, item) => sum + item.quantity, 0);
+};
+
+// Get current wall charger quantity in cart
+const getWallChargerQuantity = (items: CartItem[]): number => {
+  return items
+    .filter(item => isWallCharger(item.product))
+    .reduce((sum, item) => sum + item.quantity, 0);
+};
+
 export interface CartItem {
   lineId: string | null;
   product: ShopifyProduct;
@@ -195,12 +224,44 @@ export const useCartStore = create<CartStore>()(
         const item = items.find(i => i.variantId === variantId);
         if (!item?.lineId || !cartId) return;
 
+        // Check if this is a wall charger - limit quantity to total cable packs
+        if (isWallCharger(item.product)) {
+          const totalCablePacks = getTotalCableQuantity(items);
+          if (quantity > totalCablePacks) {
+            console.log('Cannot add more chargers than cable packs');
+            return; // Block the update
+          }
+        }
+
         set({ isLoading: true });
         try {
           const result = await updateShopifyCartLine(cartId, item.lineId, quantity);
           if (result.success) {
-            const currentItems = get().items;
-            set({ items: currentItems.map(i => i.variantId === variantId ? { ...i, quantity } : i) });
+            let currentItems = get().items;
+            currentItems = currentItems.map(i => i.variantId === variantId ? { ...i, quantity } : i);
+            
+            // If we decreased a cable product quantity, check if wall charger needs adjustment
+            if (isCableProduct(item.product)) {
+              const newTotalCables = getTotalCableQuantity(currentItems);
+              const wallChargerItem = currentItems.find(i => isWallCharger(i.product));
+              
+              if (wallChargerItem && wallChargerItem.quantity > newTotalCables && wallChargerItem.lineId) {
+                // Adjust wall charger quantity to match cable quantity
+                const adjustedQty = Math.max(newTotalCables, 0);
+                if (adjustedQty === 0) {
+                  // Remove wall charger completely
+                  await removeLineFromShopifyCart(cartId, wallChargerItem.lineId);
+                  currentItems = currentItems.filter(i => i.variantId !== wallChargerItem.variantId);
+                } else {
+                  await updateShopifyCartLine(cartId, wallChargerItem.lineId, adjustedQty);
+                  currentItems = currentItems.map(i => 
+                    i.variantId === wallChargerItem.variantId ? { ...i, quantity: adjustedQty } : i
+                  );
+                }
+              }
+            }
+            
+            set({ items: currentItems });
           } else if (result.cartNotFound) {
             clearCart();
           }
@@ -223,31 +284,22 @@ export const useCartStore = create<CartStore>()(
             const currentItems = get().items;
             let newItems = currentItems.filter(i => i.variantId !== variantId);
             
-            // Check if we removed a cable product - if so, also remove any wall charger upsell
-            const removedHandle = item.product.node.handle?.toLowerCase() || '';
-            const removedTitle = item.product.node.title?.toLowerCase() || '';
-            const wasCableProduct = removedHandle.includes('cable') || removedHandle.includes('chargestand') || 
-                                    removedTitle.includes('cable') || removedTitle.includes('chargestand');
-            
-            if (wasCableProduct) {
-              // Check if there are still cable products in cart
-              const hasCablesLeft = newItems.some(i => {
-                const h = i.product.node.handle?.toLowerCase() || '';
-                const t = i.product.node.title?.toLowerCase() || '';
-                return h.includes('cable') || h.includes('chargestand') || t.includes('cable') || t.includes('chargestand');
-              });
+            // Check if we removed a cable product
+            if (isCableProduct(item.product)) {
+              const newTotalCables = getTotalCableQuantity(newItems);
+              const wallChargerItem = newItems.find(i => isWallCharger(i.product));
               
-              // If no cables left, remove any wall charger (it was an upsell with special pricing)
-              if (!hasCablesLeft) {
-                const wallChargerItem = newItems.find(i => {
-                  const h = i.product.node.handle?.toLowerCase() || '';
-                  const t = i.product.node.title?.toLowerCase() || '';
-                  return h.includes('wall-charger') || t.includes('wall charger');
-                });
-                
-                if (wallChargerItem?.lineId) {
+              if (wallChargerItem && wallChargerItem.lineId) {
+                if (newTotalCables === 0) {
+                  // No cables left - remove wall charger completely
                   await removeLineFromShopifyCart(cartId, wallChargerItem.lineId);
                   newItems = newItems.filter(i => i.variantId !== wallChargerItem.variantId);
+                } else if (wallChargerItem.quantity > newTotalCables) {
+                  // Adjust wall charger quantity to match new cable count
+                  await updateShopifyCartLine(cartId, wallChargerItem.lineId, newTotalCables);
+                  newItems = newItems.map(i => 
+                    i.variantId === wallChargerItem.variantId ? { ...i, quantity: newTotalCables } : i
+                  );
                 }
               }
             }
