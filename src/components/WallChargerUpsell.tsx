@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,6 +7,8 @@ import wallChargerImage from "@/assets/wall-charger-240w.webp";
 import { useCartStore } from "@/stores/cartStore";
 import { trackAddToCart } from "@/lib/facebookPixel";
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
+import { fetchProductByHandle, ShopifyProduct } from "@/lib/shopify";
+import { useQuery } from "@tanstack/react-query";
 
 interface WallChargerUpsellProps {
   selectedBundleId: "single" | "duo" | "family";
@@ -28,30 +30,53 @@ const WALL_CHARGER_SPECS = [
   "Universal Compatibility",
 ];
 
+const WALL_CHARGER_HANDLE = "wall-charger-240w-gan";
+
 export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallChargerUpsellProps) {
   const [isSelected, setIsSelected] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
 
+  // Fetch real Shopify product
+  const { data: wallChargerProduct } = useQuery({
+    queryKey: ['wall-charger-product'],
+    queryFn: () => fetchProductByHandle(WALL_CHARGER_HANDLE),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  // Reset selection when bundle changes
+  useEffect(() => {
+    setIsSelected(false);
+  }, [selectedBundleId]);
+
   const pricing = WALL_CHARGER_PRICING[selectedBundleId];
   const isFree = selectedBundleId === "family";
   const isDiscounted = selectedBundleId === "duo";
+
+  // Get real image URL from Shopify if available
+  const imageUrl = wallChargerProduct?.images?.edges?.[0]?.node?.url || wallChargerImage;
+  const realVariantId = wallChargerProduct?.variants?.edges?.[0]?.node?.id;
 
   const handleAddCharger = async () => {
     if (!isSelected) return;
     
     setIsAdding(true);
     try {
-      // Create a virtual product for the wall charger
-      const wallChargerProduct = {
+      // Use real Shopify product if available, otherwise create virtual product
+      const productToAdd: ShopifyProduct = wallChargerProduct ? {
         node: {
-          id: "wall-charger-240w",
+          ...wallChargerProduct,
+          title: `Wall Charger 240W GaN${isFree ? " (FREE with Family Pack)" : isDiscounted ? " (-50% with Duo Pack)" : ""}`,
+        }
+      } : {
+        node: {
+          id: "gid://shopify/Product/14894341226859",
           title: `Wall Charger 240W GaN${isFree ? " (FREE with Family Pack)" : isDiscounted ? " (-50% with Duo Pack)" : ""}`,
           description: "5-Port 240W GaN Wall Charger",
-          handle: "wall-charger-240w",
+          handle: WALL_CHARGER_HANDLE,
           priceRange: {
             minVariantPrice: {
-              amount: pricing.price.toString(),
+              amount: "19.90",
               currencyCode: "USD",
             },
           },
@@ -69,10 +94,10 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
             edges: [
               {
                 node: {
-                  id: `wall-charger-240w-${selectedBundleId}`,
+                  id: "gid://shopify/ProductVariant/52886642983275",
                   title: "Default",
                   price: {
-                    amount: pricing.price.toString(),
+                    amount: "19.90",
                     currencyCode: "USD",
                   },
                   compareAtPrice: {
@@ -80,7 +105,7 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
                     currencyCode: "USD",
                   },
                   availableForSale: true,
-                  selectedOptions: [] as { name: string; value: string }[],
+                  selectedOptions: [],
                 },
               },
             ],
@@ -89,10 +114,12 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
         },
       };
 
+      const variantId = realVariantId || "gid://shopify/ProductVariant/52886642983275";
+
       await addItem({
-        product: wallChargerProduct,
-        variantId: `wall-charger-240w-${selectedBundleId}`,
-        variantTitle: "Wall Charger 240W GaN",
+        product: productToAdd,
+        variantId: variantId,
+        variantTitle: `Wall Charger 240W GaN${isFree ? " (FREE)" : isDiscounted ? " (-50%)" : ""}`,
         price: { amount: pricing.price.toString(), currencyCode: "USD" },
         quantity: 1,
         selectedOptions: [],
@@ -101,7 +128,7 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
       // Track
       trackAddToCart({
         content_name: "Wall Charger 240W GaN",
-        content_ids: [`wall-charger-240w-${selectedBundleId}`],
+        content_ids: [variantId],
         content_type: "product",
         value: pricing.price,
         currency: "USD",
@@ -111,10 +138,13 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
         product_name: "Wall Charger 240W GaN",
         bundle_type: selectedBundleId,
         price: pricing.price,
-        variant_id: `wall-charger-240w-${selectedBundleId}`,
+        variant_id: variantId,
         source: "wall_charger_upsell",
       });
 
+      // Open cart drawer
+      useCartStore.getState().setIsOpen(true);
+      
       onAddToCart?.();
     } catch (error) {
       console.error("Failed to add wall charger:", error);
@@ -154,7 +184,7 @@ export function WallChargerUpsell({ selectedBundleId, onAddToCart }: WallCharger
           {/* Image */}
           <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 border border-border/50">
             <img
-              src={wallChargerImage}
+              src={imageUrl}
               alt="Wall Charger 240W GaN"
               className="w-full h-full object-cover"
               loading="lazy"
