@@ -221,7 +221,37 @@ export const useCartStore = create<CartStore>()(
           const result = await removeLineFromShopifyCart(cartId, item.lineId);
           if (result.success) {
             const currentItems = get().items;
-            const newItems = currentItems.filter(i => i.variantId !== variantId);
+            let newItems = currentItems.filter(i => i.variantId !== variantId);
+            
+            // Check if we removed a cable product - if so, also remove any wall charger upsell
+            const removedHandle = item.product.node.handle?.toLowerCase() || '';
+            const removedTitle = item.product.node.title?.toLowerCase() || '';
+            const wasCableProduct = removedHandle.includes('cable') || removedHandle.includes('chargestand') || 
+                                    removedTitle.includes('cable') || removedTitle.includes('chargestand');
+            
+            if (wasCableProduct) {
+              // Check if there are still cable products in cart
+              const hasCablesLeft = newItems.some(i => {
+                const h = i.product.node.handle?.toLowerCase() || '';
+                const t = i.product.node.title?.toLowerCase() || '';
+                return h.includes('cable') || h.includes('chargestand') || t.includes('cable') || t.includes('chargestand');
+              });
+              
+              // If no cables left, remove any wall charger (it was an upsell with special pricing)
+              if (!hasCablesLeft) {
+                const wallChargerItem = newItems.find(i => {
+                  const h = i.product.node.handle?.toLowerCase() || '';
+                  const t = i.product.node.title?.toLowerCase() || '';
+                  return h.includes('wall-charger') || t.includes('wall charger');
+                });
+                
+                if (wallChargerItem?.lineId) {
+                  await removeLineFromShopifyCart(cartId, wallChargerItem.lineId);
+                  newItems = newItems.filter(i => i.variantId !== wallChargerItem.variantId);
+                }
+              }
+            }
+            
             newItems.length === 0 ? clearCart() : set({ items: newItems });
           } else if (result.cartNotFound) {
             clearCart();
