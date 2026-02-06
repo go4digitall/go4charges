@@ -100,18 +100,25 @@ export const HeroSection = () => {
               {/* Subtle vignette effect */}
               <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] pointer-events-none" />
               
-              {/* FREE CHARGER Badge - Centered at bottom of image */}
+              {/* FREE CHARGER Badge - Centered at bottom of image with glowing border */}
               <button
                 onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
-                className="absolute bottom-3 left-1/2 -translate-x-1/2 md:bottom-4 bg-gradient-to-r from-emerald-500 to-green-500 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg shadow-lg shadow-emerald-500/40 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer group/badge animate-pulse"
+                className="absolute bottom-3 left-1/2 -translate-x-1/2 md:bottom-4 cursor-pointer group/badge hover:scale-105 transition-transform duration-300"
               >
-                <div className="flex items-center gap-2 md:gap-3">
-                  <span className="text-xl md:text-2xl">🎁</span>
-                  <div className="text-center">
-                    <div className="text-xs md:text-sm font-bold leading-tight">FREE WALL CHARGER</div>
-                    <div className="text-[9px] md:text-xs font-medium text-emerald-100">with Family Pack ($19.90 value)</div>
+                {/* Animated glowing border */}
+                <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-emerald-400 via-green-300 via-emerald-500 to-green-400 opacity-75 blur-sm animate-[spin_3s_linear_infinite]" />
+                <div className="absolute -inset-[2px] rounded-xl bg-gradient-to-r from-emerald-400 via-green-300 via-emerald-500 to-green-400 opacity-90 animate-[spin_3s_linear_infinite]" />
+                
+                {/* Badge content */}
+                <div className="relative bg-gradient-to-r from-emerald-500 to-green-500 text-white px-4 py-2 md:px-5 md:py-3 rounded-lg shadow-lg shadow-emerald-500/40">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <span className="text-xl md:text-2xl">🎁</span>
+                    <div className="text-center">
+                      <div className="text-xs md:text-sm font-bold leading-tight">FREE WALL CHARGER</div>
+                      <div className="text-[9px] md:text-xs font-medium text-emerald-100">with Family Pack ($19.90 value)</div>
+                    </div>
+                    <span className="text-white/80 group-hover/badge:translate-x-1 transition-transform">→</span>
                   </div>
-                  <span className="text-white/80 group-hover/badge:translate-x-1 transition-transform">→</span>
                 </div>
               </button>
             </div>
