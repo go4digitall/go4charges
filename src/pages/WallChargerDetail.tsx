@@ -226,16 +226,6 @@ const WallChargerDetail = () => {
               <span className="text-3xl font-bold text-emerald-600">
                 ${price.toFixed(2)}
               </span>
-              {compareAtPrice > price && (
-                <>
-                  <span className="text-lg text-muted-foreground line-through">
-                    ${compareAtPrice.toFixed(2)}
-                  </span>
-                  <Badge className="bg-emerald-500 text-white hover:bg-emerald-600 text-base px-3 py-1">
-                    -{discountPercent}%
-                  </Badge>
-                </>
-              )}
             </div>
 
             {/* Add to Cart */}
