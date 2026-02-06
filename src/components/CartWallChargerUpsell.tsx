@@ -130,42 +130,10 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
     return null;
   }
 
-  // For Family Pack: show "included" message without button (auto-added)
+  // For Family Pack: don't show upsell UI at all - charger is auto-added silently
+  // The upsell will only reappear if user manually removes the charger from cart
   if (bundleType === 'family') {
-    return (
-      <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-300 rounded-lg p-3 mb-3">
-        <div className="flex gap-3 items-center">
-          <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-emerald-200">
-            <img
-              src={wallChargerImage}
-              alt="Wall Charger 240W GaN"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <Gift className="h-4 w-4 text-emerald-500" />
-              <h4 className="font-semibold text-sm text-foreground">Wall Charger 240W GaN</h4>
-            </div>
-            <p className="text-xs text-emerald-600 font-medium mt-0.5">
-              🎁 Included FREE with your Family Pack!
-            </p>
-          </div>
-
-          <div className="flex-shrink-0 flex items-center gap-1 bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold">
-            {isAdding ? (
-              <Loader2 className="h-3 w-3 animate-spin" />
-            ) : (
-              <>
-                <Check className="h-3 w-3" />
-                <span>FREE</span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   // For Duo and Single: show upsell with Add button
