@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Plus, Check, Loader2 } from "lucide-react";
+import { Zap, Plus, Check, Loader2, Gift } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductByHandle, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore, CartItem } from "@/stores/cartStore";
@@ -39,6 +39,7 @@ const isWallChargerInCart = (items: CartItem[]): boolean => {
 export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const hasAutoAddedRef = useRef(false);
   const addItem = useCartStore(state => state.addItem);
 
   const { data: wallChargerProductNode, isLoading: isLoadingProduct } = useQuery({
@@ -64,18 +65,16 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
 
   const pricing = getPricing();
 
-  const handleAddToCart = async () => {
-    if (!wallChargerProductNode || isAdding || isAdded || alreadyInCart) return;
+  const addWallChargerToCart = async () => {
+    if (!wallChargerProductNode || isAdding || alreadyInCart) return;
 
     const variant = wallChargerProductNode.variants?.edges?.[0]?.node;
     if (!variant) return;
 
     setIsAdding(true);
     try {
-      // Wrap the node in ShopifyProduct format for cart store
       const wrappedProduct: ShopifyProduct = { node: wallChargerProductNode };
 
-      // Create a custom title based on the discount
       let customTitle = "Wall Charger 240W GaN";
       if (bundleType === 'family') {
         customTitle = "Wall Charger 240W GaN (FREE with Family Pack)";
@@ -100,6 +99,27 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
     }
   };
 
+  // Auto-add wall charger for Family Pack
+  useEffect(() => {
+    if (
+      bundleType === 'family' && 
+      !alreadyInCart && 
+      wallChargerProductNode && 
+      !isAdding && 
+      !hasAutoAddedRef.current
+    ) {
+      hasAutoAddedRef.current = true;
+      addWallChargerToCart();
+    }
+  }, [bundleType, alreadyInCart, wallChargerProductNode, isAdding]);
+
+  // Reset auto-add flag if bundle type changes away from family
+  useEffect(() => {
+    if (bundleType !== 'family') {
+      hasAutoAddedRef.current = false;
+    }
+  }, [bundleType]);
+
   // Don't show if already in cart or no cable products
   if (alreadyInCart || cartItems.length === 0) {
     return null;
@@ -110,16 +130,50 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
     return null;
   }
 
+  // For Family Pack: show "included" message without button (auto-added)
+  if (bundleType === 'family') {
+    return (
+      <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-300 rounded-lg p-3 mb-3">
+        <div className="flex gap-3 items-center">
+          <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-emerald-200">
+            <img
+              src={wallChargerImage}
+              alt="Wall Charger 240W GaN"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <Gift className="h-4 w-4 text-emerald-500" />
+              <h4 className="font-semibold text-sm text-foreground">Wall Charger 240W GaN</h4>
+            </div>
+            <p className="text-xs text-emerald-600 font-medium mt-0.5">
+              🎁 Included FREE with your Family Pack!
+            </p>
+          </div>
+
+          <div className="flex-shrink-0 flex items-center gap-1 bg-emerald-500 text-white px-2 py-1 rounded text-xs font-bold">
+            {isAdding ? (
+              <Loader2 className="h-3 w-3 animate-spin" />
+            ) : (
+              <>
+                <Check className="h-3 w-3" />
+                <span>FREE</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // For Duo and Single: show upsell with Add button
   return (
     <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-3 mb-3">
       <div className="flex items-center gap-2 mb-2">
         <Zap className="h-4 w-4 text-amber-500" />
         <span className="text-xs font-bold text-amber-700 uppercase">Complete Your Setup</span>
-        {bundleType === 'family' && (
-          <Badge className="bg-green-500 text-white text-[10px] px-1.5 py-0 animate-pulse">
-            FREE
-          </Badge>
-        )}
         {bundleType === 'duo' && (
           <Badge className="bg-amber-500 text-white text-[10px] px-1.5 py-0">
             50% OFF
@@ -140,12 +194,8 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
           <h4 className="font-semibold text-sm text-foreground truncate">Wall Charger 240W GaN</h4>
           <p className="text-xs text-muted-foreground">5-Port Fast Charger</p>
           <div className="flex items-center gap-2 mt-1">
-            {pricing.price === 0 ? (
-              <span className="text-sm font-bold text-green-600">FREE</span>
-            ) : (
-              <span className="text-sm font-bold text-amber-600">${pricing.price.toFixed(2)}</span>
-            )}
-            {pricing.saving > 0 && pricing.price > 0 && (
+            <span className="text-sm font-bold text-amber-600">${pricing.price.toFixed(2)}</span>
+            {pricing.saving > 0 && (
               <span className="text-xs text-muted-foreground line-through">${pricing.originalPrice.toFixed(2)}</span>
             )}
           </div>
@@ -153,14 +203,12 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
 
         <Button
           size="sm"
-          onClick={handleAddToCart}
+          onClick={addWallChargerToCart}
           disabled={isAdding || isAdded}
           className={`flex-shrink-0 ${
             isAdded 
               ? 'bg-green-500 hover:bg-green-500' 
-              : bundleType === 'family'
-                ? 'bg-green-500 hover:bg-green-600'
-                : 'bg-amber-500 hover:bg-amber-600'
+              : 'bg-amber-500 hover:bg-amber-600'
           } text-white`}
         >
           {isAdding ? (
@@ -179,11 +227,6 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
         </Button>
       </div>
 
-      {bundleType === 'family' && (
-        <p className="text-[10px] text-green-600 mt-2 text-center font-medium">
-          🎁 Included FREE with your Family Pack!
-        </p>
-      )}
       {bundleType === 'duo' && (
         <p className="text-[10px] text-amber-600 mt-2 text-center font-medium">
           ⚡ Save $9.95 with your Duo Pack!
