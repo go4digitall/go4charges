@@ -113,12 +113,12 @@ export const CartWallChargerUpsell = ({ cartItems }: CartWallChargerUpsellProps)
     }
   }, [bundleType, alreadyInCart, wallChargerProductNode, isAdding]);
 
-  // Reset auto-add flag if bundle type changes away from family
+  // Reset auto-add flag when charger is removed from cart (so it can auto-add again)
   useEffect(() => {
-    if (bundleType !== 'family') {
+    if (bundleType === 'family' && !alreadyInCart && !isAdding) {
       hasAutoAddedRef.current = false;
     }
-  }, [bundleType]);
+  }, [bundleType, alreadyInCart, isAdding]);
 
   // Don't show if already in cart or no cable products
   if (alreadyInCart || cartItems.length === 0) {
