@@ -75,25 +75,30 @@ const Index = () => {
                   Error loading product
                 </div>
               ) : products && products.length > 0 ? (
-              <div className="flex justify-center">
-                  {/* Single product card - Single Cable as entry point */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+                  {/* Single Cable Card */}
                   {(() => {
                     const singleProduct = products.find(p => {
                       const handle = p.node.handle.toLowerCase();
-                      // Find the single cable (not duo, not family)
                       return !handle.includes('duo') && 
                              !handle.includes('2x') && 
                              !handle.includes('family') && 
                              !handle.includes('3x') &&
-                             !handle.includes('famille');
+                             !handle.includes('famille') &&
+                             !handle.includes('charger');
                     }) || products[0];
                     
                     return (
-                      <div className="w-full max-w-md">
+                      <div className="w-full">
                         <ProductCard product={singleProduct} isFeatured={false} />
                       </div>
                     );
                   })()}
+                  
+                  {/* Wall Charger Card */}
+                  <div className="w-full">
+                    <WallChargerCard />
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
@@ -110,22 +115,6 @@ const Index = () => {
                 >
                   View all bundle options →
                 </a>
-              </div>
-
-              {/* Wall Charger Section */}
-              <div className="mt-12 pt-10 border-t border-sky-200">
-                <div className="text-center mb-6">
-                  <p className="text-amber-600 font-semibold text-sm uppercase tracking-wide mb-2">⚡ Complete Your Setup</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
-                    Unlock Full <span className="text-amber-600">240W Power</span>
-                  </h3>
-                  <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-                    Your ChargeStand™ needs a powerful charger to reach maximum speed
-                  </p>
-                </div>
-                <div className="max-w-2xl mx-auto">
-                  <WallChargerCard />
-                </div>
               </div>
             </div>
           </section>
