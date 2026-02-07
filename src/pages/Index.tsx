@@ -6,6 +6,7 @@ import { BenefitsSection } from "@/components/BenefitsSection";
 import { CountdownBanner } from "@/components/CountdownBanner";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
+import { WallChargerCard } from "@/components/WallChargerCard";
 import { useProducts } from "@/hooks/useProducts";
 import { useHashScroll } from "@/hooks/useHashScroll";
 import { Loader2 } from "lucide-react";
@@ -109,6 +110,22 @@ const Index = () => {
                 >
                   View all bundle options →
                 </a>
+              </div>
+
+              {/* Wall Charger Section */}
+              <div className="mt-12 pt-10 border-t border-sky-200">
+                <div className="text-center mb-6">
+                  <p className="text-amber-600 font-semibold text-sm uppercase tracking-wide mb-2">⚡ Complete Your Setup</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    Unlock Full <span className="text-amber-600">240W Power</span>
+                  </h3>
+                  <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+                    Your ChargeStand™ needs a powerful charger to reach maximum speed
+                  </p>
+                </div>
+                <div className="max-w-2xl mx-auto">
+                  <WallChargerCard />
+                </div>
               </div>
             </div>
           </section>
