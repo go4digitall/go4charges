@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductByHandle, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { trackAddToCart } from "@/lib/facebookPixel";
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
-import { Loader2, Zap, Shield, Flame, Package } from "lucide-react";
+import { Loader2, Zap, AlertTriangle, ShoppingCart } from "lucide-react";
 
 const WALL_CHARGER_HANDLE = "wall-charger-240w-gan";
 
@@ -22,9 +24,9 @@ export const WallChargerCard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-8">
+      <Card className="h-full flex items-center justify-center min-h-[400px]">
         <Loader2 className="h-6 w-6 animate-spin text-primary" />
-      </div>
+      </Card>
     );
   }
 
@@ -33,11 +35,13 @@ export const WallChargerCard = () => {
   const variant = product.variants?.edges?.[0]?.node;
   const image = product.images?.edges?.[0]?.node;
   const price = variant ? parseFloat(variant.price.amount) : 14.90;
-  const comparePrice = 29.90; // Original price
+  const currencyCode = variant?.price.currencyCode || "USD";
+  const comparePrice = 29.90;
   const discount = Math.round(((comparePrice - price) / comparePrice) * 100);
-
-  // Simulated stock (deterministic based on product ID)
   const stockLevel = 7;
+  const stockPercentage = (stockLevel / 15) * 100;
+  const isLowStock = stockLevel < 5;
+  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
   const handleAddToCart = async () => {
     if (!variant) return;
@@ -75,101 +79,103 @@ export const WallChargerCard = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-amber-200 overflow-hidden relative">
-      {/* Hot Deal Banner */}
-      <div className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white py-2 px-4 text-center relative overflow-hidden">
-        <div className="flex items-center justify-center gap-2 relative z-10">
-          <Flame className="w-4 h-4 animate-pulse" />
-          <span className="font-bold text-sm uppercase tracking-wide">Hot Deal - {discount}% Off</span>
-          <Flame className="w-4 h-4 animate-pulse" />
+    <Card className="group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col border-0 shadow-sm hover:shadow-lg glow-border hover-glow">
+      {/* Hot Deal Banner - matching ProductCard style */}
+      <div className="absolute top-0 left-0 right-0 z-10">
+        <div className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
+          <span>🔥</span>
+          <span>HOT DEAL - {discount}% OFF</span>
+          <span>🔥</span>
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Product Image */}
-          <div className="relative flex-shrink-0 mx-auto md:mx-0">
-            <div className="w-48 h-48 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl flex items-center justify-center overflow-hidden">
-              {image?.url ? (
-                <img 
-                  src={image.url} 
-                  alt={product.title} 
-                  className="w-full h-full object-contain p-4"
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <Zap className="w-20 h-20 text-amber-400" />
-              )}
-            </div>
-            {/* Best Seller Badge */}
-            <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold px-3 py-1 shadow-lg">
-              BEST SELLER
-            </Badge>
-          </div>
-
-          {/* Product Info */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                {product.title}
-              </h3>
-              
-              {/* Features */}
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Zap className="w-4 h-4 text-amber-500" />
-                  <span><strong>240W GaN Technology</strong> - Ultra-fast charging</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Package className="w-4 h-4 text-blue-500" />
-                  <span><strong>5 Ports</strong> - 3x USB-C + 2x USB-A</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-700">
-                  <Shield className="w-4 h-4 text-emerald-500" />
-                  <span><strong>Cool & Safe</strong> - Advanced heat protection</span>
-                </div>
-              </div>
-
-              {/* Price */}
-              <div className="flex items-baseline gap-3 mb-3">
-                <span className="text-3xl font-bold text-amber-600">${price.toFixed(2)}</span>
-                <span className="text-lg text-gray-400 line-through">${comparePrice.toFixed(2)}</span>
-                <Badge className="bg-red-500 text-white">-{discount}%</Badge>
-              </div>
-
-              {/* Stock Warning */}
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[150px]">
-                  <div 
-                    className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full animate-pulse"
-                    style={{ width: `${(stockLevel / 15) * 100}%` }}
-                  />
-                </div>
-                <span className="text-sm font-semibold text-red-600">
-                  🔥 Only {stockLevel} left!
-                </span>
-              </div>
-            </div>
-
-            {/* Add to Cart Button */}
-            <Button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-lg font-bold shadow-lg shadow-orange-500/30"
-            >
-              {isAdding ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <Zap className="w-5 h-5 mr-2" />
-                  ADD TO CART - ${price.toFixed(2)}
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
+      {/* Power Badge */}
+      <div className="absolute top-10 right-3 z-10">
+        <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
+          <Zap className="h-3 w-3 mr-1" />
+          240W GaN
+        </Badge>
       </div>
-    </div>
+
+      {/* Best Seller Badge */}
+      <div className="absolute top-10 left-3 z-10">
+        <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg px-2 py-1 text-xs font-bold">
+          ⚡ Best Seller
+        </Badge>
+      </div>
+
+      {/* Stock Level Indicator */}
+      <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-red-500' : isMediumStock ? 'text-orange-500' : 'text-green-500'}`} />
+          <span className={`text-xs font-semibold ${isLowStock ? 'text-red-600' : isMediumStock ? 'text-orange-600' : 'text-green-600'}`}>
+            Only {stockLevel} left in stock!
+          </span>
+        </div>
+        <Progress 
+          value={stockPercentage} 
+          className={`h-1.5 ${isLowStock ? '[&>div]:bg-red-500' : isMediumStock ? '[&>div]:bg-orange-500' : '[&>div]:bg-green-500'}`}
+        />
+      </div>
+
+      {/* Product Image - Same aspect ratio as ProductCard */}
+      <div className="aspect-square overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
+        {image?.url ? (
+          <img 
+            src={image.url} 
+            alt={product.title} 
+            className="w-full h-full object-contain p-8 group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            decoding="async"
+            width={400}
+            height={400}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Zap className="w-20 h-20 text-amber-400" />
+          </div>
+        )}
+      </div>
+
+      {/* Card Content - Same structure as ProductCard */}
+      <CardContent className="p-4 pb-10 flex flex-col flex-1">
+        <h3 className="font-semibold text-sm mb-1 line-clamp-2 transition-colors group-hover:text-primary">
+          {product.title}
+        </h3>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">
+          5-Port 240W GaN Fast Charger • 3x USB-C PD + 2x USB-A QC3.0
+        </p>
+        <div className="flex items-center justify-between gap-2 mt-auto">
+          <div className="flex flex-col">
+            <span className="text-xs text-muted-foreground line-through">
+              {comparePrice.toFixed(2)} {currencyCode}
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-lg text-primary">
+                {price.toFixed(2)} {currencyCode}
+              </span>
+              <Badge className="bg-red-500 text-white hover:bg-red-600 text-xs px-1.5 py-0">
+                -{discount}%
+              </Badge>
+            </div>
+          </div>
+          <Button 
+            size="sm" 
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md shadow-orange-500/30"
+          >
+            {isAdding ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <>
+                <ShoppingCart className="h-4 w-4 mr-1" />
+                Add
+              </>
+            )}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
