@@ -21,6 +21,7 @@ const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
 // Lazy load popups
 const ExitIntentPopup = lazy(() => import("@/components/ExitIntentPopup").then(m => ({ default: m.ExitIntentPopup })));
 const UpsellModal = lazy(() => import("@/components/UpsellModal").then(m => ({ default: m.UpsellModal })));
+const ChargerUpsellModal = lazy(() => import("@/components/ChargerUpsellModal").then(m => ({ default: m.ChargerUpsellModal })));
 const SocialProofPopup = lazy(() => import("@/components/SocialProofPopup").then(m => ({ default: m.SocialProofPopup })));
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const AppContent = () => {
       <Suspense fallback={null}>
         <ExitIntentPopup />
         <UpsellModal />
+        <ChargerUpsellModal />
         <SocialProofPopup />
       </Suspense>
     </>
