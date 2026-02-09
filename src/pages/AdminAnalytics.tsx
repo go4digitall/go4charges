@@ -54,6 +54,7 @@ interface SalesData {
   }>;
   dailyRevenue: { date: string; revenue: number; orders: number }[];
   topProducts: { name: string; quantity: number; revenue: number }[];
+  salesByState: { state: string; orders: number; revenue: number }[];
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
@@ -303,6 +304,7 @@ const AdminAnalytics = () => {
           recentOrders: [],
           dailyRevenue: [],
           topProducts: [],
+          salesByState: [],
         });
         return;
       }
@@ -372,6 +374,35 @@ const AdminAnalytics = () => {
         .sort((a, b) => b.revenue - a.revenue)
         .slice(0, 5);
 
+      // Sales by state/province
+      const stateMap: Record<string, { orders: number; revenue: number }> = {};
+      const stateAbbreviations: Record<string, string> = {
+        'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR', 'california': 'CA',
+        'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE', 'florida': 'FL', 'georgia': 'GA',
+        'hawaii': 'HI', 'idaho': 'ID', 'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA',
+        'kansas': 'KS', 'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD',
+        'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS', 'missouri': 'MO',
+        'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV', 'new hampshire': 'NH', 'new jersey': 'NJ',
+        'new mexico': 'NM', 'new york': 'NY', 'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH',
+        'oklahoma': 'OK', 'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
+        'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT', 'vermont': 'VT',
+        'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV', 'wisconsin': 'WI', 'wyoming': 'WY',
+      };
+      orders.forEach(o => {
+        const addr = o.shipping_address as { province?: string } | null;
+        let state = addr?.province;
+        if (!state) return;
+        // Normalize to abbreviation
+        const lower = state.toLowerCase();
+        state = stateAbbreviations[lower] || state;
+        if (!stateMap[state]) stateMap[state] = { orders: 0, revenue: 0 };
+        stateMap[state].orders += 1;
+        stateMap[state].revenue += parseFloat(String(o.total_price)) || 0;
+      });
+      const salesByState = Object.entries(stateMap)
+        .map(([state, d]) => ({ state, orders: d.orders, revenue: d.revenue }))
+        .sort((a, b) => b.orders - a.orders);
+
       setSalesData({
         totalRevenue,
         totalOrders,
@@ -393,6 +424,7 @@ const AdminAnalytics = () => {
         })),
         dailyRevenue,
         topProducts,
+        salesByState,
       });
     } catch (error) {
       console.error('Error fetching sales data:', error);
@@ -926,6 +958,36 @@ const AdminAnalytics = () => {
                       )}
                     </CardContent>
                   </Card>
+
+                  {/* Sales by State */}
+                  {salesData.salesByState.length > 0 && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <MapPin className="h-5 w-5 text-blue-600" />
+                          Ventes par État
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={Math.max(250, salesData.salesByState.length * 36)}>
+                          <BarChart data={salesData.salesByState} layout="vertical" margin={{ left: 10 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis type="number" tick={{ fontSize: 11 }} />
+                            <YAxis type="category" dataKey="state" tick={{ fontSize: 12 }} width={40} />
+                            <Tooltip
+                              formatter={(value: number, name: string) => [
+                                name === 'revenue' ? `$${value.toFixed(2)}` : value,
+                                name === 'revenue' ? 'Revenu' : 'Commandes'
+                              ]}
+                            />
+                            <Legend />
+                            <Bar dataKey="orders" fill="#0088FE" name="Commandes" radius={[0, 4, 4, 0]} />
+                            <Bar dataKey="revenue" fill="#00C49F" name="Revenu ($)" radius={[0, 4, 4, 0]} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
 
                 {/* Recent Orders */}
