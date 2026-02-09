@@ -38,6 +38,8 @@ interface SalesData {
   totalOrders: number;
   avgOrderValue: number;
   totalCablesSold: number;
+  usbcCablesSold: number;
+  lightningCablesSold: number;
   totalChargersSold: number;
   currency: string;
   recentOrders: Array<{
@@ -294,6 +296,8 @@ const AdminAnalytics = () => {
           totalOrders: 0,
           avgOrderValue: 0,
           totalCablesSold: 0,
+          usbcCablesSold: 0,
+          lightningCablesSold: 0,
           totalChargersSold: 0,
           currency: 'USD',
           recentOrders: [],
@@ -331,6 +335,8 @@ const AdminAnalytics = () => {
       // Top products + count cables & chargers
       const productMap: Record<string, { quantity: number; revenue: number }> = {};
       let totalCablesSold = 0;
+      let usbcCablesSold = 0;
+      let lightningCablesSold = 0;
       let totalChargersSold = 0;
 
       orders.forEach(o => {
@@ -342,16 +348,22 @@ const AdminAnalytics = () => {
           productMap[name].quantity += qty;
           productMap[name].revenue += (parseFloat(item.price) || 0) * qty;
 
-          // Count actual units sold
           const titleLower = name.toLowerCase();
+          const isLightning = titleLower.includes('lightning');
+          
           if (titleLower.includes('wall charger') || titleLower.includes('chargeur')) {
             totalChargersSold += qty;
           } else if (titleLower.includes('family') || titleLower.includes('famille')) {
-            totalCablesSold += 3 * qty;
+            const units = 3 * qty;
+            totalCablesSold += units;
+            if (isLightning) lightningCablesSold += units; else usbcCablesSold += units;
           } else if (titleLower.includes('duo')) {
-            totalCablesSold += 2 * qty;
+            const units = 2 * qty;
+            totalCablesSold += units;
+            if (isLightning) lightningCablesSold += units; else usbcCablesSold += units;
           } else if (titleLower.includes('chargestand')) {
-            totalCablesSold += 1 * qty;
+            totalCablesSold += qty;
+            if (isLightning) lightningCablesSold += qty; else usbcCablesSold += qty;
           }
         });
       });
@@ -365,6 +377,8 @@ const AdminAnalytics = () => {
         totalOrders,
         avgOrderValue,
         totalCablesSold,
+        usbcCablesSold,
+        lightningCablesSold,
         totalChargersSold,
         currency,
         recentOrders: orders.slice(0, 10).map(o => ({
@@ -771,7 +785,7 @@ const AdminAnalytics = () => {
           {/* Sales Tab */}
           <TabsContent value="sales" className="space-y-6">
             {/* Sales KPIs */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
                 <CardContent className="p-4 md:p-6">
                   <div className="flex items-center gap-2 text-green-600 mb-2">
@@ -807,10 +821,20 @@ const AdminAnalytics = () => {
                 <CardContent className="p-4 md:p-6">
                   <div className="flex items-center gap-2 text-amber-600 mb-2">
                     <span className="text-lg">🔌</span>
-                    <span className="text-sm font-medium">Câbles vendus</span>
+                    <span className="text-sm font-medium">Câbles USB-C</span>
                   </div>
-                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.totalCablesSold || 0}</p>
-                  <p className="text-xs text-muted-foreground mt-1">unités (Duo=2, Family=3)</p>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.usbcCablesSold || 0}</p>
+                  <p className="text-xs text-muted-foreground mt-1">240W • unités vendues</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center gap-2 text-orange-600 mb-2">
+                    <span className="text-lg">🍎</span>
+                    <span className="text-sm font-medium">Câbles Lightning</span>
+                  </div>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.lightningCablesSold || 0}</p>
+                  <p className="text-xs text-muted-foreground mt-1">30W • unités vendues</p>
                 </CardContent>
               </Card>
               <Card className="bg-gradient-to-br from-teal-500/10 to-teal-600/5 border-teal-500/20">
