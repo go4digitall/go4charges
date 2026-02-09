@@ -37,6 +37,8 @@ interface SalesData {
   totalRevenue: number;
   totalOrders: number;
   avgOrderValue: number;
+  totalCablesSold: number;
+  totalChargersSold: number;
   currency: string;
   recentOrders: Array<{
     id: string;
@@ -291,6 +293,8 @@ const AdminAnalytics = () => {
           totalRevenue: 0,
           totalOrders: 0,
           avgOrderValue: 0,
+          totalCablesSold: 0,
+          totalChargersSold: 0,
           currency: 'USD',
           recentOrders: [],
           dailyRevenue: [],
@@ -324,15 +328,31 @@ const AdminAnalytics = () => {
           orders: data.orders 
         }));
 
-      // Top products
+      // Top products + count cables & chargers
       const productMap: Record<string, { quantity: number; revenue: number }> = {};
+      let totalCablesSold = 0;
+      let totalChargersSold = 0;
+
       orders.forEach(o => {
         const lineItems = o.line_items as Array<{ title: string; quantity: number; price: string }> || [];
         lineItems.forEach(item => {
           const name = item.title || 'Unknown';
+          const qty = item.quantity || 1;
           if (!productMap[name]) productMap[name] = { quantity: 0, revenue: 0 };
-          productMap[name].quantity += item.quantity || 1;
-          productMap[name].revenue += (parseFloat(item.price) || 0) * (item.quantity || 1);
+          productMap[name].quantity += qty;
+          productMap[name].revenue += (parseFloat(item.price) || 0) * qty;
+
+          // Count actual units sold
+          const titleLower = name.toLowerCase();
+          if (titleLower.includes('wall charger') || titleLower.includes('chargeur')) {
+            totalChargersSold += qty;
+          } else if (titleLower.includes('family') || titleLower.includes('famille')) {
+            totalCablesSold += 3 * qty;
+          } else if (titleLower.includes('duo')) {
+            totalCablesSold += 2 * qty;
+          } else if (titleLower.includes('chargestand')) {
+            totalCablesSold += 1 * qty;
+          }
         });
       });
       const topProducts = Object.entries(productMap)
@@ -344,6 +364,8 @@ const AdminAnalytics = () => {
         totalRevenue,
         totalOrders,
         avgOrderValue,
+        totalCablesSold,
+        totalChargersSold,
         currency,
         recentOrders: orders.slice(0, 10).map(o => ({
           id: o.id,
@@ -749,36 +771,56 @@ const AdminAnalytics = () => {
           {/* Sales Tab */}
           <TabsContent value="sales" className="space-y-6">
             {/* Sales KPIs */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center gap-2 text-green-600 mb-2">
                     <DollarSign className="h-5 w-5" />
                     <span className="text-sm font-medium">Revenu Total</span>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">
                     ${(salesData?.totalRevenue || 0).toFixed(2)}
                   </p>
                 </CardContent>
               </Card>
               <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center gap-2 text-blue-600 mb-2">
                     <Package className="h-5 w-5" />
                     <span className="text-sm font-medium">Commandes</span>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">{salesData?.totalOrders || 0}</p>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.totalOrders || 0}</p>
                 </CardContent>
               </Card>
               <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
-                <CardContent className="p-6">
+                <CardContent className="p-4 md:p-6">
                   <div className="flex items-center gap-2 text-purple-600 mb-2">
                     <CreditCard className="h-5 w-5" />
                     <span className="text-sm font-medium">Panier Moyen</span>
                   </div>
-                  <p className="text-3xl font-bold text-foreground">
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">
                     ${(salesData?.avgOrderValue || 0).toFixed(2)}
                   </p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-amber-500/10 to-amber-600/5 border-amber-500/20">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center gap-2 text-amber-600 mb-2">
+                    <span className="text-lg">🔌</span>
+                    <span className="text-sm font-medium">Câbles vendus</span>
+                  </div>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.totalCablesSold || 0}</p>
+                  <p className="text-xs text-muted-foreground mt-1">unités (Duo=2, Family=3)</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-teal-500/10 to-teal-600/5 border-teal-500/20">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center gap-2 text-teal-600 mb-2">
+                    <span className="text-lg">⚡</span>
+                    <span className="text-sm font-medium">Chargeurs vendus</span>
+                  </div>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground">{salesData?.totalChargersSold || 0}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Wall Charger 240W</p>
                 </CardContent>
               </Card>
             </div>
