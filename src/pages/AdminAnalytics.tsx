@@ -392,9 +392,18 @@ const AdminAnalytics = () => {
         const addr = o.shipping_address as { province?: string } | null;
         let state = addr?.province;
         if (!state) return;
-        // Normalize to abbreviation
+        // Normalize abbreviations to full names
         const lower = state.toLowerCase();
-        state = stateAbbreviations[lower] || state;
+        if (stateAbbreviations[lower]) {
+          // Already a full name, capitalize it
+          state = state.charAt(0).toUpperCase() + state.slice(1);
+        } else {
+          // It's an abbreviation, find the full name
+          const fullName = Object.entries(stateAbbreviations).find(([, abbr]) => abbr === state.toUpperCase());
+          if (fullName) {
+            state = fullName[0].split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          }
+        }
         if (!stateMap[state]) stateMap[state] = { orders: 0, revenue: 0 };
         stateMap[state].orders += 1;
         stateMap[state].revenue += parseFloat(String(o.total_price)) || 0;
@@ -969,22 +978,32 @@ const AdminAnalytics = () => {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <ResponsiveContainer width="100%" height={Math.max(250, salesData.salesByState.length * 36)}>
-                          <BarChart data={salesData.salesByState} layout="vertical" margin={{ left: 10 }}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis type="number" tick={{ fontSize: 11 }} />
-                            <YAxis type="category" dataKey="state" tick={{ fontSize: 12 }} width={40} />
-                            <Tooltip
-                              formatter={(value: number, name: string) => [
-                                name === 'revenue' ? `$${value.toFixed(2)}` : value,
-                                name === 'revenue' ? 'Revenu' : 'Commandes'
-                              ]}
-                            />
-                            <Legend />
-                            <Bar dataKey="orders" fill="#0088FE" name="Commandes" radius={[0, 4, 4, 0]} />
-                            <Bar dataKey="revenue" fill="#00C49F" name="Revenu ($)" radius={[0, 4, 4, 0]} />
-                          </BarChart>
-                        </ResponsiveContainer>
+                        <div className="flex flex-col lg:flex-row items-center gap-4">
+                          <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                              <Pie
+                                data={salesData.salesByState}
+                                dataKey="orders"
+                                nameKey="state"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                label={({ state, orders }) => `${state} (${orders})`}
+                                labelLine={{ strokeWidth: 1 }}
+                              >
+                                {salesData.salesByState.map((_, index) => (
+                                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                              </Pie>
+                              <Tooltip
+                                formatter={(value: number, name: string, props: { payload: { state: string; revenue: number } }) => [
+                                  `${value} commande${value > 1 ? 's' : ''} • $${props.payload.revenue.toFixed(2)}`,
+                                  props.payload.state
+                                ]}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </div>
                       </CardContent>
                     </Card>
                   )}
