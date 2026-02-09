@@ -92,11 +92,23 @@ const AdminAnalytics = () => {
         .select('*')
         .order('date', { ascending: true });
 
-      // Fetch real-time analytics events to supplement historical data
+      // Fetch real-time analytics events to supplement historical data (limited to page_view/scroll for traffic)
       const { data: realtimeEvents, error: realtimeError } = await supabase
         .from('analytics_events')
         .select('*')
+        .in('event_type', ['page_view', 'scroll_depth'])
         .order('created_at', { ascending: false });
+
+      // Fetch funnel counts separately with exact counts (avoids 1000-row limit)
+      const { count: addToCartTotal, error: atcError } = await supabase
+        .from('analytics_events')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_type', 'add_to_cart');
+
+      const { count: checkoutTotal, error: csError } = await supabase
+        .from('analytics_events')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_type', 'checkout_start');
 
       // Fetch traffic sources
       const { data: sourcesData, error: sourcesError } = await supabase
@@ -122,10 +134,14 @@ const AdminAnalytics = () => {
         .select('*')
         .order('views', { ascending: false });
 
-      if (dailyError || sourcesError || devicesError || countriesError || pagesError || realtimeError) {
-        console.error('Error fetching analytics:', { dailyError, sourcesError, devicesError, countriesError, pagesError, realtimeError });
+      if (dailyError || sourcesError || devicesError || countriesError || pagesError || realtimeError || atcError || csError) {
+        console.error('Error fetching analytics:', { dailyError, sourcesError, devicesError, countriesError, pagesError, realtimeError, atcError, csError });
         throw new Error('Failed to fetch analytics data');
       }
+
+      // Use exact counts from dedicated queries
+      const addToCartCount = addToCartTotal || 0;
+      const checkoutStartCount = checkoutTotal || 0;
 
       // Get the last date from historical data
       const lastHistoricalDate = dailyData && dailyData.length > 0 
@@ -137,23 +153,10 @@ const AdminAnalytics = () => {
       const realtimeDeviceMap: Record<string, number> = {};
       const realtimePageMap: Record<string, number> = {};
       
-      // Count add_to_cart and checkout_start events (from ALL real-time data, not just after historical date)
-      let addToCartCount = 0;
-      let checkoutStartCount = 0;
-      
       realtimeEvents?.forEach(event => {
-        // Count funnel events from all data
-        if (event.event_type === 'add_to_cart') {
-          addToCartCount++;
-        }
-        if (event.event_type === 'checkout_start') {
-          checkoutStartCount++;
-        }
-        
         const eventDate = new Date(event.created_at);
         const dateKey = eventDate.toISOString().split('T')[0];
         
-        // Only count page/device/page events after the last historical date
         if (eventDate > lastHistoricalDate) {
           if (!realtimeDailyMap[dateKey]) {
             realtimeDailyMap[dateKey] = { visitors: new Set(), pageviews: 0 };
@@ -164,12 +167,10 @@ const AdminAnalytics = () => {
             realtimeDailyMap[dateKey].pageviews += 1;
           }
           
-          // Track devices from real-time data
           if (event.device_type) {
             realtimeDeviceMap[event.device_type] = (realtimeDeviceMap[event.device_type] || 0) + 1;
           }
           
-          // Track pages from real-time data
           if (event.page_url && event.event_type === 'page_view') {
             realtimePageMap[event.page_url] = (realtimePageMap[event.page_url] || 0) + 1;
           }
