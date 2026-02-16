@@ -129,8 +129,8 @@ export const ChargerUpsellModal = () => {
   if (!chargerProduct) return null;
 
   const variant = chargerProduct.variants?.edges?.[0]?.node;
-  const chargerPrice = variant ? parseFloat(variant.price.amount) : 14.90;
-  const originalPrice = 29.90;
+  const chargerPrice = 19.90;
+  const originalPrice = 39.90;
   const savings = originalPrice - chargerPrice;
   const chargerImage = chargerProduct.images?.edges?.[0]?.node?.url;
 
