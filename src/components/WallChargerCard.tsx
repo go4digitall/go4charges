@@ -34,9 +34,9 @@ export const WallChargerCard = () => {
 
   const variant = product.variants?.edges?.[0]?.node;
   const image = product.images?.edges?.[0]?.node;
-  const price = variant ? parseFloat(variant.price.amount) : 14.90;
+  const price = 19.90;
   const currencyCode = variant?.price.currencyCode || "USD";
-  const comparePrice = 29.90;
+  const comparePrice = 39.90;
   const discount = Math.round(((comparePrice - price) / comparePrice) * 100);
   const stockLevel = 7;
   const stockPercentage = (stockLevel / 15) * 100;

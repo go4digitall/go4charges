@@ -145,7 +145,7 @@ export const HeroSection = () => {
           </div>
 
           {/* Price Preview - Family Pack first and highlighted */}
-          <div className="grid grid-cols-3 gap-2 max-w-md mx-auto mb-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-lg mx-auto mb-3">
             {/* Family Pack - Most Prominent */}
             <button 
               onClick={() => {
@@ -188,6 +188,21 @@ export const HeroSection = () => {
               <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
               <div className="text-base font-bold text-sky-600">$24.90</div>
               <div className="text-[10px] font-bold text-sky-500">-50%</div>
+            </button>
+            {/* Wall Charger */}
+            <button 
+              onClick={() => {
+                console.log('[Click] Hero Price Preview: Wall Charger');
+                navigate("/product/wall-charger-240w-gan");
+              }}
+              className="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-emerald-400 transition-all duration-200 cursor-pointer"
+            >
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">⚡ NEW</div>
+              <div className="text-[10px] font-semibold text-emerald-700 mb-0.5 mt-1">Wall Charger</div>
+              <div className="text-[9px] font-medium text-emerald-600 -mt-0.5 mb-0.5">240W GaN</div>
+              <div className="text-[10px] text-muted-foreground line-through">$39.90</div>
+              <div className="text-base font-bold text-emerald-600">$19.90</div>
+              <div className="text-[10px] font-bold text-emerald-500">-50%</div>
             </button>
           </div>
 
