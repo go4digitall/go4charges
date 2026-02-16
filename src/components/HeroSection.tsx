@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard, ChevronDown } from "lucide-react";
+import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard, ChevronDown, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-before-after.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductByHandle, ShopifyProduct } from "@/lib/shopify";
+import { useCartStore } from "@/stores/cartStore";
+import { trackAddToCart } from "@/lib/facebookPixel";
+import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 
 // Snowflake component for falling animation
 const Snowflake = ({ style, delay, duration, size }: { style: React.CSSProperties; delay: number; duration: number; size: string }) => (
@@ -20,6 +26,48 @@ const Snowflake = ({ style, delay, duration, size }: { style: React.CSSPropertie
 
 export const HeroSection = () => {
   const navigate = useNavigate();
+  const [isAddingCharger, setIsAddingCharger] = useState(false);
+  const { addItem, setIsOpen } = useCartStore();
+
+  const { data: chargerProduct } = useQuery({
+    queryKey: ['wall-charger-hero'],
+    queryFn: () => fetchProductByHandle('wall-charger-240w-gan'),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const handleAddChargerToCart = async () => {
+    if (!chargerProduct || isAddingCharger) return;
+    const variant = chargerProduct.variants?.edges?.[0]?.node;
+    if (!variant) return;
+
+    setIsAddingCharger(true);
+    try {
+      await addItem({
+        product: { node: chargerProduct } as ShopifyProduct,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        price: variant.price,
+        quantity: 1,
+        selectedOptions: variant.selectedOptions || [],
+      });
+      trackAddToCart({
+        content_name: chargerProduct.title,
+        content_ids: [variant.id],
+        content_type: "product",
+        value: 19.90,
+        currency: variant.price.currencyCode,
+      });
+      trackAnalyticsEvent('add_to_cart', {
+        product_name: chargerProduct.title,
+        price: 19.90,
+        variant_id: variant.id,
+        source: 'hero_wall_charger'
+      });
+      setIsOpen(true);
+    } finally {
+      setIsAddingCharger(false);
+    }
+  };
 
   const goToFamilyBundle = () => {
     console.log('[Click] Shop Winter Sale CTA clicked - navigating to Family Pack');
@@ -189,19 +237,19 @@ export const HeroSection = () => {
               <div className="text-base font-bold text-sky-600">$24.90</div>
               <div className="text-[10px] font-bold text-sky-500">-50%</div>
             </button>
-            {/* Wall Charger */}
+            {/* Wall Charger - Add to Cart */}
             <button 
-              onClick={() => {
-                console.log('[Click] Hero Price Preview: Wall Charger');
-                navigate("/product/wall-charger-240w-gan");
-              }}
-              className="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-emerald-400 transition-all duration-200 cursor-pointer"
+              onClick={handleAddChargerToCart}
+              disabled={isAddingCharger}
+              className="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg hover:border-emerald-400 transition-all duration-200 cursor-pointer disabled:opacity-60"
             >
               <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">⚡ NEW</div>
               <div className="text-[10px] font-semibold text-emerald-700 mb-0.5 mt-1">Wall Charger</div>
               <div className="text-[9px] font-medium text-emerald-600 -mt-0.5 mb-0.5">240W GaN</div>
               <div className="text-[10px] text-muted-foreground line-through">$39.90</div>
-              <div className="text-base font-bold text-emerald-600">$19.90</div>
+              <div className="text-base font-bold text-emerald-600">
+                {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$19.90"}
+              </div>
               <div className="text-[10px] font-bold text-emerald-500">-50%</div>
             </button>
           </div>
