@@ -54,12 +54,12 @@ export const HeroSection = () => {
         content_name: chargerProduct.title,
         content_ids: [variant.id],
         content_type: "product",
-        value: 19.90,
+        value: 24.90,
         currency: variant.price.currencyCode,
       });
       trackAnalyticsEvent('add_to_cart', {
         product_name: chargerProduct.title,
-        price: 19.90,
+        price: 24.90,
         variant_id: variant.id,
         source: 'hero_wall_charger'
       });
@@ -248,9 +248,9 @@ export const HeroSection = () => {
               <div className="text-[9px] font-medium text-emerald-600 -mt-0.5 mb-0.5">240W GaN</div>
               <div className="text-[10px] text-muted-foreground line-through">$39.90</div>
               <div className="text-base font-bold text-emerald-600">
-                {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$19.90"}
+                {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$24.90"}
               </div>
-              <div className="text-[10px] font-bold text-emerald-500">-50%</div>
+              <div className="text-[10px] font-bold text-emerald-500">-38%</div>
             </button>
           </div>
 
