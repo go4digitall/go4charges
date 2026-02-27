@@ -129,7 +129,7 @@ export const ChargerUpsellModal = () => {
   if (!chargerProduct) return null;
 
   const variant = chargerProduct.variants?.edges?.[0]?.node;
-  const chargerPrice = 19.90;
+  const chargerPrice = 24.90;
   const originalPrice = 39.90;
   const savings = originalPrice - chargerPrice;
   const chargerImage = chargerProduct.images?.edges?.[0]?.node?.url;

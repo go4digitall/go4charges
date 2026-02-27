@@ -34,7 +34,7 @@ export const WallChargerCard = () => {
 
   const variant = product.variants?.edges?.[0]?.node;
   const image = product.images?.edges?.[0]?.node;
-  const price = 19.90;
+  const price = 24.90;
   const currencyCode = variant?.price.currencyCode || "USD";
   const comparePrice = 39.90;
   const discount = Math.round(((comparePrice - price) / comparePrice) * 100);
