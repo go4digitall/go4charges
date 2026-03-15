@@ -1,28 +1,32 @@
 
+# Plan : Prix du Wall Charger + Ajout dans le Hero
 
-# Ajouter le Canada comme marché de vente
+## 1. Augmenter le prix affiché du Wall Charger a 19.90$
 
-## Changements nécessaires
+**Fichier** : `src/components/WallChargerCard.tsx`
 
-Le site mentionne déjà le Canada dans la page Shipping & Returns (délais 8-12 jours). Il faut vérifier s'il y a des restrictions géographiques ailleurs dans le code ou la configuration.
+- Changer le `comparePrice` de `29.90` a `39.90` (pour garder une reduction coherente)
+- Ajouter un override du prix a `19.90` au lieu du prix Shopify (actuellement ~14.90)
 
-### Fichiers à vérifier/modifier
+Alternativement, si tu veux que le prix Shopify reste la source de verite, il faudra le modifier directement dans Shopify Admin. Dis-moi ce que tu preferes -- pour ce plan je vais hardcoder 19.90.
 
-1. **`src/pages/ShippingReturns.tsx`** — Le Canada est déjà listé dans les délais de livraison. Aucun changement requis ici.
+## 2. Ajouter le Wall Charger dans le Hero
 
-2. **Shopify Admin** — Vérifier que le Canada est activé comme marché de vente (Markets) et que les zones d'expédition (Shipping Zones) incluent le Canada. Cela doit être fait manuellement dans le Shopify Admin.
+**Fichier** : `src/components/HeroSection.tsx`
 
-3. **Recherche dans le code** — Vérifier s'il y a des restrictions de pays codées en dur (filtres sur "US only", etc.) dans le checkout ou ailleurs.
+- Ajouter un 4eme bouton/carte dans la grille des prix (ligne 148), a cote du Single Cable
+- Passer la grille de `grid-cols-3` a `grid-cols-4` (ou `grid-cols-2 sm:grid-cols-4`)
+- La carte affichera :
+  - Titre : "Wall Charger"
+  - Sous-titre : "240W GaN"
+  - Prix barre : ~$39.90
+  - Prix : $19.90
+  - Badge de reduction
+  - Au clic : navigation vers `/product/wall-charger-240w-gan`
 
-### Actions
+## Details techniques
 
-1. Rechercher dans le codebase toute mention de restriction géographique (US-only, country filter, etc.)
-2. Si des restrictions existent, les mettre à jour pour inclure le Canada
-3. Rappeler à l'utilisateur de configurer le Canada dans Shopify Admin (Markets + Shipping Zones)
-
-### Note importante
-
-Les Markets et Shipping Zones doivent être configurés manuellement dans le Shopify Admin — ce n'est pas faisable via l'API. L'utilisateur devra :
-- Aller dans **Shopify Admin → Settings → Markets** et ajouter le Canada
-- Aller dans **Shopify Admin → Settings → Shipping and delivery** et ajouter une zone Canada
-
+- La grille actuelle des prix dans le Hero contient 3 colonnes (Family, Duo, Single)
+- On ajoute une 4eme colonne pour le Wall Charger avec le meme style visuel
+- Sur mobile, la grille passera en 2 colonnes sur 2 lignes pour rester lisible
+- Le `comparePrice` dans `WallChargerCard.tsx` sera aussi mis a jour pour correspondre
