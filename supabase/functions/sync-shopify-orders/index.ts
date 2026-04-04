@@ -77,7 +77,7 @@ Deno.serve(async (req) => {
         order_number: order.name || order.order_number,
         email: order.email,
         total_price: parseFloat(order.total_price) || 0,
-        currency: order.currency || 'USD',
+        currency: order.currency || 'CAD',
         financial_status: order.financial_status,
         fulfillment_status: order.fulfillment_status,
         items_count: order.line_items?.length || 0,
