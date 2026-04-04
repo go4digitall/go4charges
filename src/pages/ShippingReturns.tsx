@@ -67,14 +67,10 @@ const ShippingReturns = () => {
 
             <h3 className="text-xl font-medium mt-6 mb-3">Delivery Times</h3>
             <p className="text-muted-foreground mb-4">
-              We ship worldwide! Estimated delivery times after processing:
+              We ship across Canada! Estimated delivery times after processing:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li><strong>United States:</strong> 7-10 business days</li>
-              <li><strong>Canada:</strong> 8-12 business days</li>
-              <li><strong>Europe:</strong> 10-14 business days</li>
-              <li><strong>Australia:</strong> 10-14 business days</li>
-              <li><strong>Rest of World:</strong> 12-18 business days</li>
+              <li><strong>Canada:</strong> 7-10 business days</li>
             </ul>
 
             <h3 className="text-xl font-medium mt-6 mb-3">Shipping Costs</h3>
