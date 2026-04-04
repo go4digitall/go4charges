@@ -46,11 +46,12 @@ LIGHTNING VERSION (ChargeStand™ USB-C to Lightning) - NEW!
 
 Package includes: Cable, protective carrying pouch, warranty card
 
-PRICING (all prices in USD - same for both USB-C and Lightning versions):
+PRICING (all prices in CAD - same for both USB-C and Lightning versions):
 - Single ChargeStand™ cable: $24.90 (was $49.90 - 50% OFF)
 - Duo Pack (2 cables): $34.90 (was $99.80 - 65% OFF - POPULAR)
-- Family Pack (3 cables): $44.90 (was $149.70 - 70% OFF - BEST VALUE)
+- Family Pack (3 cables): $44.90 (was $149.70 - 70% OFF - BEST VALUE) + FREE Wall Charger ($49.90 value)!
 Note: USB-C version supports up to 240W, Lightning version supports up to 30W
+The Family Pack is the best deal because it comes with a FREE 240W GaN Wall Charger — perfect to unlock the full speed of the cables.
 
 SHIPPING:
 - FREE shipping across Canada on all orders
