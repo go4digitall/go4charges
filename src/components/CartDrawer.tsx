@@ -52,13 +52,25 @@ const useCountdown = () => {
 
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
-  const giftItems = items.filter((item) => item.isGift);
-  const visibleItems = [
-    ...items.filter((item) => !item.isGift),
-    ...(giftItems.length > 0 ? [{ ...giftItems[0], quantity: 1 }] : []),
-  ];
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const displayItems = items.filter((item) => !item.isGift).reduce((sum, item) => sum + item.quantity, 0) + (giftItems.length > 0 ? 1 : 0);
+  const visibleItems = items.reduce<typeof items>((acc, item) => {
+    if (item.isGift) {
+      const existingGift = acc.find((entry) => entry.isGift);
+      if (existingGift) return acc;
+      return [...acc, { ...item, quantity: 1 }];
+    }
+
+    const existingItem = acc.find((entry) => !entry.isGift && entry.variantId === item.variantId);
+    if (!existingItem) return [...acc, item];
+
+    return acc.map((entry) =>
+      !entry.isGift && entry.variantId === item.variantId
+        ? { ...entry, quantity: entry.quantity + item.quantity }
+        : entry
+    );
+  }, []);
+
+  const totalItems = visibleItems.reduce((sum, item) => sum + (item.isGift ? 1 : item.quantity), 0);
+  const displayItems = totalItems;
   const totalPrice = items.reduce((sum, item) => {
     if (item.isGift) return sum; // Gift items are free
     return sum + (parseFloat(item.price.amount) * item.quantity);
