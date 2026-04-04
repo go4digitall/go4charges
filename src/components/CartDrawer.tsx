@@ -52,8 +52,13 @@ const useCountdown = () => {
 
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const giftItems = items.filter((item) => item.isGift);
+  const visibleItems = [
+    ...items.filter((item) => !item.isGift),
+    ...(giftItems.length > 0 ? [{ ...giftItems[0], quantity: 1 }] : []),
+  ];
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const displayItems = items.reduce((sum, item) => sum + (item.isGift ? 1 : item.quantity), 0);
+  const displayItems = items.filter((item) => !item.isGift).reduce((sum, item) => sum + item.quantity, 0) + (giftItems.length > 0 ? 1 : 0);
   const totalPrice = items.reduce((sum, item) => {
     if (item.isGift) return sum; // Gift items are free
     return sum + (parseFloat(item.price.amount) * item.quantity);
@@ -138,7 +143,7 @@ export const CartDrawer = () => {
         )}
 
         <div className="flex flex-col flex-1 px-4 min-h-0">
-          {items.length === 0 ? (
+          {visibleItems.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -149,8 +154,8 @@ export const CartDrawer = () => {
             <>
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
                 <div className="space-y-3">
-                  {items.map((item) => (
-                    <div key={item.variantId} className={`flex gap-3 p-2 border rounded-lg ${item.isGift ? 'bg-emerald-50 border-emerald-200' : 'bg-card'}`}>
+                  {visibleItems.map((item, index) => (
+                    <div key={item.lineId ?? `${item.variantId}-${index}`} className={`flex gap-3 p-2 border rounded-lg ${item.isGift ? 'bg-emerald-50 border-emerald-200' : 'bg-card'}`}>
                       <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
                           <img 
