@@ -108,7 +108,7 @@ export function BundleSelector({
                 <RadioGroupItem
                   value={option.id}
                   id={option.id}
-                  className="mt-1 border-sky-400 text-sky-500"
+                  className="mt-1 border-amber-400 text-amber-500"
                 />
 
                 {/* Content */}
