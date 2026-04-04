@@ -282,7 +282,7 @@ export const useCartStore = create<CartStore>()(
         const { checkoutUrl, items } = get();
         if (!checkoutUrl) return null;
         // Auto-apply discount code if Family Pack + charger gift in cart
-        if (hasFamilyPackInItems(items) && hasChargerGiftInItems(items)) {
+        if (getFamilyPackCount(items) > 0 && hasChargerGiftInItems(items)) {
           try {
             const url = new URL(checkoutUrl);
             url.searchParams.set('discount', FREE_CHARGER_DISCOUNT_CODE);
