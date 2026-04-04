@@ -250,11 +250,6 @@ const ProductDetail = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/50 to-background">
       <Header />
       <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10 relative">
-        {/* Decorative snowflakes */}
-        <div className="absolute top-24 left-[5%] text-sky-300/30 text-2xl pointer-events-none">❄</div>
-        <div className="absolute top-32 right-[8%] text-blue-300/25 text-lg pointer-events-none">❄</div>
-        <div className="absolute top-[40%] left-[3%] text-indigo-300/20 text-xl pointer-events-none hidden md:block">❄</div>
-        <div className="absolute top-[60%] right-[5%] text-sky-300/25 text-base pointer-events-none hidden md:block">❄</div>
 
         {/* Breadcrumb */}
         <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
