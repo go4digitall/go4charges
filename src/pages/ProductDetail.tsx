@@ -439,7 +439,7 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  ❄️ Add to Cart - {selectedBundle?.name}
+                  ⚡ Add to Cart - {selectedBundle?.name}
                 </>
               )}
             </Button>
