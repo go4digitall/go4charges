@@ -1,32 +1,47 @@
 
-# Plan : Prix du Wall Charger + Ajout dans le Hero
 
-## 1. Augmenter le prix affiché du Wall Charger a 19.90$
+# Orienter le site Go4Charges vers le Canada uniquement
 
-**Fichier** : `src/components/WallChargerCard.tsx`
+## Résumé
+Remplacer toutes les mentions "Worldwide", "USD", et références aux autres pays par du contenu ciblant exclusivement le Canada. La boutique Shopify Canada sera connectée plus tard par l'utilisateur.
 
-- Changer le `comparePrice` de `29.90` a `39.90` (pour garder une reduction coherente)
-- Ajouter un override du prix a `19.90` au lieu du prix Shopify (actuellement ~14.90)
+## Changements par fichier
 
-Alternativement, si tu veux que le prix Shopify reste la source de verite, il faudra le modifier directement dans Shopify Admin. Dis-moi ce que tu preferes -- pour ce plan je vais hardcoder 19.90.
+### 1. Mentions "Worldwide" → "Canada 🇨🇦"
 
-## 2. Ajouter le Wall Charger dans le Hero
+| Fichier | Avant | Après |
+|---------|-------|-------|
+| `src/pages/Index.tsx` | "Free Shipping Worldwide" | "Free Shipping Across Canada 🇨🇦" |
+| `src/components/CTASection.tsx` | "FREE Worldwide Shipping" | "FREE Shipping to Canada 🇨🇦" |
+| `src/components/ChargerUpsellModal.tsx` | "FREE worldwide shipping" | "FREE shipping across Canada" |
+| `src/components/ExitIntentPopup.tsx` | "Free worldwide shipping" | "Free shipping across Canada 🇨🇦" |
+| `src/pages/ProductDetail.tsx` | "Worldwide delivery" | "Ships across Canada 🇨🇦" |
+| `src/components/HeroSection.tsx` | "Free Shipping" (trust badge) | "Free Shipping 🇨🇦" |
+| `src/components/TrustBadgeSection.tsx` | "FREE Shipping" | "FREE Shipping 🇨🇦" |
+| `src/components/CartDrawer.tsx` | "FREE Shipping" | "FREE Shipping 🇨🇦" |
+| `src/pages/ShippingReturns.tsx` | "Free Shipping - On all orders" | "Free Shipping - Across Canada" |
 
-**Fichier** : `src/components/HeroSection.tsx`
+### 2. Devise USD → CAD
 
-- Ajouter un 4eme bouton/carte dans la grille des prix (ligne 148), a cote du Single Cable
-- Passer la grille de `grid-cols-3` a `grid-cols-4` (ou `grid-cols-2 sm:grid-cols-4`)
-- La carte affichera :
-  - Titre : "Wall Charger"
-  - Sous-titre : "240W GaN"
-  - Prix barre : ~$39.90
-  - Prix : $19.90
-  - Badge de reduction
-  - Au clic : navigation vers `/product/wall-charger-240w-gan`
+| Fichier | Changement |
+|---------|-----------|
+| `src/pages/ProductDetail.tsx` | `currency: 'USD'` → `currency: 'CAD'` (2 occurrences Facebook Pixel) |
+| `src/components/WallChargerCard.tsx` | `currencyCode || "USD"` → `currencyCode || "CAD"` |
+| `src/pages/TermsConditions.tsx` | "All prices are displayed in USD" → "All prices are displayed in CAD" |
 
-## Details techniques
+### 3. Page Shipping & Returns
+- Retirer les lignes United States, Europe, Australia, Rest of World
+- Garder uniquement **Canada: 7-10 business days**
+- Changer "We ship worldwide" → "We ship across Canada"
 
-- La grille actuelle des prix dans le Hero contient 3 colonnes (Family, Duo, Single)
-- On ajoute une 4eme colonne pour le Wall Charger avec le meme style visuel
-- Sur mobile, la grille passera en 2 colonnes sur 2 lignes pour rester lisible
-- Le `comparePrice` dans `WallChargerCard.tsx` sera aussi mis a jour pour correspondre
+### 4. FAQ Section
+- Question "Do you ship internationally?" → "Where do you ship?"
+- Réponse : "We ship across Canada with FREE shipping on all orders. Delivery typically takes 7-10 business days."
+- Question "Winter Clearance" : garder telle quelle (promo indépendante de la géo)
+
+### 5. Chatbot (Edge Function)
+- `supabase/functions/chat/index.ts` : mettre à jour le system prompt pour mentionner Canada uniquement et délais 7-10 jours
+
+### Note importante
+La boutique Shopify actuelle reste connectée pour l'instant. L'utilisateur créera une boutique Shopify Canada séparée et la connectera plus tard. Les prix affichés via le Storefront API refléteront la devise configurée dans cette nouvelle boutique.
+
