@@ -75,7 +75,7 @@ const ShippingReturns = () => {
 
             <h3 className="text-xl font-medium mt-6 mb-3">Shipping Costs</h3>
             <p className="text-muted-foreground">
-              We offer <strong>FREE standard shipping</strong> on all orders worldwide. Express shipping options 
+              We offer <strong>FREE standard shipping</strong> on all orders across Canada. Express shipping options 
               are available at checkout for an additional fee.
             </p>
 
