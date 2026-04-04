@@ -92,8 +92,8 @@ export function BundleSelector({
               className={cn(
                 "relative flex cursor-pointer rounded-xl border-2 p-4 transition-all duration-200",
                 isSelected
-                  ? "border-sky-500 bg-gradient-to-r from-sky-50 to-blue-50 shadow-md shadow-sky-500/20"
-                  : "border-border bg-card hover:border-sky-300 hover:bg-sky-50/50"
+                  ? "border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 shadow-md shadow-amber-500/20"
+                  : "border-border bg-card hover:border-amber-300 hover:bg-amber-50/50"
               )}
             >
               {/* Selected indicator */}
