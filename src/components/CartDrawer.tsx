@@ -9,6 +9,19 @@ import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import paymentBadges from "@/assets/payment-badges.png";
 
 const ORIGINAL_UNIT_PRICE = 49.90;
+const WALL_CHARGER_HANDLE = 'wall-charger-240w-gan';
+
+const isWallCharger = (product: { node: { handle: string } }): boolean => {
+  return product.node.handle.toLowerCase() === WALL_CHARGER_HANDLE;
+};
+
+const hasFamilyPack = (items: typeof useCartStore extends ((...args: any) => { items: infer T }) ? T : any[]): boolean => {
+  return (items as any[]).some((item: any) => {
+    const handle = item.product?.node?.handle?.toLowerCase() || '';
+    const title = item.product?.node?.title?.toLowerCase() || '';
+    return handle.includes('family') || handle.includes('famille') || title.includes('family') || title.includes('famille');
+  });
+};
 
 const getBundleSize = (product: { node: { handle: string; title: string } }): number => {
   const handle = product.node.handle.toLowerCase();
@@ -53,10 +66,13 @@ const useCountdown = () => {
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const visibleItems = items.reduce<typeof items>((acc, item) => {
-    if (item.isGift) {
+    // Identify gift by isGift flag OR by being the wall charger when a Family Pack is in cart
+    const isGiftItem = item.isGift || (isWallCharger(item.product) && hasFamilyPack(items));
+    
+    if (isGiftItem) {
       const existingGift = acc.find((entry) => entry.isGift);
       if (existingGift) return acc;
-      return [...acc, { ...item, quantity: 1 }];
+      return [...acc, { ...item, quantity: 1, isGift: true }];
     }
 
     const existingItem = acc.find((entry) => !entry.isGift && entry.variantId === item.variantId);
