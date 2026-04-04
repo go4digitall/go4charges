@@ -212,7 +212,7 @@ const ProductDetail = () => {
         product: selectedBundle.product,
         variantId: selectedBundle.variantId,
         variantTitle: selectedBundle.name,
-        price: { amount: selectedBundle.price.toString(), currencyCode: 'USD' },
+        price: { amount: selectedBundle.price.toString(), currencyCode: 'CAD' },
         quantity: 1,
         selectedOptions: []
       });
