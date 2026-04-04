@@ -56,8 +56,55 @@ function shouldHaveFreeCharger(items: CartItem[]): boolean {
   return getFamilyPackCount(items) > 0;
 }
 
+function areCartItemsEqual(currentItems: CartItem[], nextItems: CartItem[]): boolean {
+  if (currentItems.length !== nextItems.length) return false;
+
+  return currentItems.every((item, index) => {
+    const nextItem = nextItems[index];
+
+    return (
+      item.lineId === nextItem?.lineId &&
+      item.variantId === nextItem?.variantId &&
+      item.quantity === nextItem?.quantity &&
+      item.isGift === nextItem?.isGift
+    );
+  });
+}
+
+function mergeDuplicateVariantItems(items: CartItem[]): CartItem[] {
+  const mergedItems = new Map<string, CartItem>();
+
+  for (const item of items.filter((entry) => !entry.isGift)) {
+    const existingItem = mergedItems.get(item.variantId);
+
+    if (!existingItem) {
+      mergedItems.set(item.variantId, { ...item });
+      continue;
+    }
+
+    mergedItems.set(item.variantId, {
+      ...existingItem,
+      lineId: existingItem.lineId ?? item.lineId,
+      quantity: existingItem.quantity + item.quantity,
+    });
+  }
+
+  return Array.from(mergedItems.values());
+}
+
+function normalizeCartItems(items: CartItem[]): CartItem[] {
+  const normalizedNonGiftItems = mergeDuplicateVariantItems(items);
+  const giftItem = getChargerGiftItem(items);
+
+  if (!shouldHaveFreeCharger(normalizedNonGiftItems) || !giftItem) {
+    return normalizedNonGiftItems;
+  }
+
+  return [...normalizedNonGiftItems, { ...giftItem, quantity: 1, isGift: true }];
+}
+
 function normalizeGiftItems(items: CartItem[], quantity: number): CartItem[] {
-  const nonGiftItems = items.filter(item => !item.isGift);
+  const nonGiftItems = mergeDuplicateVariantItems(items);
   const firstGiftItem = getChargerGiftItem(items);
 
   if (!firstGiftItem || quantity <= 0) return nonGiftItems;
@@ -153,7 +200,19 @@ async function removeLineFromShopifyCart(cartId: string, lineId: string): Promis
 
 export const useCartStore = create<CartStore>()(
   persist(
-    (set, get) => ({
+    (set, get) => {
+      const getSafeItems = () => {
+        const currentItems = get().items;
+        const normalizedItems = normalizeCartItems(currentItems);
+
+        if (!areCartItemsEqual(currentItems, normalizedItems)) {
+          set({ items: normalizedItems });
+        }
+
+        return normalizedItems;
+      };
+
+      return {
       items: [],
       cartId: null,
       checkoutUrl: null,
@@ -163,7 +222,8 @@ export const useCartStore = create<CartStore>()(
       setIsOpen: (open: boolean) => set({ isOpen: open }),
 
       addItem: async (item) => {
-        const { items, cartId, clearCart } = get();
+        const items = getSafeItems();
+        const { cartId, clearCart } = get();
         const existingItem = items.find(i => i.variantId === item.variantId);
         
         set({ isLoading: true });
@@ -251,7 +311,8 @@ export const useCartStore = create<CartStore>()(
           return;
         }
         
-        const { items, cartId, clearCart } = get();
+        const items = getSafeItems();
+        const { cartId, clearCart } = get();
         const item = items.find(i => i.variantId === variantId);
         if (!item?.lineId || !cartId) return;
 
@@ -276,7 +337,8 @@ export const useCartStore = create<CartStore>()(
       },
 
       removeItem: async (variantId) => {
-        const { items, cartId, clearCart } = get();
+        const items = getSafeItems();
+        const { cartId, clearCart } = get();
         const item = items.find(i => i.variantId === variantId);
         if (!item?.lineId || !cartId) return;
 
@@ -310,7 +372,8 @@ export const useCartStore = create<CartStore>()(
       clearCart: () => set({ items: [], cartId: null, checkoutUrl: null }),
       
       getCheckoutUrl: () => {
-        const { checkoutUrl, items } = get();
+        const { checkoutUrl } = get();
+        const items = getSafeItems();
         if (!checkoutUrl) return null;
         // Auto-apply discount code if Family Pack + charger gift in cart
         if (shouldHaveFreeCharger(items) && hasChargerGiftInItems(items)) {
@@ -327,12 +390,13 @@ export const useCartStore = create<CartStore>()(
 
       autoAddFreeCharger: async () => {
         const { cartId } = get();
-        if (!cartId || hasChargerGiftInItems(get().items)) return;
+        const items = getSafeItems();
+        if (!cartId || hasChargerGiftInItems(items)) return;
         
         try {
           const chargerProduct = await fetchProductByHandle(WALL_CHARGER_HANDLE);
           if (!chargerProduct) return;
-          if (hasChargerGiftInItems(get().items)) return;
+          if (hasChargerGiftInItems(getSafeItems())) return;
           
           const variant = chargerProduct.variants?.edges?.[0]?.node;
           if (!variant) return;
@@ -350,7 +414,7 @@ export const useCartStore = create<CartStore>()(
           
           const result = await addLineToShopifyCart(cartId, giftItem);
           if (result.success) {
-            const currentItems = get().items;
+            const currentItems = getSafeItems();
             set({ items: normalizeGiftItems([...currentItems, { ...giftItem, lineId: result.lineId ?? null }], 1) });
           }
         } catch (error) {
@@ -359,7 +423,8 @@ export const useCartStore = create<CartStore>()(
       },
 
       autoRemoveFreeCharger: async () => {
-        const { items, cartId, clearCart } = get();
+        const items = getSafeItems();
+        const { cartId, clearCart } = get();
         const giftItems = getChargerGiftItems(items);
         if (!cartId || giftItems.length === 0) return;
         
@@ -382,7 +447,8 @@ export const useCartStore = create<CartStore>()(
       },
 
       syncChargerGiftQuantity: async () => {
-        const { items, cartId, clearCart } = get();
+        const items = getSafeItems();
+        const { cartId, clearCart } = get();
         const giftItems = getChargerGiftItems(items);
         const giftItem = giftItems[0];
         const targetQuantity = shouldHaveFreeCharger(items) ? 1 : 0;
@@ -424,6 +490,8 @@ export const useCartStore = create<CartStore>()(
         const { cartId, isSyncing, clearCart } = get();
         if (!cartId || isSyncing) return;
 
+        getSafeItems();
+
         set({ isSyncing: true });
         try {
           const data = await storefrontApiRequest(CART_QUERY, { id: cartId });
@@ -440,10 +508,20 @@ export const useCartStore = create<CartStore>()(
           set({ isSyncing: false });
         }
       }
-    }),
+    };
+    },
     {
       name: 'shopify-cart',
       storage: createJSONStorage(() => localStorage),
+      merge: (persistedState, currentState) => {
+        const typedPersistedState = persistedState as Partial<CartStore>;
+
+        return {
+          ...currentState,
+          ...typedPersistedState,
+          items: normalizeCartItems(Array.isArray(typedPersistedState.items) ? typedPersistedState.items : currentState.items),
+        };
+      },
       partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl }),
     }
   )
