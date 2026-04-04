@@ -150,7 +150,6 @@ export const useCartStore = create<CartStore>()(
                 checkoutUrl: result.checkoutUrl,
                 items: [{ ...item, lineId: result.lineId }]
               });
-              // Track add to cart event
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -158,6 +157,10 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              // Auto-add free charger if Family Pack
+              if (isFamilyPack(item.product)) {
+                await get().autoAddFreeCharger();
+              }
             }
           } else if (existingItem) {
             const newQuantity = existingItem.quantity + item.quantity;
@@ -169,7 +172,6 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: currentItems.map(i => i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i) });
-              // Track add to cart event (quantity update)
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -185,7 +187,6 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: [...currentItems, { ...item, lineId: result.lineId ?? null }] });
-              // Track add to cart event
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -193,6 +194,10 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              // Auto-add free charger if Family Pack and no gift yet
+              if (isFamilyPack(item.product) && !hasChargerGiftInItems(get().items)) {
+                await get().autoAddFreeCharger();
+              }
             } else if (result.cartNotFound) {
               clearCart();
             }
