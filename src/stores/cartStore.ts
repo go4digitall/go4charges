@@ -258,8 +258,11 @@ export const useCartStore = create<CartStore>()(
             // Auto-remove charger gift if no more Family Pack
             if (isFamilyPack(item.product) && !item.isGift) {
               const updatedItems = get().items;
-              if (!hasFamilyPackInItems(updatedItems)) {
+              const familyCount = getFamilyPackCount(updatedItems);
+              if (familyCount === 0) {
                 await get().autoRemoveFreeCharger();
+              } else {
+                await get().syncChargerGiftQuantity();
               }
             }
           } else if (result.cartNotFound) {
