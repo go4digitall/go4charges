@@ -481,7 +481,7 @@ const ProductDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Free Shipping</p>
-                  <p className="text-xs text-muted-foreground">Worldwide delivery</p>
+                  <p className="text-xs text-muted-foreground">Ships across Canada 🇨🇦</p>
                 </div>
               </div>
             </div>
