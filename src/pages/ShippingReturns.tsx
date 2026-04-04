@@ -27,8 +27,8 @@ const ShippingReturns = () => {
               <Truck className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="font-semibold">Free Shipping</p>
-              <p className="text-sm text-muted-foreground">On all orders</p>
+              <p className="font-semibold">Free Shipping 🇨🇦</p>
+              <p className="text-sm text-muted-foreground">Across Canada</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 border">
