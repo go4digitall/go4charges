@@ -225,7 +225,7 @@ const ProductDetail = () => {
         content_ids: [selectedBundle.variantId],
         content_type: 'product',
         value: selectedBundle.price,
-        currency: 'USD'
+        currency: 'CAD'
       });
       
       // Database analytics tracking

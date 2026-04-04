@@ -31,8 +31,8 @@ const faqs = [
     answer: "Once your order ships, you'll receive an email with your tracking number and a direct link to track your package with the carrier. You can also check your order status anytime by clicking the link in your order confirmation email."
   },
   {
-    question: "Do you ship internationally?",
-    answer: "Yes! We offer FREE worldwide shipping on all orders. Orders typically arrive within 7-14 business days depending on your location. You'll receive tracking information once your order ships."
+    question: "Where do you ship?",
+    answer: "We ship across Canada with FREE shipping on all orders! Delivery typically takes 7-10 business days. You'll receive tracking information once your order ships."
   },
   {
     question: "What if I'm not satisfied?",

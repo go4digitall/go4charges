@@ -37,7 +37,7 @@ export const CTASection = () => {
 
         <p className="text-sm text-muted-foreground">
           <span className="text-emerald-600">✓</span> 30-Day Money-Back Guarantee • 
-          <span className="text-blue-600"> ✓</span> FREE Worldwide Shipping • 
+          <span className="text-blue-600"> ✓</span> FREE Shipping to Canada 🇨🇦 • 
           <span className="text-violet-600"> ✓</span> Safe & Secure Checkout
         </p>
 

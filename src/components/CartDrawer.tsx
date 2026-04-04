@@ -289,7 +289,7 @@ export const CartDrawer = () => {
 
                 {/* Final Reassurance */}
                 <p className="text-center text-xs text-muted-foreground pb-2">
-                  ❄️ Free Worldwide Shipping • 30-Day Money-Back Guarantee ❄️
+                  ❄️ Free Shipping Across Canada 🇨🇦 • 30-Day Money-Back Guarantee ❄️
                 </p>
               </div>
             </>

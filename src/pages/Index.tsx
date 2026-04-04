@@ -55,7 +55,7 @@ const Index = () => {
                     <span>WINTER CLEARANCE - UP TO 70% OFF!</span>
                     <span>❄️</span>
                   </div>
-                  <p className="text-sm mt-1 text-blue-100">Limited Winter Stock • Free Shipping Worldwide</p>
+                  <p className="text-sm mt-1 text-blue-100">Limited Winter Stock • Free Shipping Across Canada 🇨🇦</p>
                 </div>
 
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">

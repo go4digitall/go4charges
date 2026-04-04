@@ -79,12 +79,6 @@ const ShippingReturns = () => {
               are available at checkout for an additional fee.
             </p>
 
-            <h3 className="text-xl font-medium mt-6 mb-3">Customs & Duties</h3>
-            <p className="text-muted-foreground">
-              For international orders, customs fees and import duties may apply depending on your country's 
-              regulations. These fees are the responsibility of the customer and are not included in our 
-              shipping costs.
-            </p>
           </section>
 
           {/* Returns Section */}
