@@ -191,10 +191,13 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              // Sync charger gift quantity if Family Pack quantity changed
+              if (isFamilyPack(item.product)) {
+                await get().syncChargerGiftQuantity();
+              }
             } else if (result.cartNotFound) {
               clearCart();
             }
-          } else {
             const result = await addLineToShopifyCart(cartId, { ...item, lineId: null });
             if (result.success) {
               const currentItems = get().items;
