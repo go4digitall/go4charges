@@ -582,7 +582,7 @@ const ProductDetail = () => {
               </div>
               <a 
                 href="/#testimonials" 
-                className="mt-3 md:mt-4 inline-flex items-center text-xs md:text-sm text-sky-600 hover:text-sky-700 font-medium transition-colors"
+                className="mt-3 md:mt-4 inline-flex items-center text-xs md:text-sm text-amber-600 hover:text-amber-700 font-medium transition-colors"
               >
                 See all 1,247 reviews →
               </a>
