@@ -337,11 +337,15 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Winter Urgency Banner */}
-            <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white font-bold py-3 px-4 rounded-lg text-center relative overflow-hidden">
-              <div className="absolute top-1 left-3 text-white/20 text-sm">❄</div>
-              <div className="absolute bottom-1 right-4 text-white/20 text-sm">❄</div>
-              <span className="relative z-10">❄️ WINTER SALE - UP TO 70% OFF!</span>
+            {/* Flash Sale Urgency Banner */}
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold py-3 px-4 rounded-lg text-center">
+              <span>⚡ FLASH SALE - UP TO 70% OFF!</span>
+            </div>
+
+            {/* Free Charger with Family Pack */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-3 flex items-center gap-2">
+              <span className="text-lg">🎁</span>
+              <span className="text-sm font-semibold text-emerald-700">FREE Wall Charger ($49.90 value) with every Family Pack!</span>
             </div>
 
             {/* Active Viewers Counter */}
