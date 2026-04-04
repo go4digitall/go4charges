@@ -35,27 +35,17 @@ const Index = () => {
           <BenefitsSection />
           
           {/* Products Section */}
-          <section id="products" className="py-12 md:py-16 bg-gradient-to-b from-sky-50 to-blue-50 scroll-mt-56 md:scroll-mt-36 relative overflow-hidden">
-            {/* Decorative snowflakes */}
-            <div className="absolute top-4 left-[10%] text-sky-300/40 text-2xl pointer-events-none">❄</div>
-            <div className="absolute top-12 right-[15%] text-blue-300/30 text-lg pointer-events-none">❄</div>
-            <div className="absolute bottom-8 left-[20%] text-indigo-300/25 text-xl pointer-events-none">❄</div>
-            <div className="absolute bottom-16 right-[25%] text-sky-300/35 text-base pointer-events-none">❄</div>
-            
+          <section id="products" className="py-12 md:py-16 bg-gradient-to-b from-amber-50/50 to-orange-50/30 scroll-mt-56 md:scroll-mt-36 relative overflow-hidden">
             <div className="container">
               <div className="text-center mb-10">
-                {/* Winter Clearance Banner */}
-                <div className="mb-6 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg shadow-blue-500/30 max-w-2xl mx-auto relative overflow-hidden">
-                  <div className="absolute top-1 left-4 text-white/20 text-lg">❄</div>
-                  <div className="absolute top-2 right-6 text-white/15 text-sm">❄</div>
-                  <div className="absolute bottom-1 right-12 text-white/20 text-base">❄</div>
-                  
+                {/* Flash Sale Banner */}
+                <div className="mb-6 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-4 px-6 rounded-xl shadow-lg shadow-orange-500/30 max-w-2xl mx-auto relative overflow-hidden">
                   <div className="flex items-center justify-center gap-2 text-lg md:text-xl font-bold">
-                    <span>❄️</span>
-                    <span>WINTER CLEARANCE - UP TO 70% OFF!</span>
-                    <span>❄️</span>
+                    <span>⚡</span>
+                    <span>FLASH SALE - UP TO 70% OFF!</span>
+                    <span>⚡</span>
                   </div>
-                  <p className="text-sm mt-1 text-blue-100">Limited Winter Stock • Free Shipping Across Canada 🇨🇦</p>
+                  <p className="text-sm mt-1 text-orange-100">Limited Stock • Free Shipping Across Canada 🇨🇦 • FREE Charger with Family Pack 🎁</p>
                 </div>
 
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
