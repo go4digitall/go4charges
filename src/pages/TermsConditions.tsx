@@ -45,7 +45,7 @@ const TermsConditions = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">3. Pricing and Payment</h2>
             <p className="text-muted-foreground mb-4">
-              All prices are displayed in USD and are subject to change without notice. We accept major credit cards, 
+              All prices are displayed in CAD and are subject to change without notice. We accept major credit cards, 
               PayPal, and other payment methods as displayed at checkout. Payment must be received in full before order 
               processing begins.
             </p>
