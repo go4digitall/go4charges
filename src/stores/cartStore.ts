@@ -21,6 +21,24 @@ export interface CartItem {
   price: { amount: string; currencyCode: string };
   quantity: number;
   selectedOptions: Array<{ name: string; value: string }>;
+  isGift?: boolean;
+}
+
+const WALL_CHARGER_HANDLE = 'wall-charger-240w-gan';
+const FREE_CHARGER_DISCOUNT_CODE = 'FREECHARGER';
+
+function isFamilyPack(product: ShopifyProduct): boolean {
+  const handle = product.node.handle.toLowerCase();
+  const title = product.node.title.toLowerCase();
+  return handle.includes('family') || handle.includes('famille') || title.includes('family') || title.includes('famille');
+}
+
+function hasFamilyPackInItems(items: CartItem[]): boolean {
+  return items.some(item => isFamilyPack(item.product) && !item.isGift);
+}
+
+function hasChargerGiftInItems(items: CartItem[]): boolean {
+  return items.some(item => item.isGift === true);
 }
 
 interface CartStore {
