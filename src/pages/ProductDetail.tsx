@@ -290,8 +290,8 @@ const ProductDetail = () => {
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
                       index === selectedImageIndex 
-                        ? 'border-sky-500 shadow-md shadow-sky-500/20' 
-                        : 'border-transparent hover:border-sky-300'
+                        ? 'border-amber-500 shadow-md shadow-amber-500/20' 
+                        : 'border-transparent hover:border-amber-300'
                     }`}
                   >
                     <img
