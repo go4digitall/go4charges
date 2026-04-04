@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { 
   ShopifyProduct, 
   storefrontApiRequest, 
+  fetchProductByHandle,
   CART_QUERY,
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
@@ -21,6 +22,24 @@ export interface CartItem {
   price: { amount: string; currencyCode: string };
   quantity: number;
   selectedOptions: Array<{ name: string; value: string }>;
+  isGift?: boolean;
+}
+
+const WALL_CHARGER_HANDLE = 'wall-charger-240w-gan';
+const FREE_CHARGER_DISCOUNT_CODE = 'FREECHARGER';
+
+function isFamilyPack(product: ShopifyProduct): boolean {
+  const handle = product.node.handle.toLowerCase();
+  const title = product.node.title.toLowerCase();
+  return handle.includes('family') || handle.includes('famille') || title.includes('family') || title.includes('famille');
+}
+
+function hasFamilyPackInItems(items: CartItem[]): boolean {
+  return items.some(item => isFamilyPack(item.product) && !item.isGift);
+}
+
+function hasChargerGiftInItems(items: CartItem[]): boolean {
+  return items.some(item => item.isGift === true);
 }
 
 interface CartStore {
@@ -37,6 +56,8 @@ interface CartStore {
   clearCart: () => void;
   syncCart: () => Promise<void>;
   getCheckoutUrl: () => string | null;
+  autoAddFreeCharger: () => Promise<void>;
+  autoRemoveFreeCharger: () => Promise<void>;
 }
 
 async function createShopifyCart(item: CartItem): Promise<{ cartId: string; checkoutUrl: string; lineId: string } | null> {
@@ -131,7 +152,6 @@ export const useCartStore = create<CartStore>()(
                 checkoutUrl: result.checkoutUrl,
                 items: [{ ...item, lineId: result.lineId }]
               });
-              // Track add to cart event
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -139,6 +159,10 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              // Auto-add free charger if Family Pack
+              if (isFamilyPack(item.product)) {
+                await get().autoAddFreeCharger();
+              }
             }
           } else if (existingItem) {
             const newQuantity = existingItem.quantity + item.quantity;
@@ -150,7 +174,6 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: currentItems.map(i => i.variantId === item.variantId ? { ...i, quantity: newQuantity } : i) });
-              // Track add to cart event (quantity update)
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -166,7 +189,6 @@ export const useCartStore = create<CartStore>()(
             if (result.success) {
               const currentItems = get().items;
               set({ items: [...currentItems, { ...item, lineId: result.lineId ?? null }] });
-              // Track add to cart event
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -174,6 +196,10 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              // Auto-add free charger if Family Pack and no gift yet
+              if (isFamilyPack(item.product) && !hasChargerGiftInItems(get().items)) {
+                await get().autoAddFreeCharger();
+              }
             } else if (result.cartNotFound) {
               clearCart();
             }
@@ -223,6 +249,13 @@ export const useCartStore = create<CartStore>()(
             const currentItems = get().items;
             const newItems = currentItems.filter(i => i.variantId !== variantId);
             newItems.length === 0 ? clearCart() : set({ items: newItems });
+            // Auto-remove charger gift if no more Family Pack
+            if (isFamilyPack(item.product) && !item.isGift) {
+              const updatedItems = get().items;
+              if (!hasFamilyPackInItems(updatedItems)) {
+                await get().autoRemoveFreeCharger();
+              }
+            }
           } else if (result.cartNotFound) {
             clearCart();
           }
@@ -234,7 +267,71 @@ export const useCartStore = create<CartStore>()(
       },
 
       clearCart: () => set({ items: [], cartId: null, checkoutUrl: null }),
-      getCheckoutUrl: () => get().checkoutUrl,
+      
+      getCheckoutUrl: () => {
+        const { checkoutUrl, items } = get();
+        if (!checkoutUrl) return null;
+        // Auto-apply discount code if Family Pack + charger gift in cart
+        if (hasFamilyPackInItems(items) && hasChargerGiftInItems(items)) {
+          try {
+            const url = new URL(checkoutUrl);
+            url.searchParams.set('discount', FREE_CHARGER_DISCOUNT_CODE);
+            return url.toString();
+          } catch {
+            return checkoutUrl;
+          }
+        }
+        return checkoutUrl;
+      },
+
+      autoAddFreeCharger: async () => {
+        const { cartId, items } = get();
+        if (!cartId || hasChargerGiftInItems(items)) return;
+        
+        try {
+          const chargerProduct = await fetchProductByHandle(WALL_CHARGER_HANDLE);
+          if (!chargerProduct) return;
+          
+          const variant = chargerProduct.variants?.edges?.[0]?.node;
+          if (!variant) return;
+          
+          const giftItem: CartItem = {
+            lineId: null,
+            product: { node: chargerProduct } as ShopifyProduct,
+            variantId: variant.id,
+            variantTitle: variant.title,
+            price: variant.price,
+            quantity: 1,
+            selectedOptions: variant.selectedOptions || [],
+            isGift: true,
+          };
+          
+          const result = await addLineToShopifyCart(cartId, giftItem);
+          if (result.success) {
+            const currentItems = get().items;
+            set({ items: [...currentItems, { ...giftItem, lineId: result.lineId ?? null }] });
+          }
+        } catch (error) {
+          console.error('Failed to auto-add free charger:', error);
+        }
+      },
+
+      autoRemoveFreeCharger: async () => {
+        const { items, cartId, clearCart } = get();
+        const giftItem = items.find(i => i.isGift === true);
+        if (!giftItem?.lineId || !cartId) return;
+        
+        try {
+          const result = await removeLineFromShopifyCart(cartId, giftItem.lineId);
+          if (result.success) {
+            const currentItems = get().items;
+            const newItems = currentItems.filter(i => !i.isGift);
+            newItems.length === 0 ? clearCart() : set({ items: newItems });
+          }
+        } catch (error) {
+          console.error('Failed to auto-remove free charger:', error);
+        }
+      },
 
       syncCart: async () => {
         const { cartId, isSyncing, clearCart } = get();
