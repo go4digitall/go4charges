@@ -53,10 +53,14 @@ const useCountdown = () => {
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const totalPrice = items.reduce((sum, item) => {
+    if (item.isGift) return sum; // Gift items are free
+    return sum + (parseFloat(item.price.amount) * item.quantity);
+  }, 0);
   const timeLeft = useCountdown();
   
   const totalOriginalPrice = items.reduce((sum, item) => {
+    if (item.isGift) return sum;
     const bundleSize = getBundleSize(item.product);
     return sum + (ORIGINAL_UNIT_PRICE * bundleSize * item.quantity);
   }, 0);
