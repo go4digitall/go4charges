@@ -62,7 +62,7 @@ interface CartStore {
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
   syncCart: () => Promise<void>;
-  getCheckoutUrl: () => string | null;
+  getCheckoutUrl: () => Promise<string | null>;
   autoAddFreeCharger: () => Promise<void>;
   autoRemoveFreeCharger: () => Promise<void>;
   syncChargerGiftQuantity: () => Promise<void>;
