@@ -53,7 +53,7 @@ const useCountdown = () => {
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const displayItems = items.reduce((sum, item) => item.isGift ? sum : sum + item.quantity, 0);
+  const displayItems = items.reduce((sum, item) => sum + (item.isGift ? 1 : item.quantity), 0);
   const totalPrice = items.reduce((sum, item) => {
     if (item.isGift) return sum; // Gift items are free
     return sum + (parseFloat(item.price.amount) * item.quantity);
@@ -111,8 +111,7 @@ export const CartDrawer = () => {
         <SheetHeader className="flex-shrink-0 p-4 pb-2">
           <SheetTitle>Cart</SheetTitle>
           <SheetDescription>
-            {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
-            {displayItems !== totalItems && totalItems > 0 && ` (+ 1 free gift)`}
+            {displayItems === 0 ? "Your cart is empty" : `${displayItems} item${displayItems !== 1 ? 's' : ''} in your cart`}
           </SheetDescription>
         </SheetHeader>
 
