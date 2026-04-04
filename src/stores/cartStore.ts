@@ -241,6 +241,10 @@ export const useCartStore = create<CartStore>()(
           if (result.success) {
             const currentItems = get().items;
             set({ items: currentItems.map(i => i.variantId === variantId ? { ...i, quantity } : i) });
+            // Sync charger gift quantity if Family Pack quantity changed
+            if (isFamilyPack(item.product)) {
+              await get().syncChargerGiftQuantity();
+            }
           } else if (result.cartNotFound) {
             clearCart();
           }
