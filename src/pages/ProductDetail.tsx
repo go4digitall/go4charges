@@ -309,7 +309,7 @@ const ProductDetail = () => {
           <div className="space-y-6">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
-              <Badge className="bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20">
+              <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20">
                 <Zap className="h-3 w-3 mr-1" />
                 Up to {cableType === 'lightning' ? '30W' : '240W'}
               </Badge>
@@ -317,8 +317,8 @@ const ProductDetail = () => {
                 <Truck className="h-3 w-3 mr-1" />
                 Free Shipping
               </Badge>
-              <Badge variant="secondary" className="bg-indigo-500/10 text-indigo-600 border-indigo-500/20">
-                ❄️ Winter Special
+              <Badge variant="secondary" className="bg-orange-500/10 text-orange-600 border-orange-500/20">
+                ⚡ Flash Sale
               </Badge>
             </div>
 
