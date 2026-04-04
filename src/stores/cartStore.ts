@@ -34,12 +34,18 @@ function isFamilyPack(product: ShopifyProduct): boolean {
   return handle.includes('family') || handle.includes('famille') || title.includes('family') || title.includes('famille');
 }
 
-function hasFamilyPackInItems(items: CartItem[]): boolean {
-  return items.some(item => isFamilyPack(item.product) && !item.isGift);
+function getFamilyPackCount(items: CartItem[]): number {
+  return items
+    .filter(item => isFamilyPack(item.product) && !item.isGift)
+    .reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function hasChargerGiftInItems(items: CartItem[]): boolean {
   return items.some(item => item.isGift === true);
+}
+
+function getChargerGiftItem(items: CartItem[]): CartItem | undefined {
+  return items.find(item => item.isGift === true);
 }
 
 interface CartStore {
