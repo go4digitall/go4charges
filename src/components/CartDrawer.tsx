@@ -112,6 +112,7 @@ export const CartDrawer = () => {
           <SheetTitle>Cart</SheetTitle>
           <SheetDescription>
             {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
+            {displayItems !== totalItems && totalItems > 0 && ` (+ 1 free gift)`}
           </SheetDescription>
         </SheetHeader>
 
