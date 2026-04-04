@@ -70,8 +70,8 @@ export const CartDrawer = () => {
     if (isOpen) syncCart(); 
   }, [isOpen, syncCart]);
 
-  const handleCheckout = async () => {
-    const checkoutUrl = await getCheckoutUrl();
+  const handleCheckout = () => {
+    const checkoutUrl = getCheckoutUrl();
     if (checkoutUrl) {
       const currency = items[0]?.price.currencyCode || 'EUR';
       
