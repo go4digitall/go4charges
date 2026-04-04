@@ -604,7 +604,7 @@ const ProductDetail = () => {
               </span>
             </div>
             <Button
-              className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30"
+              className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-orange-500/30"
               onClick={handleAddToCart}
               disabled={isAdding}
             >
