@@ -247,14 +247,9 @@ const ProductDetail = () => {
   const discountPercent = selectedBundle?.discountPercent || 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/50 to-background">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-amber-50/30 to-background">
       <Header />
       <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10 relative">
-        {/* Decorative snowflakes */}
-        <div className="absolute top-24 left-[5%] text-sky-300/30 text-2xl pointer-events-none">❄</div>
-        <div className="absolute top-32 right-[8%] text-blue-300/25 text-lg pointer-events-none">❄</div>
-        <div className="absolute top-[40%] left-[3%] text-indigo-300/20 text-xl pointer-events-none hidden md:block">❄</div>
-        <div className="absolute top-[60%] right-[5%] text-sky-300/25 text-base pointer-events-none hidden md:block">❄</div>
 
         {/* Breadcrumb */}
         <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
@@ -267,13 +262,13 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="relative">
               <div className="absolute top-0 left-0 right-0 z-10">
-                <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
-                  <span>❄️</span>
-                  <span>WINTER DEAL</span>
-                  <span>❄️</span>
+                <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
+                  <span>⚡</span>
+                  <span>FLASH SALE</span>
+                  <span>⚡</span>
                 </div>
               </div>
-              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-sky-100/50 to-blue-50/30 border border-sky-200/50 shadow-lg shadow-blue-500/10">
+              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50/50 to-orange-50/30 border border-amber-200/50 shadow-lg shadow-orange-500/10">
                 {currentImage ? (
                   <img
                     src={currentImage.url}
@@ -295,8 +290,8 @@ const ProductDetail = () => {
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
                       index === selectedImageIndex 
-                        ? 'border-sky-500 shadow-md shadow-sky-500/20' 
-                        : 'border-transparent hover:border-sky-300'
+                        ? 'border-amber-500 shadow-md shadow-amber-500/20' 
+                        : 'border-transparent hover:border-amber-300'
                     }`}
                   >
                     <img
@@ -314,7 +309,7 @@ const ProductDetail = () => {
           <div className="space-y-6">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
-              <Badge className="bg-sky-500/10 text-sky-600 border-sky-500/20 hover:bg-sky-500/20">
+              <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20">
                 <Zap className="h-3 w-3 mr-1" />
                 Up to {cableType === 'lightning' ? '30W' : '240W'}
               </Badge>
@@ -322,8 +317,8 @@ const ProductDetail = () => {
                 <Truck className="h-3 w-3 mr-1" />
                 Free Shipping
               </Badge>
-              <Badge variant="secondary" className="bg-indigo-500/10 text-indigo-600 border-indigo-500/20">
-                ❄️ Winter Special
+              <Badge variant="secondary" className="bg-orange-500/10 text-orange-600 border-orange-500/20">
+                ⚡ Flash Sale
               </Badge>
             </div>
 
@@ -342,11 +337,15 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Winter Urgency Banner */}
-            <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white font-bold py-3 px-4 rounded-lg text-center relative overflow-hidden">
-              <div className="absolute top-1 left-3 text-white/20 text-sm">❄</div>
-              <div className="absolute bottom-1 right-4 text-white/20 text-sm">❄</div>
-              <span className="relative z-10">❄️ WINTER SALE - UP TO 70% OFF!</span>
+            {/* Flash Sale Urgency Banner */}
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold py-3 px-4 rounded-lg text-center">
+              <span>⚡ FLASH SALE - UP TO 70% OFF!</span>
+            </div>
+
+            {/* Free Charger with Family Pack */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-3 flex items-center gap-2">
+              <span className="text-lg">🎁</span>
+              <span className="text-sm font-semibold text-emerald-700">FREE Wall Charger ($49.90 value) with every Family Pack!</span>
             </div>
 
             {/* Active Viewers Counter */}
@@ -414,15 +413,15 @@ const ProductDetail = () => {
             />
 
             {/* Price Summary */}
-            <div className="flex items-baseline gap-3 flex-wrap bg-sky-50 border border-sky-100 rounded-lg p-4">
+            <div className="flex items-baseline gap-3 flex-wrap bg-amber-50 border border-amber-100 rounded-lg p-4">
               <span className="text-sm text-muted-foreground">Your price:</span>
-              <span className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+              <span className="text-3xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
                 ${price.toFixed(2)}
               </span>
               <span className="text-lg text-muted-foreground line-through">
                 ${compareAtPrice.toFixed(2)}
               </span>
-              <Badge className="bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700 text-base px-3 py-1">
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 text-base px-3 py-1">
                 -{discountPercent}%
               </Badge>
             </div>
@@ -431,7 +430,7 @@ const ProductDetail = () => {
             <Button
               ref={addToCartButtonRef}
               size="lg"
-              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
+              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300"
               onClick={handleAddToCart}
               disabled={isAdding || !selectedBundle}
             >
@@ -440,7 +439,7 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  ❄️ Add to Cart - {selectedBundle?.name}
+                  ⚡ Add to Cart - {selectedBundle?.name}
                 </>
               )}
             </Button>
@@ -457,9 +456,9 @@ const ProductDetail = () => {
 
             {/* Trust Features */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
-                  <Check className="h-5 w-5 text-sky-600" />
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 border border-amber-100">
+                <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                  <Check className="h-5 w-5 text-amber-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Up to {cableType === 'lightning' ? '30W' : '240W'}</p>
@@ -583,7 +582,7 @@ const ProductDetail = () => {
               </div>
               <a 
                 href="/#testimonials" 
-                className="mt-3 md:mt-4 inline-flex items-center text-xs md:text-sm text-sky-600 hover:text-sky-700 font-medium transition-colors"
+                className="mt-3 md:mt-4 inline-flex items-center text-xs md:text-sm text-amber-600 hover:text-amber-700 font-medium transition-colors"
               >
                 See all 1,247 reviews →
               </a>
@@ -605,7 +604,7 @@ const ProductDetail = () => {
               </span>
             </div>
             <Button
-              className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30"
+              className="flex-1 max-w-[200px] h-12 text-base font-semibold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-orange-500/30"
               onClick={handleAddToCart}
               disabled={isAdding}
             >
@@ -614,7 +613,7 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <ShoppingCart className="h-4 w-4 mr-2" />
-                  ❄️ Add to Cart
+                  ⚡ Add to Cart
                 </>
               )}
             </Button>

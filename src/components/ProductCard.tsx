@@ -19,30 +19,25 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const price = parseFloat(firstVariant?.price.amount || node.priceRange.minVariantPrice.amount);
   const currencyCode = firstVariant?.price.currencyCode || node.priceRange.minVariantPrice.currencyCode;
   
-  // Calculate compare at price - use Shopify's compareAtPrice if available, 
-  // otherwise calculate for bundles based on single unit price (49.90)
   const SINGLE_UNIT_ORIGINAL_PRICE = 49.90;
   let compareAtPrice = firstVariant?.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null;
   
-  // For bundle products, calculate the compare price if not set in Shopify
   if (!compareAtPrice) {
     const handle = node.handle.toLowerCase();
     if (handle.includes('duo') || handle.includes('2x')) {
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2; // 99.80
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 2;
     } else if (handle.includes('family') || handle.includes('3x')) {
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3; // 149.70
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE * 3;
     } else {
-      // Single product fallback
-      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE; // 49.90
+      compareAtPrice = SINGLE_UNIT_ORIGINAL_PRICE;
     }
   }
   
   const hasDiscount = compareAtPrice && compareAtPrice > price;
 
-  // Generate deterministic stock level based on product ID
   const getStockLevel = (productId: string): number => {
     const hash = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return 3 + (hash % 13); // Between 3 and 15
+    return 3 + (hash % 13);
   };
   
   const stockLevel = getStockLevel(node.id);
@@ -50,7 +45,6 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
   const isLowStock = stockLevel < 5;
   const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
-  // Determine bundle type for unified product page navigation
   const getBundleType = (): string => {
     const handle = node.handle.toLowerCase();
     if (handle.includes('family') || handle.includes('3x') || handle.includes('famille')) return 'family';
@@ -58,8 +52,6 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
     return 'single';
   };
   const bundleType = getBundleType();
-  
-  // All cards link to the unified product page with bundle pre-selection
   const productLink = `/product/chargestand-240w-90-fast-charging-cable?bundle=${bundleType}`;
 
   return (
@@ -69,7 +61,6 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           ? 'border-2 border-amber-500 shadow-xl shadow-amber-500/30 hover:shadow-2xl hover:shadow-amber-500/40 ring-4 ring-amber-500/30 scale-[1.02]' 
           : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
       }`}>
-        {/* Featured Ribbon */}
         {isFeatured && (
           <div className="absolute -top-1 -right-12 z-20 rotate-45 transform">
             <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold py-1 px-12 shadow-lg">
@@ -78,20 +69,19 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           </div>
         )}
 
-        {/* Winter Deal Badge */}
+        {/* Flash Sale Badge */}
         <div className="absolute top-0 left-0 right-0 z-10">
           <div className={`text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg ${
             isFeatured 
               ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500'
-              : 'bg-gradient-to-r from-sky-500 to-blue-600'
+              : 'bg-gradient-to-r from-amber-500 to-orange-500'
           }`}>
-            <span>{isFeatured ? '🏆' : '❄️'}</span>
-            <span>{isFeatured ? 'MOST POPULAR CHOICE' : 'WINTER DEAL'}</span>
-            <span>{isFeatured ? '🏆' : '❄️'}</span>
+            <span>{isFeatured ? '🏆' : '⚡'}</span>
+            <span>{isFeatured ? 'MOST POPULAR CHOICE' : 'FLASH SALE'}</span>
+            <span>{isFeatured ? '🏆' : '⚡'}</span>
           </div>
         </div>
 
-        {/* Featured Badge */}
         {isFeatured && (
           <div className="absolute top-10 left-3 z-10">
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg px-3 py-1.5 text-xs font-bold animate-pulse">
@@ -101,7 +91,6 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           </div>
         )}
         
-        {/* Power Badge */}
         <div className="absolute top-10 right-3 z-10">
           <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
             <Zap className="h-3 w-3 mr-1" />
@@ -161,7 +150,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
                   {price.toFixed(2)} {currencyCode}
                 </span>
                 {hasDiscount && (
-                  <Badge className="bg-sky-500 text-white hover:bg-sky-600 text-xs px-1.5 py-0">
+                  <Badge className="bg-orange-500 text-white hover:bg-orange-600 text-xs px-1.5 py-0">
                     -{Math.round((1 - price / compareAtPrice) * 100)}%
                   </Badge>
                 )}
@@ -171,7 +160,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
               size="sm" 
               className={isFeatured 
                 ? "bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/30" 
-                : "bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700"
+                : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
               }
             >
               Shop Now

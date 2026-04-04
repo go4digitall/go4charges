@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Timer, ArrowRight } from "lucide-react";
+import { Timer, ArrowRight, Gift } from "lucide-react";
 
 export const CTASection = () => {
   const scrollToProducts = () => {
@@ -23,6 +23,12 @@ export const CTASection = () => {
         <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto px-4">
           Join 1,000+ happy customers! Very limited stock at these insane prices.
         </p>
+
+        {/* Free Charger Highlight */}
+        <div className="mb-6 bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 px-6 rounded-xl max-w-md mx-auto flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30">
+          <Gift className="w-5 h-5 flex-shrink-0" />
+          <span className="font-bold">FREE Wall Charger with Family Pack!</span>
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <Button

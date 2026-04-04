@@ -10,18 +10,13 @@ import paymentBadges from "@/assets/payment-badges.png";
 
 const ORIGINAL_UNIT_PRICE = 49.90;
 
-// Helper to detect bundle size from product handle/title
 const getBundleSize = (product: { node: { handle: string; title: string } }): number => {
   const handle = product.node.handle.toLowerCase();
   const title = product.node.title.toLowerCase();
   
-  if (handle.includes('family') || handle.includes('3x') || title.includes('3x') || title.includes('family')) {
-    return 3;
-  }
-  if (handle.includes('duo') || handle.includes('2x') || title.includes('2x') || title.includes('duo')) {
-    return 2;
-  }
-  return 1; // Single product
+  if (handle.includes('family') || handle.includes('3x') || title.includes('3x') || title.includes('family')) return 3;
+  if (handle.includes('duo') || handle.includes('2x') || title.includes('2x') || title.includes('duo')) return 2;
+  return 1;
 };
 
 const useCountdown = () => {
@@ -61,7 +56,6 @@ export const CartDrawer = () => {
   const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
   const timeLeft = useCountdown();
   
-  // Calculate savings based on bundle size (how many cables in each product)
   const totalOriginalPrice = items.reduce((sum, item) => {
     const bundleSize = getBundleSize(item.product);
     return sum + (ORIGINAL_UNIT_PRICE * bundleSize * item.quantity);
@@ -77,7 +71,6 @@ export const CartDrawer = () => {
     if (checkoutUrl) {
       const currency = items[0]?.price.currencyCode || 'EUR';
       
-      // Facebook Pixel tracking
       trackInitiateCheckout({
         content_ids: items.map(item => item.variantId),
         content_type: 'product',
@@ -86,7 +79,6 @@ export const CartDrawer = () => {
         num_items: totalItems
       });
       
-      // Database analytics tracking
       trackAnalyticsEvent('checkout_start', {
         total_value: totalPrice,
         total_items: totalItems,
@@ -118,17 +110,12 @@ export const CartDrawer = () => {
           </SheetDescription>
         </SheetHeader>
 
-        {/* Winter Urgency Banner */}
+        {/* Flash Sale Urgency Banner */}
         {items.length > 0 && (
-          <div className="mx-4 mb-2 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 text-white py-2.5 px-3 rounded-lg relative overflow-hidden">
-            {/* Snowflake decorations */}
-            <div className="absolute top-0.5 left-2 text-white/20 text-sm">❄</div>
-            <div className="absolute top-1 right-3 text-white/15 text-xs">❄</div>
-            <div className="absolute bottom-0.5 right-8 text-white/20 text-sm">❄</div>
-            
+          <div className="mx-4 mb-2 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-2.5 px-3 rounded-lg relative overflow-hidden">
             <div className="flex items-center justify-center gap-2 relative z-10">
-              <span className="text-sm">❄️</span>
-              <span className="text-sm font-bold">WINTER SALE ENDS IN:</span>
+              <span className="text-sm">⚡</span>
+              <span className="text-sm font-bold">FLASH SALE ENDS IN:</span>
               <div className="flex gap-1">
                 <span className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-bold">
                   {String(timeLeft.hours).padStart(2, "0")}h
@@ -140,7 +127,7 @@ export const CartDrawer = () => {
                   {String(timeLeft.seconds).padStart(2, "0")}s
                 </span>
               </div>
-              <span className="text-sm">❄️</span>
+              <span className="text-sm">⚡</span>
             </div>
           </div>
         )}
@@ -171,7 +158,6 @@ export const CartDrawer = () => {
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium truncate text-sm">{item.product.node.title}</h4>
                         <p className="text-xs text-muted-foreground">{item.selectedOptions.map(option => option.value).join(' • ')}</p>
-                        {/* In Stock Badge */}
                         <div className="flex items-center gap-1 mt-1">
                           <CheckCircle className="h-3 w-3 text-emerald-500" />
                           <span className="text-xs text-emerald-600 font-medium">In Stock</span>
@@ -217,14 +203,14 @@ export const CartDrawer = () => {
 
               {/* Bottom Section */}
               <div className="flex-shrink-0 space-y-3 pt-3 border-t bg-background">
-                {/* Winter Savings Banner */}
+                {/* Savings Banner */}
                 {totalSavings > 0 && (
-                  <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
-                    <span className="text-lg">❄️</span>
-                    <span className="text-sky-700 font-bold text-sm">
-                      Winter Savings: ${totalSavings.toFixed(2)}!
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
+                    <span className="text-lg">🔥</span>
+                    <span className="text-amber-700 font-bold text-sm">
+                      You Save: ${totalSavings.toFixed(2)}!
                     </span>
-                    <span className="text-lg">❄️</span>
+                    <span className="text-lg">🔥</span>
                   </div>
                 )}
 
@@ -234,10 +220,10 @@ export const CartDrawer = () => {
                   <span className="text-xl font-bold">${totalPrice.toFixed(2)}</span>
                 </div>
 
-                {/* Winter Secure Checkout Button */}
+                {/* Secure Checkout Button */}
                 <Button 
                   onClick={handleCheckout} 
-                  className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white py-6 text-base font-bold shadow-lg shadow-blue-500/30" 
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-base font-bold shadow-lg shadow-orange-500/30" 
                   size="lg" 
                   disabled={items.length === 0 || isLoading || isSyncing}
                 >
@@ -246,17 +232,15 @@ export const CartDrawer = () => {
                   ) : (
                     <>
                       <Lock className="w-5 h-5 mr-2" />
-                      ❄️ SECURE CHECKOUT
+                      🔒 SECURE CHECKOUT
                     </>
                   )}
                 </Button>
 
-                {/* Powered by Shopify */}
                 <p className="text-center text-xs text-muted-foreground">
                   Powered by Shopify • 256-bit SSL Encryption
                 </p>
 
-                {/* Payment Badges */}
                 <div className="flex justify-center">
                   <img 
                     src={paymentBadges} 
@@ -287,9 +271,8 @@ export const CartDrawer = () => {
                   </div>
                 </div>
 
-                {/* Final Reassurance */}
                 <p className="text-center text-xs text-muted-foreground pb-2">
-                  ❄️ Free Shipping Across Canada 🇨🇦 • 30-Day Money-Back Guarantee ❄️
+                  ⚡ Free Shipping Across Canada 🇨🇦 • 30-Day Money-Back Guarantee
                 </p>
               </div>
             </>

@@ -92,13 +92,13 @@ export function BundleSelector({
               className={cn(
                 "relative flex cursor-pointer rounded-xl border-2 p-4 transition-all duration-200",
                 isSelected
-                  ? "border-sky-500 bg-gradient-to-r from-sky-50 to-blue-50 shadow-md shadow-sky-500/20"
-                  : "border-border bg-card hover:border-sky-300 hover:bg-sky-50/50"
+                  ? "border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 shadow-md shadow-amber-500/20"
+                  : "border-border bg-card hover:border-amber-300 hover:bg-amber-50/50"
               )}
             >
               {/* Selected indicator */}
               {isSelected && (
-                <div className="absolute -top-2.5 left-4 bg-sky-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                <div className="absolute -top-2.5 left-4 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                   ✓ SELECTED
                 </div>
               )}
@@ -108,7 +108,7 @@ export function BundleSelector({
                 <RadioGroupItem
                   value={option.id}
                   id={option.id}
-                  className="mt-1 border-sky-400 text-sky-500"
+                  className="mt-1 border-amber-400 text-amber-500"
                 />
 
                 {/* Content */}
