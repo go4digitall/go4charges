@@ -53,6 +53,7 @@ const useCountdown = () => {
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const displayItems = items.reduce((sum, item) => item.isGift ? sum : sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => {
     if (item.isGift) return sum; // Gift items are free
     return sum + (parseFloat(item.price.amount) * item.quantity);
@@ -99,9 +100,9 @@ export const CartDrawer = () => {
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="relative h-11 w-11 border-2 border-amber-500 bg-amber-500/10 hover:bg-amber-500/20 hover:border-amber-600">
           <ShoppingCart className="h-6 w-6 text-amber-600" />
-          {totalItems > 0 && (
+          {displayItems > 0 && (
             <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold bg-amber-500 text-white shadow-lg">
-              {totalItems}
+              {displayItems}
             </Badge>
           )}
         </Button>
