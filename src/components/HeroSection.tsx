@@ -285,7 +285,7 @@ export const HeroSection = () => {
               <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-blue-100 flex items-center justify-center mb-1.5 md:mb-2 transition-all duration-300 group-hover:scale-110">
                 <Truck className="w-5 h-5 md:w-7 md:h-7 text-blue-600" />
               </div>
-              <p className="text-xs md:text-base font-medium">Free Shipping</p>
+              <p className="text-xs md:text-base font-medium">Free Shipping 🇨🇦</p>
             </div>
             <div className="flex flex-col items-center text-center group">
               <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-violet-100 flex items-center justify-center mb-1.5 md:mb-2 transition-all duration-300 group-hover:scale-110">

@@ -264,7 +264,7 @@ export const ExitIntentPopup = () => {
 
           {/* Trust text */}
           <p className="text-xs text-gray-400 pt-2">
-            🔒 Secure checkout • Free worldwide shipping • 30-day guarantee
+            🔒 Secure checkout • Free shipping across Canada 🇨🇦 • 30-day guarantee
           </p>
         </div>
       </DialogContent>

@@ -27,8 +27,8 @@ const ShippingReturns = () => {
               <Truck className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="font-semibold">Free Shipping</p>
-              <p className="text-sm text-muted-foreground">On all orders</p>
+              <p className="font-semibold">Free Shipping 🇨🇦</p>
+              <p className="text-sm text-muted-foreground">Across Canada</p>
             </div>
           </div>
           <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 border">
@@ -36,7 +36,7 @@ const ShippingReturns = () => {
               <Clock className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="font-semibold">7-14 Business Days</p>
+              <p className="font-semibold">7-10 Business Days</p>
               <p className="text-sm text-muted-foreground">Delivery time</p>
             </div>
           </div>
@@ -67,28 +67,18 @@ const ShippingReturns = () => {
 
             <h3 className="text-xl font-medium mt-6 mb-3">Delivery Times</h3>
             <p className="text-muted-foreground mb-4">
-              We ship worldwide! Estimated delivery times after processing:
+              We ship across Canada! Estimated delivery times after processing:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li><strong>United States:</strong> 7-10 business days</li>
-              <li><strong>Canada:</strong> 8-12 business days</li>
-              <li><strong>Europe:</strong> 10-14 business days</li>
-              <li><strong>Australia:</strong> 10-14 business days</li>
-              <li><strong>Rest of World:</strong> 12-18 business days</li>
+              <li><strong>Canada:</strong> 7-10 business days</li>
             </ul>
 
             <h3 className="text-xl font-medium mt-6 mb-3">Shipping Costs</h3>
             <p className="text-muted-foreground">
-              We offer <strong>FREE standard shipping</strong> on all orders worldwide. Express shipping options 
+              We offer <strong>FREE standard shipping</strong> on all orders across Canada. Express shipping options 
               are available at checkout for an additional fee.
             </p>
 
-            <h3 className="text-xl font-medium mt-6 mb-3">Customs & Duties</h3>
-            <p className="text-muted-foreground">
-              For international orders, customs fees and import duties may apply depending on your country's 
-              regulations. These fees are the responsibility of the customer and are not included in our 
-              shipping costs.
-            </p>
           </section>
 
           {/* Returns Section */}

@@ -15,7 +15,7 @@ const badges = [
   },
   {
     icon: Truck,
-    title: "FREE Shipping",
+    title: "FREE Shipping 🇨🇦",
     color: "text-blue-600",
     bgColor: "bg-blue-100",
   },

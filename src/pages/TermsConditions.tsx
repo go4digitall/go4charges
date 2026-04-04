@@ -45,7 +45,7 @@ const TermsConditions = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">3. Pricing and Payment</h2>
             <p className="text-muted-foreground mb-4">
-              All prices are displayed in USD and are subject to change without notice. We accept major credit cards, 
+              All prices are displayed in CAD and are subject to change without notice. We accept major credit cards, 
               PayPal, and other payment methods as displayed at checkout. Payment must be received in full before order 
               processing begins.
             </p>
@@ -58,9 +58,9 @@ const TermsConditions = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">4. Shipping</h2>
             <p className="text-muted-foreground">
-              We ship internationally. Delivery times typically range from 7-14 business days depending on your location. 
-              Shipping costs and estimated delivery times are calculated at checkout. Go4Charges is not responsible for 
-              delays caused by customs, weather, or carrier issues.
+               We ship across Canada. Delivery times typically range from 7-10 business days. 
+              Shipping is free on all orders. Go4Charges is not responsible for 
+              delays caused by weather or carrier issues.
             </p>
           </section>
 

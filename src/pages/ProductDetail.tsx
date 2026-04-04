@@ -125,7 +125,7 @@ const ProductDetail = () => {
         content_ids: [selectedBundle.variantId],
         content_type: 'product',
         value: selectedBundle.price,
-        currency: 'USD'
+        currency: 'CAD'
       });
     }
   }, [selectedBundle?.id]);
@@ -212,7 +212,7 @@ const ProductDetail = () => {
         product: selectedBundle.product,
         variantId: selectedBundle.variantId,
         variantTitle: selectedBundle.name,
-        price: { amount: selectedBundle.price.toString(), currencyCode: 'USD' },
+        price: { amount: selectedBundle.price.toString(), currencyCode: 'CAD' },
         quantity: 1,
         selectedOptions: []
       });
@@ -225,7 +225,7 @@ const ProductDetail = () => {
         content_ids: [selectedBundle.variantId],
         content_type: 'product',
         value: selectedBundle.price,
-        currency: 'USD'
+        currency: 'CAD'
       });
       
       // Database analytics tracking
@@ -481,7 +481,7 @@ const ProductDetail = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Free Shipping</p>
-                  <p className="text-xs text-muted-foreground">Worldwide delivery</p>
+                  <p className="text-xs text-muted-foreground">Ships across Canada 🇨🇦</p>
                 </div>
               </div>
             </div>

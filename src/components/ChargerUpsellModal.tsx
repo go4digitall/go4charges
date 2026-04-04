@@ -243,7 +243,7 @@ export const ChargerUpsellModal = () => {
             </div>
             <div className="flex items-center gap-2 text-sm">
               <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span><strong>FREE worldwide shipping</strong> when bundled</span>
+              <span><strong>FREE shipping across Canada</strong> when bundled</span>
             </div>
           </div>
 
