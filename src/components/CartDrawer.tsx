@@ -15,8 +15,8 @@ const isWallCharger = (product: { node: { handle: string } }): boolean => {
   return product.node.handle.toLowerCase() === WALL_CHARGER_HANDLE;
 };
 
-const hasFamilyPack = (items: typeof useCartStore extends ((...args: any) => { items: infer T }) ? T : any[]): boolean => {
-  return (items as any[]).some((item: any) => {
+const hasFamilyPack = (items: any[]): boolean => {
+  return items.some((item: any) => {
     const handle = item.product?.node?.handle?.toLowerCase() || '';
     const title = item.product?.node?.title?.toLowerCase() || '';
     return handle.includes('family') || handle.includes('famille') || title.includes('family') || title.includes('famille');
