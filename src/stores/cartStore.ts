@@ -387,6 +387,10 @@ export const useCartStore = create<CartStore>()(
           if (!data) return;
           const cart = data?.data?.cart;
           if (!cart || cart.totalQuantity === 0) clearCart();
+          else {
+            // Ensure gift charger quantity is always 1
+            await get().syncChargerGiftQuantity();
+          }
         } catch (error) {
           console.error('Failed to sync cart with Shopify:', error);
         } finally {
