@@ -198,10 +198,11 @@ export const useCartStore = create<CartStore>()(
             } else if (result.cartNotFound) {
               clearCart();
             }
-            const result = await addLineToShopifyCart(cartId, { ...item, lineId: null });
-            if (result.success) {
+          } else {
+            const result2 = await addLineToShopifyCart(cartId, { ...item, lineId: null });
+            if (result2.success) {
               const currentItems = get().items;
-              set({ items: [...currentItems, { ...item, lineId: result.lineId ?? null }] });
+              set({ items: [...currentItems, { ...item, lineId: result2.lineId ?? null }] });
               trackAnalyticsEvent('add_to_cart', {
                 product_name: item.product.node.title,
                 variant_id: item.variantId,
@@ -213,7 +214,7 @@ export const useCartStore = create<CartStore>()(
               if (isFamilyPack(item.product) && !hasChargerGiftInItems(get().items)) {
                 await get().autoAddFreeCharger();
               }
-            } else if (result.cartNotFound) {
+            } else if (result2.cartNotFound) {
               clearCart();
             }
           }
