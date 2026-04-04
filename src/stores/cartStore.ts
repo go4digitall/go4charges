@@ -13,6 +13,7 @@ import {
   isCartNotFoundError
 } from '@/lib/shopify';
 import { trackAnalyticsEvent } from '@/hooks/useAnalyticsTracking';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CartItem {
   lineId: string | null;
