@@ -44,12 +44,25 @@ function hasChargerGiftInItems(items: CartItem[]): boolean {
   return items.some(item => item.isGift === true);
 }
 
+function getChargerGiftItems(items: CartItem[]): CartItem[] {
+  return items.filter(item => item.isGift === true);
+}
+
 function getChargerGiftItem(items: CartItem[]): CartItem | undefined {
-  return items.find(item => item.isGift === true);
+  return getChargerGiftItems(items)[0];
 }
 
 function shouldHaveFreeCharger(items: CartItem[]): boolean {
   return getFamilyPackCount(items) > 0;
+}
+
+function normalizeGiftItems(items: CartItem[], quantity: number): CartItem[] {
+  const nonGiftItems = items.filter(item => !item.isGift);
+  const firstGiftItem = getChargerGiftItem(items);
+
+  if (!firstGiftItem || quantity <= 0) return nonGiftItems;
+
+  return [...nonGiftItems, { ...firstGiftItem, quantity }];
 }
 
 interface CartStore {
@@ -214,9 +227,12 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
-              // Auto-add free charger if Family Pack and no gift yet
-              if (isFamilyPack(item.product) && !hasChargerGiftInItems(get().items)) {
-                await get().autoAddFreeCharger();
+              // Auto-add/sync free charger if Family Pack
+              if (isFamilyPack(item.product)) {
+                if (!hasChargerGiftInItems(get().items)) {
+                  await get().autoAddFreeCharger();
+                }
+                await get().syncChargerGiftQuantity();
               }
             } else if (result2.cartNotFound) {
               clearCart();
@@ -310,12 +326,13 @@ export const useCartStore = create<CartStore>()(
       },
 
       autoAddFreeCharger: async () => {
-        const { cartId, items } = get();
-        if (!cartId || hasChargerGiftInItems(items)) return;
+        const { cartId } = get();
+        if (!cartId || hasChargerGiftInItems(get().items)) return;
         
         try {
           const chargerProduct = await fetchProductByHandle(WALL_CHARGER_HANDLE);
           if (!chargerProduct) return;
+          if (hasChargerGiftInItems(get().items)) return;
           
           const variant = chargerProduct.variants?.edges?.[0]?.node;
           if (!variant) return;
@@ -334,7 +351,7 @@ export const useCartStore = create<CartStore>()(
           const result = await addLineToShopifyCart(cartId, giftItem);
           if (result.success) {
             const currentItems = get().items;
-            set({ items: [...currentItems, { ...giftItem, lineId: result.lineId ?? null }] });
+            set({ items: normalizeGiftItems([...currentItems, { ...giftItem, lineId: result.lineId ?? null }], 1) });
           }
         } catch (error) {
           console.error('Failed to auto-add free charger:', error);
@@ -343,16 +360,22 @@ export const useCartStore = create<CartStore>()(
 
       autoRemoveFreeCharger: async () => {
         const { items, cartId, clearCart } = get();
-        const giftItem = items.find(i => i.isGift === true);
-        if (!giftItem?.lineId || !cartId) return;
+        const giftItems = getChargerGiftItems(items);
+        if (!cartId || giftItems.length === 0) return;
         
         try {
-          const result = await removeLineFromShopifyCart(cartId, giftItem.lineId);
-          if (result.success) {
-            const currentItems = get().items;
-            const newItems = currentItems.filter(i => !i.isGift);
-            newItems.length === 0 ? clearCart() : set({ items: newItems });
+          for (const giftItem of giftItems) {
+            if (!giftItem.lineId) continue;
+            const result = await removeLineFromShopifyCart(cartId, giftItem.lineId);
+            if (result.cartNotFound) {
+              clearCart();
+              return;
+            }
           }
+
+          const currentItems = get().items;
+          const newItems = currentItems.filter(i => !i.isGift);
+          newItems.length === 0 ? clearCart() : set({ items: newItems });
         } catch (error) {
           console.error('Failed to auto-remove free charger:', error);
         }
@@ -360,7 +383,8 @@ export const useCartStore = create<CartStore>()(
 
       syncChargerGiftQuantity: async () => {
         const { items, cartId, clearCart } = get();
-        const giftItem = getChargerGiftItem(items);
+        const giftItems = getChargerGiftItems(items);
+        const giftItem = giftItems[0];
         const targetQuantity = shouldHaveFreeCharger(items) ? 1 : 0;
 
         if (!giftItem) {
@@ -380,8 +404,14 @@ export const useCartStore = create<CartStore>()(
         try {
           const result = await updateShopifyCartLine(cartId, giftItem.lineId, targetQuantity);
           if (result.success) {
+            for (const duplicateGift of giftItems.slice(1)) {
+              if (duplicateGift.lineId) {
+                await removeLineFromShopifyCart(cartId, duplicateGift.lineId);
+              }
+            }
+
             const currentItems = get().items;
-            set({ items: currentItems.map(i => i.isGift ? { ...i, quantity: targetQuantity } : i) });
+            set({ items: normalizeGiftItems(currentItems, targetQuantity) });
           } else if (result.cartNotFound) {
             clearCart();
           }
