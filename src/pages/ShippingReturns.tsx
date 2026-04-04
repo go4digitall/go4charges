@@ -36,7 +36,7 @@ const ShippingReturns = () => {
               <Clock className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="font-semibold">7-14 Business Days</p>
+              <p className="font-semibold">7-10 Business Days</p>
               <p className="text-sm text-muted-foreground">Delivery time</p>
             </div>
           </div>

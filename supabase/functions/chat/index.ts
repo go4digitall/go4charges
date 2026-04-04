@@ -53,15 +53,10 @@ PRICING (all prices in USD - same for both USB-C and Lightning versions):
 Note: USB-C version supports up to 240W, Lightning version supports up to 30W
 
 SHIPPING:
-- FREE worldwide shipping on all orders
+- FREE shipping across Canada on all orders
 - Processing time: 1-2 business days
-- Delivery times:
-  - USA: 7-10 business days
-  - Canada: 8-12 business days
-  - Europe: 10-14 business days
-  - Australia: 10-14 business days
-  - Rest of World: 12-18 business days
-- Customs/duties may apply for international orders (customer responsibility)
+- Delivery time: 7-10 business days across Canada
+- We only ship to Canada
 
 ORDER TRACKING:
 - When an order ships, customers receive an email with a tracking link
