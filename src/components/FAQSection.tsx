@@ -27,6 +27,10 @@ const faqs = [
     answer: "Each ChargeStand™ cable comes with the premium braided cable (USB-C or Lightning), a protective carrying pouch, and our comprehensive warranty card. Everything you need for reliable charging on the go."
   },
   {
+    question: "Do I get a free charger with the Family Pack?",
+    answer: "Yes! Every Family Pack (3x Cables) comes with a FREE 240W GaN Wall Charger — a $49.90 value, absolutely free. It's the best way to unlock the full potential of your ChargeStand™ cables and charge up to 5 devices simultaneously."
+  },
+  {
     question: "How can I track my order?",
     answer: "Once your order ships, you'll receive an email with your tracking number and a direct link to track your package with the carrier. You can also check your order status anytime by clicking the link in your order confirmation email."
   },
@@ -43,8 +47,8 @@ const faqs = [
     answer: "Our cables feature premium braided nylon construction with reinforced connectors. They're tested to withstand over 10,000 bend cycles, making them significantly more durable than standard cables."
   },
   {
-    question: "Why is this Winter Clearance offer so good?",
-    answer: "This is our Winter Clearance sale! We're offering up to 70% off on bundle packs to clear our winter stock. Single cables are 50% off, Duo Packs 65% off, and Family Packs 70% off. Stock is limited!"
+    question: "Why are prices so low during the Flash Sale?",
+    answer: "We're running a limited-time Flash Sale with up to 70% off on bundle packs! Single cables are 50% off, Duo Packs 65% off, and Family Packs 70% off plus a FREE wall charger. These deals won't last — grab yours now!"
   }
 ];
 

@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Gift, Clock, Snowflake, Copy, Check } from "lucide-react";
+import { Gift, Clock, Zap, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useCartStore } from "@/stores/cartStore";
 
@@ -43,132 +43,79 @@ export const ExitIntentPopup = () => {
     }
   }, [hasRecentlyShown, isOpen, markAsShown]);
 
-  // Trigger on mouseleave (desktop exit intent)
   useEffect(() => {
     const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger if mouse leaves from the top of the viewport (toward browser UI)
       if (e.clientY <= 0 && !hasTriggeredMouseLeave.current) {
-        console.log('[ExitIntent] Mouse left viewport from top');
         hasTriggeredMouseLeave.current = true;
         triggerPopup();
       }
     };
-
-    // Only add on desktop (non-touch devices)
     const isDesktop = !('ontouchstart' in window);
-    if (isDesktop) {
-      document.addEventListener('mouseleave', handleMouseLeave);
-    }
-
-    return () => {
-      document.removeEventListener('mouseleave', handleMouseLeave);
-    };
+    if (isDesktop) document.addEventListener('mouseleave', handleMouseLeave);
+    return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, [triggerPopup]);
 
-  // Trigger on visibility change (mobile: user switches app/tab)
   useEffect(() => {
     let timeOnPage = 0;
-    const minTimeBeforeTrigger = 10000; // 10 seconds minimum on page
-    
-    const interval = setInterval(() => {
-      timeOnPage += 1000;
-    }, 1000);
-
+    const minTimeBeforeTrigger = 10000;
+    const interval = setInterval(() => { timeOnPage += 1000; }, 1000);
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden' && timeOnPage >= minTimeBeforeTrigger) {
-        console.log('[ExitIntent] Tab/app hidden after', timeOnPage / 1000, 'seconds');
-        triggerPopup();
-      }
+      if (document.visibilityState === 'hidden' && timeOnPage >= minTimeBeforeTrigger) triggerPopup();
     };
-
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+    return () => { clearInterval(interval); document.removeEventListener('visibilitychange', handleVisibilityChange); };
   }, [triggerPopup]);
 
-  // Trigger on rapid scroll to top (mobile: user scrolling back up quickly)
   useEffect(() => {
     let lastScrollY = window.scrollY;
-    let scrollVelocity = 0;
     let hasScrolledDown = false;
-    const velocityThreshold = -50; // Fast upward scroll
-    const minScrollBeforeTrigger = 300; // Must have scrolled down at least 300px first
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      scrollVelocity = currentScrollY - lastScrollY;
-      
-      // Track if user has scrolled down enough
-      if (currentScrollY > minScrollBeforeTrigger) {
-        hasScrolledDown = true;
-      }
-      
-      // Trigger if scrolling up fast from a scrolled position and near the top
-      if (hasScrolledDown && scrollVelocity < velocityThreshold && currentScrollY < 100) {
-        console.log('[ExitIntent] Rapid scroll to top detected');
+      const velocity = currentScrollY - lastScrollY;
+      if (currentScrollY > 300) hasScrolledDown = true;
+      if (hasScrolledDown && velocity < -50 && currentScrollY < 100) {
         triggerPopup();
-        hasScrolledDown = false; // Reset to prevent multiple triggers
+        hasScrolledDown = false;
       }
-      
       lastScrollY = currentScrollY;
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [triggerPopup]);
 
-  // Trigger when cart closes (and has items)
   useEffect(() => {
-    // Detect cart closing: was open, now closed
     if (wasCartOpen.current && !isCartOpen) {
-      console.log('[ExitIntent] Cart closed. Items:', items.length, 'Recently shown:', hasRecentlyShown(), 'Popup open:', isOpen);
-      // Only show if cart has items and hasn't been shown recently
       if (items.length > 0 && !hasRecentlyShown() && !isOpen) {
-        // Small delay for smoother UX
-        setTimeout(() => {
-          triggerPopup();
-        }, 300);
+        setTimeout(() => triggerPopup(), 300);
       }
     }
     wasCartOpen.current = isCartOpen;
   }, [isCartOpen, items.length, hasRecentlyShown, isOpen, triggerPopup]);
 
-  const handleClaim = () => {
-    setShowCode(true);
-  };
+  const handleClaim = () => setShowCode(true);
 
   const handleCopyCode = async () => {
     try {
       await navigator.clipboard.writeText(PROMO_CODE);
       setCopied(true);
-      toast.success("Code copié ! Utilisez-le au checkout.");
+      toast.success("Code copied! Use it at checkout.");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Erreur de copie, copiez manuellement: " + PROMO_CODE);
+      toast.error("Copy error, manually copy: " + PROMO_CODE);
     }
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
-    setShowCode(false);
-    setCopied(false);
-  };
+  const handleClose = () => { setIsOpen(false); setShowCode(false); setCopied(false); };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-0 bg-gradient-to-br from-sky-50 to-blue-100">
-        {/* Header with winter theme */}
-        <div className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 p-6 text-white relative overflow-hidden">
-          <Snowflake className="absolute top-2 left-4 w-6 h-6 text-white/20 animate-pulse" />
-          <Snowflake className="absolute top-4 right-8 w-4 h-4 text-white/15" />
-          <Snowflake className="absolute bottom-2 left-12 w-5 h-5 text-white/20" />
-          <Snowflake className="absolute bottom-4 right-4 w-6 h-6 text-white/15 animate-pulse" />
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-0 bg-gradient-to-br from-amber-50 to-orange-100">
+        {/* Header with flash sale theme */}
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-6 text-white relative overflow-hidden">
+          <Zap className="absolute top-2 left-4 w-6 h-6 text-white/20 animate-pulse" />
+          <Zap className="absolute top-4 right-8 w-4 h-4 text-white/15" />
+          <Zap className="absolute bottom-2 left-12 w-5 h-5 text-white/20" />
+          <Zap className="absolute bottom-4 right-4 w-6 h-6 text-white/15 animate-pulse" />
           
           <div className="relative z-10 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
@@ -176,7 +123,7 @@ export const ExitIntentPopup = () => {
             </div>
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-white text-center">
-                ❄️ WAIT! Don't Miss This!
+                ⚡ WAIT! Don't Miss This!
               </DialogTitle>
               <DialogDescription className="text-white/90 text-center text-base mt-2">
                 Exclusive offer just for you
@@ -185,84 +132,52 @@ export const ExitIntentPopup = () => {
           </div>
         </div>
 
-        {/* Content */}
         <div className="p-6 text-center space-y-4">
           {!showCode ? (
             <>
-              {/* Discount Badge */}
               <div className="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg shadow-orange-500/30">
                 EXTRA 10% OFF
               </div>
-
               <p className="text-gray-600">
-                Complete your order now and get an <span className="font-bold text-sky-600">additional 10% discount</span> on your entire cart!
+                Complete your order now and get an <span className="font-bold text-orange-600">additional 10% discount</span> on your entire cart!
               </p>
-
-              {/* Urgency */}
               <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
                 <Clock className="w-4 h-4" />
                 <span>Offer expires when you leave this page</span>
               </div>
-
-              {/* CTA Buttons */}
               <div className="space-y-3 pt-2">
                 <Button
                   onClick={handleClaim}
-                  className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white py-6 text-lg font-bold shadow-lg shadow-blue-500/30"
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-lg font-bold shadow-lg shadow-orange-500/30"
                 >
-                  ❄️ CLAIM MY 10% OFF NOW
+                  ⚡ CLAIM MY 10% OFF NOW
                 </Button>
-                
-                <button
-                  onClick={handleClose}
-                  className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors"
-                >
+                <button onClick={handleClose} className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors">
                   No thanks, I'll pay full price
                 </button>
               </div>
             </>
           ) : (
-            <>
-              {/* Promo Code Reveal */}
-              <div className="space-y-4">
-                <p className="text-gray-600 font-medium">
-                  🎉 Here's your exclusive code:
-                </p>
-                
-                <div 
-                  onClick={handleCopyCode}
-                  className="bg-gradient-to-r from-sky-100 to-blue-100 border-2 border-dashed border-sky-400 rounded-xl p-4 cursor-pointer hover:border-sky-500 transition-colors group"
-                >
-                  <div className="flex items-center justify-center gap-3">
-                    <span className="text-3xl font-bold text-sky-600 tracking-wider">
-                      {PROMO_CODE}
-                    </span>
-                    {copied ? (
-                      <Check className="w-6 h-6 text-green-500" />
-                    ) : (
-                      <Copy className="w-6 h-6 text-sky-400 group-hover:text-sky-600 transition-colors" />
-                    )}
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    {copied ? "Copied!" : "Click to copy"}
-                  </p>
+            <div className="space-y-4">
+              <p className="text-gray-600 font-medium">🎉 Here's your exclusive code:</p>
+              <div 
+                onClick={handleCopyCode}
+                className="bg-gradient-to-r from-amber-100 to-orange-100 border-2 border-dashed border-amber-400 rounded-xl p-4 cursor-pointer hover:border-amber-500 transition-colors group"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <span className="text-3xl font-bold text-orange-600 tracking-wider">{PROMO_CODE}</span>
+                  {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6 text-amber-400 group-hover:text-amber-600 transition-colors" />}
                 </div>
-
-                <p className="text-sm text-gray-500">
-                  Use this code at checkout to get <span className="font-bold text-sky-600">10% OFF</span> your order!
-                </p>
-
-                <Button
-                  onClick={handleClose}
-                  className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white py-5"
-                >
-                  Continue Shopping
-                </Button>
+                <p className="text-xs text-gray-500 mt-2">{copied ? "Copied!" : "Click to copy"}</p>
               </div>
-            </>
+              <p className="text-sm text-gray-500">
+                Use this code at checkout to get <span className="font-bold text-orange-600">10% OFF</span> your order!
+              </p>
+              <Button onClick={handleClose} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-5">
+                Continue Shopping
+              </Button>
+            </div>
           )}
-
-          {/* Trust text */}
           <p className="text-xs text-gray-400 pt-2">
             🔒 Secure checkout • Free shipping across Canada 🇨🇦 • 30-day guarantee
           </p>
