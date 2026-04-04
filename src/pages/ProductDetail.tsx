@@ -262,13 +262,13 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="relative">
               <div className="absolute top-0 left-0 right-0 z-10">
-                <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
-                  <span>❄️</span>
-                  <span>WINTER DEAL</span>
-                  <span>❄️</span>
+                <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-sm font-bold py-2 px-4 text-center flex items-center justify-center gap-2 rounded-t-2xl">
+                  <span>⚡</span>
+                  <span>FLASH SALE</span>
+                  <span>⚡</span>
                 </div>
               </div>
-              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-sky-100/50 to-blue-50/30 border border-sky-200/50 shadow-lg shadow-blue-500/10">
+              <div className="aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50/50 to-orange-50/30 border border-amber-200/50 shadow-lg shadow-orange-500/10">
                 {currentImage ? (
                   <img
                     src={currentImage.url}
