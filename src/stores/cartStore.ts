@@ -350,6 +350,25 @@ export const useCartStore = create<CartStore>()(
         }
       },
 
+      syncChargerGiftQuantity: async () => {
+        const { items, cartId } = get();
+        const giftItem = getChargerGiftItem(items);
+        if (!giftItem?.lineId || !cartId) return;
+        
+        const familyCount = getFamilyPackCount(items);
+        if (familyCount === 0 || giftItem.quantity === familyCount) return;
+        
+        try {
+          const result = await updateShopifyCartLine(cartId, giftItem.lineId, familyCount);
+          if (result.success) {
+            const currentItems = get().items;
+            set({ items: currentItems.map(i => i.isGift ? { ...i, quantity: familyCount } : i) });
+          }
+        } catch (error) {
+          console.error('Failed to sync charger gift quantity:', error);
+        }
+      },
+
       syncCart: async () => {
         const { cartId, isSyncing, clearCart } = get();
         if (!cartId || isSyncing) return;
