@@ -277,7 +277,7 @@ export const CartDrawer = () => {
                     <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
                       <Truck className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-[10px] font-medium">FREE Shipping</span>
+                    <span className="text-[10px] font-medium">FREE Shipping 🇨🇦</span>
                   </div>
                   <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
                     <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mb-1">
