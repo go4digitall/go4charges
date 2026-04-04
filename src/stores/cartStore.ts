@@ -64,6 +64,7 @@ interface CartStore {
   getCheckoutUrl: () => string | null;
   autoAddFreeCharger: () => Promise<void>;
   autoRemoveFreeCharger: () => Promise<void>;
+  syncChargerGiftQuantity: () => Promise<void>;
 }
 
 async function createShopifyCart(item: CartItem): Promise<{ cartId: string; checkoutUrl: string; lineId: string } | null> {
