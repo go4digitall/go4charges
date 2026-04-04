@@ -163,7 +163,7 @@ export const CartDrawer = () => {
                         <h4 className="font-medium truncate text-sm">{item.product.node.title}</h4>
                         {item.isGift ? (
                           <div className="flex items-center gap-1 mt-1">
-                            <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">🎁 FREE GIFT</span>
+                            <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">🎁 FREE GIFT{item.quantity > 1 ? ` x${item.quantity}` : ''}</span>
                           </div>
                         ) : (
                           <p className="text-xs text-muted-foreground">{item.selectedOptions.map(option => option.value).join(' • ')}</p>
