@@ -413,15 +413,15 @@ const ProductDetail = () => {
             />
 
             {/* Price Summary */}
-            <div className="flex items-baseline gap-3 flex-wrap bg-sky-50 border border-sky-100 rounded-lg p-4">
+            <div className="flex items-baseline gap-3 flex-wrap bg-amber-50 border border-amber-100 rounded-lg p-4">
               <span className="text-sm text-muted-foreground">Your price:</span>
-              <span className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+              <span className="text-3xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
                 ${price.toFixed(2)}
               </span>
               <span className="text-lg text-muted-foreground line-through">
                 ${compareAtPrice.toFixed(2)}
               </span>
-              <Badge className="bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:from-sky-600 hover:to-blue-700 text-base px-3 py-1">
+              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 text-base px-3 py-1">
                 -{discountPercent}%
               </Badge>
             </div>
