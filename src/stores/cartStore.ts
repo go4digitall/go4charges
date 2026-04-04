@@ -290,11 +290,22 @@ export const useCartStore = create<CartStore>()(
 
       clearCart: () => set({ items: [], cartId: null, checkoutUrl: null }),
       
-      getCheckoutUrl: () => {
+      getCheckoutUrl: async () => {
         const { checkoutUrl, items } = get();
         if (!checkoutUrl) return null;
         // Auto-apply discount code if Family Pack + charger gift in cart
-        if (getFamilyPackCount(items) > 0 && hasChargerGiftInItems(items)) {
+        const familyCount = getFamilyPackCount(items);
+        if (familyCount > 0 && hasChargerGiftInItems(items)) {
+          // Update the discount value to match charger count
+          try {
+            const giftItem = getChargerGiftItem(items);
+            const chargerCount = giftItem?.quantity || 1;
+            await supabase.functions.invoke('update-charger-discount', {
+              body: { chargerCount },
+            });
+          } catch (error) {
+            console.error('Failed to update charger discount:', error);
+          }
           try {
             const url = new URL(checkoutUrl);
             url.searchParams.set('discount', FREE_CHARGER_DISCOUNT_CODE);
