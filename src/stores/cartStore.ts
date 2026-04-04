@@ -48,6 +48,10 @@ function getChargerGiftItem(items: CartItem[]): CartItem | undefined {
   return items.find(item => item.isGift === true);
 }
 
+function shouldHaveFreeCharger(items: CartItem[]): boolean {
+  return getFamilyPackCount(items) > 0;
+}
+
 interface CartStore {
   items: CartItem[];
   cartId: string | null;
@@ -293,7 +297,7 @@ export const useCartStore = create<CartStore>()(
         const { checkoutUrl, items } = get();
         if (!checkoutUrl) return null;
         // Auto-apply discount code if Family Pack + charger gift in cart
-        if (getFamilyPackCount(items) > 0 && hasChargerGiftInItems(items)) {
+        if (shouldHaveFreeCharger(items) && hasChargerGiftInItems(items)) {
           try {
             const url = new URL(checkoutUrl);
             url.searchParams.set('discount', FREE_CHARGER_DISCOUNT_CODE);
@@ -359,14 +363,14 @@ export const useCartStore = create<CartStore>()(
         const giftItem = getChargerGiftItem(items);
         if (!giftItem?.lineId || !cartId) return;
         
-        const familyCount = getFamilyPackCount(items);
-        if (familyCount === 0 || giftItem.quantity === familyCount) return;
+        const targetQuantity = shouldHaveFreeCharger(items) ? 1 : 0;
+        if (targetQuantity === 0 || giftItem.quantity === targetQuantity) return;
         
         try {
-          const result = await updateShopifyCartLine(cartId, giftItem.lineId, familyCount);
+          const result = await updateShopifyCartLine(cartId, giftItem.lineId, targetQuantity);
           if (result.success) {
             const currentItems = get().items;
-            set({ items: currentItems.map(i => i.isGift ? { ...i, quantity: familyCount } : i) });
+            set({ items: currentItems.map(i => i.isGift ? { ...i, quantity: targetQuantity } : i) });
           }
         } catch (error) {
           console.error('Failed to sync charger gift quantity:', error);
