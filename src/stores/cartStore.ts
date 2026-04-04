@@ -166,9 +166,12 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
-              // Auto-add free charger if Family Pack
+              // Auto-add/sync free charger if Family Pack
               if (isFamilyPack(item.product)) {
-                await get().autoAddFreeCharger();
+                if (!hasChargerGiftInItems(get().items)) {
+                  await get().autoAddFreeCharger();
+                }
+                await get().syncChargerGiftQuantity();
               }
             }
           } else if (existingItem) {
