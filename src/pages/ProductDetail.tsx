@@ -247,7 +247,7 @@ const ProductDetail = () => {
   const discountPercent = selectedBundle?.discountPercent || 0;
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50/50 to-background">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-amber-50/30 to-background">
       <Header />
       <main className="flex-1 container pt-[96px] sm:pt-[76px] pb-6 md:pb-10 relative">
 
