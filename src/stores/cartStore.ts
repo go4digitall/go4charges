@@ -462,6 +462,11 @@ export const useCartStore = create<CartStore>()(
 
         if (!giftItem.lineId || !cartId) return;
 
+        // Early exit: gift already at correct quantity with no duplicates
+        if (giftItem.quantity === targetQuantity && giftItems.length === 1) {
+          return;
+        }
+
         if (targetQuantity === 0) {
           await get().autoRemoveFreeCharger();
           return;
