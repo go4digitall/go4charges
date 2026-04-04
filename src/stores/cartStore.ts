@@ -359,18 +359,31 @@ export const useCartStore = create<CartStore>()(
       },
 
       syncChargerGiftQuantity: async () => {
-        const { items, cartId } = get();
+        const { items, cartId, clearCart } = get();
         const giftItem = getChargerGiftItem(items);
-        if (!giftItem?.lineId || !cartId) return;
-        
         const targetQuantity = shouldHaveFreeCharger(items) ? 1 : 0;
-        if (targetQuantity === 0 || giftItem.quantity === targetQuantity) return;
+
+        if (!giftItem) {
+          if (targetQuantity > 0) {
+            await get().autoAddFreeCharger();
+          }
+          return;
+        }
+
+        if (!giftItem.lineId || !cartId) return;
+
+        if (targetQuantity === 0) {
+          await get().autoRemoveFreeCharger();
+          return;
+        }
         
         try {
           const result = await updateShopifyCartLine(cartId, giftItem.lineId, targetQuantity);
           if (result.success) {
             const currentItems = get().items;
             set({ items: currentItems.map(i => i.isGift ? { ...i, quantity: targetQuantity } : i) });
+          } else if (result.cartNotFound) {
+            clearCart();
           }
         } catch (error) {
           console.error('Failed to sync charger gift quantity:', error);
