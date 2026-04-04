@@ -456,9 +456,9 @@ const ProductDetail = () => {
 
             {/* Trust Features */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
-                  <Check className="h-5 w-5 text-sky-600" />
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 border border-amber-100">
+                <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                  <Check className="h-5 w-5 text-amber-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">Up to {cableType === 'lightning' ? '30W' : '240W'}</p>
