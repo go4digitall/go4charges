@@ -72,12 +72,18 @@ export const ChargerUpsellModal = () => {
       const newestItem = items[items.length - 1];
       const isCharger = newestItem.product.node.handle.toLowerCase().includes('charger');
       const alreadyShown = sessionStorage.getItem("charger-upsell-shown");
+      
+      // Check if the added item is a Family Pack (charger is already auto-added as gift)
+      const newestHandle = newestItem.product.node.handle.toLowerCase();
+      const newestTitle = newestItem.product.node.title.toLowerCase();
+      const isFamilyPack = newestHandle.includes('family') || newestHandle.includes('famille') || 
+                           newestTitle.includes('family') || newestTitle.includes('famille');
 
       // Show upsell if:
-      // - Added a cable (not a charger)
+      // - Added a cable (not a charger, not a Family Pack)
       // - Don't already have charger in cart
       // - Haven't shown this session
-      if (!isCharger && hasCableInCart() && !hasChargerInCart() && !alreadyShown && chargerProduct) {
+      if (!isCharger && !isFamilyPack && hasCableInCart() && !hasChargerInCart() && !alreadyShown && chargerProduct) {
         setTriggerItem(newestItem);
         setTimeout(() => {
           setIsOpen(true);
