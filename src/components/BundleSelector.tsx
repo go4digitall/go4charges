@@ -98,7 +98,7 @@ export function BundleSelector({
             >
               {/* Selected indicator */}
               {isSelected && (
-                <div className="absolute -top-2.5 left-4 bg-sky-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                <div className="absolute -top-2.5 left-4 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded">
                   ✓ SELECTED
                 </div>
               )}
