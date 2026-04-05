@@ -1,4 +1,4 @@
-import benefitsBanner from "@/assets/benefits-banner.jpg";
+import heroImage from "@/assets/hero-before-after.jpg";
 import benefitsVideo from "@/assets/benefits-video.mp4";
 import benefitsVideo2 from "@/assets/benefits-video-2.mp4";
 
@@ -20,8 +20,8 @@ export const BenefitsSection = () => {
           {/* Main banner image */}
           <div className="md:col-span-2">
             <img 
-              src={benefitsBanner} 
-              alt="Go4Charges - Up to 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable" 
+              src={heroImage} 
+              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
               loading="lazy"
               decoding="async"
               width={800}
