@@ -25,7 +25,7 @@ export const CTASection = () => {
         </p>
 
         {/* Free Charger Highlight */}
-        <div className="mb-6 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-3 px-6 rounded-xl max-w-md mx-auto flex items-center justify-center gap-2 shadow-lg shadow-orange-500/30">
+        <div className="mb-6 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white py-3 px-6 rounded-xl max-w-md mx-auto flex items-center justify-center gap-2 shadow-lg shadow-violet-500/30">
           <Gift className="w-5 h-5 flex-shrink-0" />
           <span className="font-bold">🎁 FREE Wall Charger with Family Pack!</span>
         </div>
