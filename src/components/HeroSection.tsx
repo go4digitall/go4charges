@@ -162,52 +162,53 @@ export const HeroSection = () => {
               </div>
 
               {/* Price grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-lg mx-auto lg:mx-0">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-xl mx-auto lg:mx-0">
                 <button
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
-                  className="bg-primary text-primary-foreground rounded-lg px-2 py-2 shadow-lg text-center relative hover:scale-105 transition-all duration-200 cursor-pointer"
+                  className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-xl px-3 py-3 shadow-lg shadow-primary/25 text-center relative hover:scale-105 transition-all duration-200 cursor-pointer ring-2 ring-primary/30"
                 >
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[8px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
-                  <div className="text-[10px] font-bold mb-0.5 mt-1">Family Pack</div>
-                  <div className="text-[9px] font-semibold opacity-80 -mt-0.5 mb-0.5">3x Cables</div>
-                  <div className="text-[10px] opacity-60 line-through">$149.70</div>
-                  <div className="text-lg font-black">$44.90</div>
-                  <div className="text-[10px] font-bold opacity-90">-70%</div>
-                  <div className="text-[8px] font-bold opacity-80 mt-0.5">+ FREE Charger 🎁</div>
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
+                  <div className="text-xs font-bold mb-0.5 mt-1.5">Family Pack</div>
+                  <div className="text-[10px] font-semibold opacity-80 -mt-0.5 mb-1">3x Cables</div>
+                  <div className="text-[10px] opacity-50 line-through">$149.70</div>
+                  <div className="text-xl font-black tracking-tight">$44.90</div>
+                  <div className="inline-block bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-70% OFF</div>
+                  <div className="text-[9px] font-bold opacity-90 mt-1">+ FREE Charger 🎁</div>
                 </button>
                 <button
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=duo")}
-                  className="bg-secondary border border-border rounded-lg px-2 py-2 shadow-sm text-center relative hover:scale-105 hover:border-primary/30 transition-all duration-200 cursor-pointer"
+                  className="bg-secondary border-2 border-border rounded-xl px-3 py-3 shadow-md text-center relative hover:scale-105 hover:border-primary/40 hover:shadow-lg transition-all duration-200 cursor-pointer"
                 >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-muted-foreground text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">POPULAR</div>
-                  <div className="text-[10px] font-semibold text-muted-foreground mb-0.5 mt-1">Duo Pack</div>
-                  <div className="text-[9px] font-medium text-muted-foreground -mt-0.5 mb-0.5">2x Cables</div>
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🔥 POPULAR</div>
+                  <div className="text-xs font-bold text-foreground mb-0.5 mt-1.5">Duo Pack</div>
+                  <div className="text-[10px] font-medium text-muted-foreground -mt-0.5 mb-1">2x Cables</div>
                   <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
-                  <div className="text-base font-bold text-foreground">$34.90</div>
-                  <div className="text-[10px] font-bold text-primary">-65%</div>
+                  <div className="text-xl font-black text-foreground tracking-tight">$34.90</div>
+                  <div className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-65% OFF</div>
                 </button>
                 <button
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=single")}
-                  className="bg-secondary border border-border rounded-lg px-2 py-2 shadow-sm text-center hover:scale-105 hover:border-primary/30 transition-all duration-200 cursor-pointer"
+                  className="bg-secondary border-2 border-border rounded-xl px-3 py-3 shadow-md text-center hover:scale-105 hover:border-primary/40 hover:shadow-lg transition-all duration-200 cursor-pointer"
                 >
-                  <div className="text-[10px] font-semibold text-muted-foreground mb-0.5">1x Cable</div>
+                  <div className="text-xs font-bold text-foreground mb-0.5 mt-0.5">1x Cable</div>
+                  <div className="text-[10px] text-muted-foreground mb-1">&nbsp;</div>
                   <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
-                  <div className="text-base font-bold text-foreground">$24.90</div>
-                  <div className="text-[10px] font-bold text-primary">-50%</div>
+                  <div className="text-xl font-black text-foreground tracking-tight">$24.90</div>
+                  <div className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-50% OFF</div>
                 </button>
                 <button
                   onClick={handleAddChargerToCart}
                   disabled={isAddingCharger}
-                  className="bg-secondary border border-border rounded-lg px-2 py-2 shadow-sm text-center relative hover:scale-105 hover:border-primary/30 transition-all duration-200 cursor-pointer disabled:opacity-60"
+                  className="bg-gradient-to-br from-foreground to-foreground/90 text-white rounded-xl px-3 py-3 shadow-md text-center relative hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-60"
                 >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">⚡ NEW</div>
-                  <div className="text-[10px] font-semibold text-foreground mb-0.5 mt-1">Wall Charger</div>
-                  <div className="text-[9px] font-medium text-muted-foreground -mt-0.5 mb-0.5">240W GaN</div>
-                  <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
-                  <div className="text-base font-bold text-foreground">
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">⚡ NEW</div>
+                  <div className="text-xs font-bold mb-0.5 mt-1.5">Wall Charger</div>
+                  <div className="text-[10px] font-medium opacity-70 -mt-0.5 mb-1">240W GaN</div>
+                  <div className="text-[10px] opacity-50 line-through">$49.90</div>
+                  <div className="text-xl font-black tracking-tight">
                     {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$24.90"}
                   </div>
-                  <div className="text-[10px] font-bold text-primary">-50%</div>
+                  <div className="inline-block bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-50% OFF</div>
                 </button>
               </div>
 
