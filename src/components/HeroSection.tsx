@@ -156,7 +156,6 @@ export const HeroSection = () => {
               {/* FREE Charger badge */}
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
                 <div className="border border-primary/20 bg-primary/5 text-foreground text-xs md:text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2">
-                  <Gift className="w-3.5 h-3.5 flex-shrink-0 text-primary" />
                   <span>🎁 FREE Wall Charger ($49.90) with Family Pack</span>
                 </div>
               </div>
