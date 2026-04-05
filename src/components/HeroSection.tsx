@@ -80,12 +80,12 @@ export const HeroSection = () => {
             </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-stretch items-center gap-4 lg:gap-16 pb-6 lg:py-20">
+          <div className="flex flex-col lg:flex-row lg:items-start items-center gap-4 lg:gap-16 pb-6 lg:py-20">
 
             {/* Video card */}
-            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1 flex flex-col">
-              <div className="relative flex-1 flex flex-col">
-                <div className="bg-foreground rounded-2xl overflow-hidden shadow-2xl flex-1 flex flex-col">
+            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1">
+              <div className="relative">
+                <div className="bg-foreground rounded-2xl overflow-hidden shadow-2xl">
                   <video
                     src={heroVideo}
                     autoPlay
@@ -93,7 +93,7 @@ export const HeroSection = () => {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full max-h-[280px] lg:max-h-none lg:flex-1 object-cover"
+                    className="w-full max-h-[280px] lg:max-h-[360px] object-cover aspect-square lg:aspect-[4/3]"
                   />
                   <div className="flex items-start gap-3 bg-foreground/95 p-3 lg:p-4">
                     <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs lg:text-sm font-bold text-primary">
