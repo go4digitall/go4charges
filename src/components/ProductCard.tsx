@@ -39,31 +39,25 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
     const hash = productId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return 3 + (hash % 13);
   };
-  
-  const stockLevel = getStockLevel(node.id);
-  const stockPercentage = (stockLevel / 15) * 100;
-  const isLowStock = stockLevel < 5;
-  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
 
-  const getBundleType = (): string => {
-    const handle = node.handle.toLowerCase();
-    if (handle.includes('family') || handle.includes('3x') || handle.includes('famille')) return 'family';
-    if (handle.includes('duo') || handle.includes('2x')) return 'duo';
-    return 'single';
-  };
-  const bundleType = getBundleType();
-  const productLink = `/product/chargestand-240w-90-fast-charging-cable?bundle=${bundleType}`;
+  const stockLevel = getStockLevel(node.id);
+  const isLowStock = stockLevel <= 5;
+  const isMediumStock = stockLevel <= 10;
+  const stockPercentage = Math.min((stockLevel / 20) * 100, 100);
 
   return (
-    <Link to={productLink} className="h-full">
-      <Card className={`group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col ${
+    <Link 
+      to={`/product/${node.handle}?bundle=family`}
+      className="block group"
+    >
+      <Card className={`overflow-hidden relative h-full flex flex-col transition-all duration-300 bg-card ${
         isFeatured 
-          ? 'border-2 border-amber-500 shadow-xl shadow-amber-500/30 hover:shadow-2xl hover:shadow-amber-500/40 ring-4 ring-amber-500/30 scale-[1.02]' 
+          ? 'border-2 border-primary shadow-xl shadow-primary/20 hover:shadow-2xl ring-2 ring-primary/20 scale-[1.02]' 
           : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
       }`}>
         {isFeatured && (
           <div className="absolute -top-1 -right-12 z-20 rotate-45 transform">
-            <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold py-1 px-12 shadow-lg">
+            <div className="bg-primary text-primary-foreground text-[10px] font-bold py-1 px-12 shadow-lg">
               BEST VALUE
             </div>
           </div>
@@ -71,11 +65,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
 
         {/* Flash Sale Badge */}
         <div className="absolute top-0 left-0 right-0 z-10">
-          <div className={`text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg ${
-            isFeatured 
-              ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500'
-              : 'bg-gradient-to-r from-amber-500 to-orange-500'
-          }`}>
+          <div className="bg-primary text-primary-foreground text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
             <span>{isFeatured ? '🏆' : '⚡'}</span>
             <span>{isFeatured ? 'MOST POPULAR CHOICE' : 'FLASH SALE'}</span>
             <span>{isFeatured ? '🏆' : '⚡'}</span>
@@ -84,8 +74,8 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
 
         {isFeatured && (
           <div className="absolute top-10 left-3 z-10">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg px-3 py-1.5 text-xs font-bold animate-pulse">
-              <Star className="h-3.5 w-3.5 mr-1 fill-white" />
+            <Badge className="bg-accent text-accent-foreground shadow-lg px-3 py-1.5 text-xs font-bold animate-pulse">
+              <Star className="h-3.5 w-3.5 mr-1 fill-current" />
               #1 Best Seller
             </Badge>
           </div>
@@ -98,21 +88,21 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
           </Badge>
         </div>
 
-        {/* Stock Level Indicator */}
+        {/* Stock Level */}
         <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
           <div className="flex items-center gap-1.5 mb-1.5">
-            <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-red-500' : isMediumStock ? 'text-orange-500' : 'text-green-500'}`} />
-            <span className={`text-xs font-semibold ${isLowStock ? 'text-red-600' : isMediumStock ? 'text-orange-600' : 'text-green-600'}`}>
+            <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`} />
+            <span className={`text-xs font-semibold ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`}>
               Only {stockLevel} left in stock!
             </span>
           </div>
           <Progress 
             value={stockPercentage} 
-            className={`h-1.5 ${isLowStock ? '[&>div]:bg-red-500' : isMediumStock ? '[&>div]:bg-orange-500' : '[&>div]:bg-green-500'}`}
+            className={`h-1.5 ${isLowStock ? '[&>div]:bg-destructive' : isMediumStock ? '[&>div]:bg-accent' : '[&>div]:bg-primary'}`}
           />
         </div>
 
-        <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-gradient-to-br from-amber-50 to-amber-100/50' : 'bg-secondary/10'}`}>
+        <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-muted' : 'bg-muted/50'}`}>
           {image ? (
             <img
               src={image.url}
@@ -129,10 +119,8 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
           )}
         </div>
-        <CardContent className={`p-4 pb-10 flex flex-col flex-1 ${isFeatured ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
-          <h3 className={`font-semibold text-sm mb-1 line-clamp-2 transition-colors ${
-            isFeatured ? 'text-foreground group-hover:text-amber-600' : 'group-hover:text-primary'
-          }`}>
+        <CardContent className="p-4 pb-10 flex flex-col flex-1">
+          <h3 className="font-semibold text-sm mb-1 line-clamp-2 transition-colors group-hover:text-primary text-foreground">
             {node.title}
           </h3>
           <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">
@@ -146,11 +134,11 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
                 </span>
               )}
               <div className="flex items-center gap-2">
-                <span className={`font-bold text-lg ${isFeatured ? 'text-amber-600' : 'text-primary'}`}>
+                <span className="font-bold text-lg text-foreground">
                   {price.toFixed(2)} {currencyCode}
                 </span>
                 {hasDiscount && (
-                  <Badge className="bg-orange-500 text-white hover:bg-orange-600 text-xs px-1.5 py-0">
+                  <Badge className="bg-primary text-primary-foreground text-xs px-1.5 py-0">
                     -{Math.round((1 - price / compareAtPrice) * 100)}%
                   </Badge>
                 )}
@@ -158,10 +146,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
             <Button 
               size="sm" 
-              className={isFeatured 
-                ? "bg-amber-500 hover:bg-amber-600 text-white shadow-md shadow-amber-500/30" 
-                : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-              }
+              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md"
             >
               Shop Now
               <ArrowRight className="h-4 w-4 ml-1" />
