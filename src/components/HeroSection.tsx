@@ -85,7 +85,7 @@ export const HeroSection = () => {
             {/* Video card */}
             <div className="flex-1 w-full max-w-md lg:max-w-lg order-1">
               <div className="relative">
-                <div className="bg-foreground rounded-2xl overflow-hidden shadow-2xl">
+                <div className="bg-secondary rounded-2xl overflow-hidden shadow-2xl border border-border">
                   <video
                     src={heroVideo}
                     autoPlay
@@ -95,8 +95,8 @@ export const HeroSection = () => {
                     preload="auto"
                     className="w-full max-h-[280px] lg:max-h-[500px] object-cover"
                   />
-                  <div className="flex items-start gap-3 bg-foreground/95 p-3 lg:p-4">
-                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs lg:text-sm font-bold text-primary">
+                  <div className="flex items-start gap-3 bg-secondary p-3 lg:p-4 border-t border-border">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-xs lg:text-sm font-bold text-primary">
                       JL
                     </div>
                     <div>
@@ -105,10 +105,10 @@ export const HeroSection = () => {
                           <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <p className="text-[11px] lg:text-xs text-white/90 leading-relaxed">
+                      <p className="text-[11px] lg:text-xs text-foreground/80 leading-relaxed">
                         "Best cable I've ever owned. The stand feature is genius!"
                       </p>
-                      <p className="text-[10px] text-white/50 mt-0.5">Jason L. — Verified Buyer</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Jason L. — Verified Buyer</p>
                     </div>
                   </div>
                 </div>
@@ -155,8 +155,8 @@ export const HeroSection = () => {
 
               {/* FREE Charger badge */}
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-                <div className="border border-foreground/20 bg-foreground text-white text-xs md:text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2">
-                  <Gift className="w-3.5 h-3.5 flex-shrink-0" />
+                <div className="border border-primary/20 bg-primary/5 text-foreground text-xs md:text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2">
+                  <Gift className="w-3.5 h-3.5 flex-shrink-0 text-primary" />
                   <span>🎁 FREE Wall Charger ($49.90) with Family Pack</span>
                 </div>
               </div>
@@ -167,7 +167,7 @@ export const HeroSection = () => {
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
                   className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-xl px-3 py-3 shadow-lg shadow-primary/25 text-center relative hover:scale-105 transition-all duration-200 cursor-pointer ring-2 ring-primary/30"
                 >
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
                   <div className="text-xs font-bold mb-0.5 mt-1.5">Family Pack</div>
                   <div className="text-[10px] font-semibold opacity-80 -mt-0.5 mb-1">3x Cables</div>
                   <div className="text-[10px] opacity-50 line-through">$149.70</div>
@@ -179,7 +179,7 @@ export const HeroSection = () => {
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=duo")}
                   className="bg-secondary border-2 border-border rounded-xl px-3 py-3 shadow-md text-center relative hover:scale-105 hover:border-primary/40 hover:shadow-lg transition-all duration-200 cursor-pointer"
                 >
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🔥 POPULAR</div>
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary/80 text-primary-foreground text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🔥 POPULAR</div>
                   <div className="text-xs font-bold text-foreground mb-0.5 mt-1.5">Duo Pack</div>
                   <div className="text-[10px] font-medium text-muted-foreground -mt-0.5 mb-1">2x Cables</div>
                   <div className="text-[10px] text-muted-foreground line-through">$99.80</div>
@@ -199,16 +199,16 @@ export const HeroSection = () => {
                 <button
                   onClick={handleAddChargerToCart}
                   disabled={isAddingCharger}
-                  className="bg-gradient-to-br from-foreground to-foreground/90 text-white rounded-xl px-3 py-3 shadow-md text-center relative hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-60"
+                  className="bg-gradient-to-br from-primary/15 to-primary/5 text-foreground border-2 border-primary/30 rounded-xl px-3 py-3 shadow-md text-center relative hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-60"
                 >
                   <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">⚡ NEW</div>
                   <div className="text-xs font-bold mb-0.5 mt-1.5">Wall Charger</div>
-                  <div className="text-[10px] font-medium opacity-70 -mt-0.5 mb-1">240W GaN</div>
-                  <div className="text-[10px] opacity-50 line-through">$49.90</div>
+                  <div className="text-[10px] font-medium text-muted-foreground -mt-0.5 mb-1">240W GaN</div>
+                  <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
                   <div className="text-xl font-black tracking-tight">
                     {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$24.90"}
                   </div>
-                  <div className="inline-block bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-50% OFF</div>
+                  <div className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-50% OFF</div>
                 </button>
               </div>
 
