@@ -156,9 +156,11 @@ export const HeroSection = () => {
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-emerald-600 mb-3">
-                <Gift className="w-4 h-4 flex-shrink-0" />
-                <span className="text-xs md:text-sm font-bold">FREE Wall Charger ($49.90 value) with Family Pack!</span>
+              <div className="flex items-center justify-center lg:justify-start gap-2 mb-3">
+                <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs md:text-sm font-bold px-3 py-1.5 rounded-full shadow-md shadow-orange-500/30 flex items-center gap-1.5">
+                  <Gift className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span>🎁 FREE Wall Charger ($49.90 value) with Family Pack!</span>
+                </div>
               </div>
 
               {/* Quick price grid */}
@@ -173,7 +175,7 @@ export const HeroSection = () => {
                   <div className="text-[10px] text-muted-foreground line-through">$149.70</div>
                   <div className="text-lg font-black text-amber-600">$44.90</div>
                   <div className="text-[10px] font-bold text-amber-500 bg-amber-100 rounded px-1">-70%</div>
-                  <div className="text-[8px] font-bold text-emerald-600 mt-0.5">+ FREE Charger 🎁</div>
+                  <div className="text-[8px] font-bold text-orange-600 mt-0.5 bg-orange-100 rounded px-1">+ FREE Charger 🎁</div>
                 </button>
                 <button
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=duo")}
