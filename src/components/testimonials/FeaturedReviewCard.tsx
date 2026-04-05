@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const FeaturedReviewCard = ({ review }: Props) => (
-  <div className="break-inside-avoid bg-card rounded-xl border border-border/50 p-4 hover:shadow-md transition-all duration-300 group">
+  <div className="break-inside-avoid bg-card rounded-xl border border-border p-4 hover:shadow-md transition-all duration-300 group">
     {review.image && (
       <div className="relative -mx-4 -mt-4 mb-3 overflow-hidden rounded-t-xl">
         <img
@@ -28,7 +28,7 @@ export const FeaturedReviewCard = ({ review }: Props) => (
         <p className="font-semibold text-xs truncate">{review.name}</p>
         <div className="flex items-center gap-0.5">
           {[...Array(5)].map((_, i) => (
-            <Star key={i} className={`w-2.5 h-2.5 ${i < review.rating ? "fill-accent text-accent" : "fill-muted text-muted"}`} />
+            <Star key={i} className={`w-2.5 h-2.5 ${i < review.rating ? "fill-yellow-400 text-yellow-400" : "fill-muted text-muted"}`} />
           ))}
         </div>
       </div>
