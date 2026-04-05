@@ -343,9 +343,9 @@ const ProductDetail = () => {
             </div>
 
             {/* Free Charger with Family Pack */}
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-3 flex items-center gap-2">
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-400 rounded-lg p-3 flex items-center gap-2 shadow-md shadow-amber-500/10">
               <span className="text-lg">🎁</span>
-              <span className="text-sm font-semibold text-emerald-700">FREE Wall Charger ($49.90 value) with every Family Pack!</span>
+              <span className="text-sm font-bold text-amber-700">FREE Wall Charger ($49.90 value) with every Family Pack!</span>
             </div>
 
             {/* Active Viewers Counter */}
