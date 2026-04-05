@@ -1,47 +1,20 @@
 
 
-# Orienter le site Go4Charges vers le Canada uniquement
+## Mise à jour du Pixel Meta
 
-## Résumé
-Remplacer toutes les mentions "Worldwide", "USD", et références aux autres pays par du contenu ciblant exclusivement le Canada. La boutique Shopify Canada sera connectée plus tard par l'utilisateur.
+Remplacer l'ID du pixel Facebook actuel (`661610226976532`) par le nouveau `197273290668251`.
 
-## Changements par fichier
+### Fichiers à modifier
 
-### 1. Mentions "Worldwide" → "Canada 🇨🇦"
+1. **`src/lib/facebookPixel.ts`** — Changer `FB_PIXEL_ID` de `'661610226976532'` à `'197273290668251'`
 
-| Fichier | Avant | Après |
-|---------|-------|-------|
-| `src/pages/Index.tsx` | "Free Shipping Worldwide" | "Free Shipping Across Canada 🇨🇦" |
-| `src/components/CTASection.tsx` | "FREE Worldwide Shipping" | "FREE Shipping to Canada 🇨🇦" |
-| `src/components/ChargerUpsellModal.tsx` | "FREE worldwide shipping" | "FREE shipping across Canada" |
-| `src/components/ExitIntentPopup.tsx` | "Free worldwide shipping" | "Free shipping across Canada 🇨🇦" |
-| `src/pages/ProductDetail.tsx` | "Worldwide delivery" | "Ships across Canada 🇨🇦" |
-| `src/components/HeroSection.tsx` | "Free Shipping" (trust badge) | "Free Shipping 🇨🇦" |
-| `src/components/TrustBadgeSection.tsx` | "FREE Shipping" | "FREE Shipping 🇨🇦" |
-| `src/components/CartDrawer.tsx` | "FREE Shipping" | "FREE Shipping 🇨🇦" |
-| `src/pages/ShippingReturns.tsx` | "Free Shipping - On all orders" | "Free Shipping - Across Canada" |
+2. **`index.html`** — Ajouter le fallback `<noscript>` dans le `<body>` pour que le pixel fonctionne même sans JavaScript :
+```html
+<noscript>
+  <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=197273290668251&ev=PageView&noscript=1" />
+</noscript>
+```
 
-### 2. Devise USD → CAD
-
-| Fichier | Changement |
-|---------|-----------|
-| `src/pages/ProductDetail.tsx` | `currency: 'USD'` → `currency: 'CAD'` (2 occurrences Facebook Pixel) |
-| `src/components/WallChargerCard.tsx` | `currencyCode || "USD"` → `currencyCode || "CAD"` |
-| `src/pages/TermsConditions.tsx` | "All prices are displayed in USD" → "All prices are displayed in CAD" |
-
-### 3. Page Shipping & Returns
-- Retirer les lignes United States, Europe, Australia, Rest of World
-- Garder uniquement **Canada: 7-10 business days**
-- Changer "We ship worldwide" → "We ship across Canada"
-
-### 4. FAQ Section
-- Question "Do you ship internationally?" → "Where do you ship?"
-- Réponse : "We ship across Canada with FREE shipping on all orders. Delivery typically takes 7-10 business days."
-- Question "Winter Clearance" : garder telle quelle (promo indépendante de la géo)
-
-### 5. Chatbot (Edge Function)
-- `supabase/functions/chat/index.ts` : mettre à jour le system prompt pour mentionner Canada uniquement et délais 7-10 jours
-
-### Note importante
-La boutique Shopify actuelle reste connectée pour l'instant. L'utilisateur créera une boutique Shopify Canada séparée et la connectera plus tard. Les prix affichés via le Storefront API refléteront la devise configurée dans cette nouvelle boutique.
+Deux modifications simples, aucun changement de logique.
 
