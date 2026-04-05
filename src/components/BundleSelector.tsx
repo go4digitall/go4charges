@@ -67,7 +67,7 @@ export function BundleSelector({
   return (
     <div className="space-y-4">
       {/* Timer */}
-      <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 px-4 rounded-lg font-semibold">
+      <div className="flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 px-4 rounded-lg font-semibold">
         <Timer className="h-4 w-4" />
         <span>Bundle deal expires in</span>
         <span className="font-mono font-bold">{timeLeft}</span>
@@ -92,13 +92,13 @@ export function BundleSelector({
               className={cn(
                 "relative flex cursor-pointer rounded-xl border-2 p-4 transition-all duration-200",
                 isSelected
-                  ? "border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 shadow-md shadow-amber-500/20"
-                  : "border-border bg-card hover:border-amber-300 hover:bg-amber-50/50"
+                  ? "border-primary bg-primary/10 shadow-md shadow-primary/10"
+                  : "border-border bg-card hover:border-primary/30"
               )}
             >
               {/* Selected indicator */}
               {isSelected && (
-                <div className="absolute -top-2.5 left-4 bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                <div className="absolute -top-2.5 left-4 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded">
                   ✓ SELECTED
                 </div>
               )}
@@ -108,7 +108,7 @@ export function BundleSelector({
                 <RadioGroupItem
                   value={option.id}
                   id={option.id}
-                  className="mt-1 border-amber-400 text-amber-500"
+                  className="mt-1 border-primary text-primary"
                 />
 
                 {/* Content */}
@@ -125,11 +125,11 @@ export function BundleSelector({
                           className={cn(
                             "text-xs",
                             badge === "BEST VALUE"
-                              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 animate-pulse"
+                              ? "bg-primary text-primary-foreground border-0 animate-pulse"
                               : badge === "POPULAR"
-                              ? "bg-sky-500 text-white border-0"
+                              ? "bg-secondary text-secondary-foreground border-0"
                               : badge.includes("%")
-                              ? "bg-green-500 text-white border-0"
+                              ? "bg-primary/80 text-primary-foreground border-0"
                               : "bg-muted text-muted-foreground"
                           )}
                         >
@@ -158,8 +158,8 @@ export function BundleSelector({
 
                   {/* Most Popular Choice indicator for Family */}
                   {isFamily && isSelected && (
-                    <div className="flex items-center gap-1 mt-2 text-amber-600">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    <div className="flex items-center gap-1 mt-2 text-primary">
+                      <Star className="h-4 w-4 fill-accent text-accent" />
                       <span className="text-sm font-medium">
                         Most Popular Choice
                       </span>

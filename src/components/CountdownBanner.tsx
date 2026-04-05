@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Gift } from "lucide-react";
 
 export const CountdownBanner = () => {
   const navigate = useNavigate();
@@ -37,37 +36,37 @@ export const CountdownBanner = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-1.5 px-2 sm:py-2.5 sm:px-4 shadow-md">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-primary text-primary-foreground py-1.5 px-2 sm:py-2.5 sm:px-4 shadow-lg shadow-primary/20">
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center flex-nowrap">
-        <span className="font-bold text-[10px] sm:text-base">
-          ⚡ FLASH SALE - UP TO 70% OFF ⚡
+        <span className="font-bold text-[10px] sm:text-base tracking-wide">
+          ⚡ FLASH SALE — UP TO 70% OFF ⚡
         </span>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="flex gap-1 sm:gap-2">
-            <div className="bg-white/20 backdrop-blur-sm px-1 sm:px-3 py-0.5 sm:py-1 rounded">
-              <span className="font-bold text-xs sm:text-lg">
+            <div className="bg-primary-foreground/15 px-1 sm:px-3 py-0.5 sm:py-1 rounded">
+              <span className="font-bold text-xs sm:text-lg font-mono">
                 {String(timeLeft.hours).padStart(2, "0")}
               </span>
-              <span className="text-[8px] sm:text-xs ml-0.5">h</span>
+              <span className="text-[8px] sm:text-xs ml-0.5 opacity-70">h</span>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm px-1 sm:px-3 py-0.5 sm:py-1 rounded">
-              <span className="font-bold text-xs sm:text-lg">
+            <div className="bg-primary-foreground/15 px-1 sm:px-3 py-0.5 sm:py-1 rounded">
+              <span className="font-bold text-xs sm:text-lg font-mono">
                 {String(timeLeft.minutes).padStart(2, "0")}
               </span>
-              <span className="text-[8px] sm:text-xs ml-0.5">m</span>
+              <span className="text-[8px] sm:text-xs ml-0.5 opacity-70">m</span>
             </div>
-            <div className="bg-white/20 backdrop-blur-sm px-1 sm:px-3 py-0.5 sm:py-1 rounded">
-              <span className="font-bold text-xs sm:text-lg">
+            <div className="bg-primary-foreground/15 px-1 sm:px-3 py-0.5 sm:py-1 rounded">
+              <span className="font-bold text-xs sm:text-lg font-mono">
                 {String(timeLeft.seconds).padStart(2, "0")}
               </span>
-              <span className="text-[8px] sm:text-xs ml-0.5">s</span>
+              <span className="text-[8px] sm:text-xs ml-0.5 opacity-70">s</span>
             </div>
           </div>
 
           <button
             onClick={goToFamilyBundle}
-            className="bg-white text-orange-600 hover:bg-orange-50 px-2 sm:px-4 py-0.5 sm:py-1.5 rounded-md text-[9px] sm:text-sm font-semibold transition-colors whitespace-nowrap"
+            className="bg-accent text-accent-foreground hover:bg-accent/90 px-2 sm:px-4 py-0.5 sm:py-1.5 rounded-md text-[9px] sm:text-sm font-bold transition-colors whitespace-nowrap"
           >
             Shop Now
           </button>

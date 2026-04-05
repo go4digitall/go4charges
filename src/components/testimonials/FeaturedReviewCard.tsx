@@ -28,11 +28,11 @@ export const FeaturedReviewCard = ({ review }: Props) => (
         <p className="font-semibold text-xs truncate">{review.name}</p>
         <div className="flex items-center gap-0.5">
           {[...Array(5)].map((_, i) => (
-            <Star key={i} className={`w-2.5 h-2.5 ${i < review.rating ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`} />
+            <Star key={i} className={`w-2.5 h-2.5 ${i < review.rating ? "fill-accent text-accent" : "fill-muted text-muted"}`} />
           ))}
         </div>
       </div>
-      <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full flex-shrink-0">✓ Verified</span>
+      <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded-full flex-shrink-0">✓ Verified</span>
     </div>
     <p className="text-sm text-foreground leading-relaxed">"{review.text}"</p>
   </div>

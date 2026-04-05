@@ -4,88 +4,55 @@
 
 @layer base {
   :root {
-    /* Go4Charges Clean Blue Theme */
-    --background: 0 0% 100%;
-    --foreground: 210 30% 15%;
+    /* Go4Charges — Dark Tech Premium */
+    --background: 220 25% 6%;
+    --foreground: 210 20% 93%;
     
-    --card: 0 0% 100%;
-    --card-foreground: 210 30% 15%;
+    --card: 220 22% 10%;
+    --card-foreground: 210 20% 93%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 30% 15%;
+    --popover: 220 22% 10%;
+    --popover-foreground: 210 20% 93%;
     
     /* Primary: Electric Blue */
-    --primary: 200 100% 45%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 205 100% 55%;
+    --primary-foreground: 220 25% 6%;
     
-    /* Secondary: Light Blue */
-    --secondary: 205 85% 55%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Lighter cyan-blue */
+    --secondary: 195 90% 60%;
+    --secondary-foreground: 220 25% 6%;
     
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 15% 45%;
+    --muted: 220 20% 13%;
+    --muted-foreground: 215 15% 55%;
     
-    /* Section alternate - soft blue tint from logo */
-    --section-alt: 200 60% 94%;
+    --section-alt: 220 20% 8%;
     
-    /* Accent: Silver/Gray */
-    --accent: 210 20% 88%;
-    --accent-foreground: 210 30% 25%;
+    /* Accent: Warm amber for CTAs */
+    --accent: 35 95% 55%;
+    --accent-foreground: 220 25% 6%;
     
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 210 15% 88%;
-    --input: 210 15% 92%;
-    --ring: 200 100% 45%;
+    --border: 220 15% 16%;
+    --input: 220 18% 14%;
+    --ring: 205 100% 55%;
     
     --radius: 0.75rem;
     
-    /* Subtle accent colors */
-    --glow-blue: 200 100% 45%;
-    --glow-light-blue: 205 85% 55%;
-    --glow-cyan: 185 80% 45%;
+    /* Glow system */
+    --glow-blue: 205 100% 55%;
+    --glow-light-blue: 195 90% 60%;
+    --glow-cyan: 185 85% 50%;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 210 30% 15%;
-    --sidebar-primary: 200 100% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 15% 95%;
-    --sidebar-accent-foreground: 210 30% 15%;
-    --sidebar-border: 210 15% 88%;
-    --sidebar-ring: 200 100% 45%;
-  }
-
-  .dark {
-    --background: 210 25% 10%;
-    --foreground: 210 15% 95%;
-    
-    --card: 210 25% 14%;
-    --card-foreground: 210 15% 95%;
-    
-    --popover: 210 25% 14%;
-    --popover-foreground: 210 15% 95%;
-    
-    --primary: 200 100% 50%;
-    --primary-foreground: 210 25% 10%;
-    
-    --secondary: 205 85% 60%;
-    --secondary-foreground: 210 25% 10%;
-    
-    --muted: 210 20% 20%;
-    --muted-foreground: 210 15% 60%;
-    
-    --section-alt: 210 20% 15%;
-    
-    --accent: 210 20% 25%;
-    --accent-foreground: 210 15% 95%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 210 20% 22%;
-    --input: 210 20% 20%;
-    --ring: 200 100% 50%;
+    --sidebar-background: 220 22% 10%;
+    --sidebar-foreground: 210 20% 93%;
+    --sidebar-primary: 205 100% 55%;
+    --sidebar-primary-foreground: 220 25% 6%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 210 20% 93%;
+    --sidebar-border: 220 15% 16%;
+    --sidebar-ring: 205 100% 55%;
   }
 }
 
@@ -99,30 +66,33 @@
 }
 
 @layer utilities {
-  /* Subtle shadow effects instead of neon glow */
+  /* Electric glow effects */
   .glow-blue {
-    box-shadow: 0 4px 14px hsl(var(--primary) / 0.25);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3), 0 0 60px hsl(var(--primary) / 0.1);
   }
   
   .glow-light-blue {
-    box-shadow: 0 4px 14px hsl(var(--secondary) / 0.2);
+    box-shadow: 0 0 20px hsl(var(--secondary) / 0.25);
   }
   
   .glow-cyan {
-    box-shadow: 0 4px 14px hsl(var(--glow-cyan) / 0.2);
+    box-shadow: 0 0 20px hsl(var(--glow-cyan) / 0.25);
   }
 
-  /* Legacy glow classes - now subtle */
+  .glow-primary {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.2), 0 4px 20px hsl(var(--primary) / 0.15);
+  }
+
+  /* Legacy glow classes */
   .glow-yellow, .glow-lime, .glow-pink, .glow-orange, .glow-silver, .glow-multi {
-    box-shadow: 0 4px 14px hsl(var(--primary) / 0.15);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.15);
   }
   
-  /* Clean border effect */
   .glow-border {
-    border: 1px solid hsl(var(--border));
+    border: 1px solid hsl(var(--primary) / 0.2);
   }
   
-  /* Text Gradient */
+  /* Text Gradient — electric blue */
   .text-gradient {
     background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     -webkit-background-clip: text;
@@ -130,60 +100,27 @@
     background-clip: text;
   }
   
-  /* Subtle Hover Effect */
+  /* Hover Effect */
   .hover-glow {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
   
   .hover-glow:hover {
-    box-shadow: 0 6px 20px hsl(var(--primary) / 0.2);
+    box-shadow: 0 0 25px hsl(var(--primary) / 0.25);
     transform: translateY(-2px);
   }
   
-  /* Subtle Pulse Animation */
+  /* Pulse */
   .animate-pulse-glow {
     animation: pulse-subtle 2s ease-in-out infinite;
   }
   
   @keyframes pulse-subtle {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.85;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
   }
 
-  /* Snowfall Animation - GPU optimized */
-  .animate-snowfall {
-    animation: snowfall linear infinite;
-    will-change: transform;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .animate-snowfall {
-      animation: none;
-    }
-  }
-
-  @keyframes snowfall {
-    0% {
-      transform: translateY(-20px) rotate(0deg);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.6;
-    }
-    90% {
-      opacity: 0.4;
-    }
-    100% {
-      transform: translateY(400px) rotate(360deg);
-      opacity: 0;
-    }
-  }
-
-  /* Marquee Animation - GPU optimized */
+  /* Marquee */
   .animate-marquee {
     will-change: transform;
   }
