@@ -36,11 +36,11 @@ const Index = () => {
             <div className="container">
               <div className="text-center mb-10">
                 {/* Flash Sale Banner */}
-                <div className="mb-6 bg-foreground text-white py-4 px-6 rounded-xl shadow-lg max-w-2xl mx-auto">
+                <div className="mb-6 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-4 px-6 rounded-xl shadow-lg max-w-2xl mx-auto">
                   <div className="flex items-center justify-center gap-2 text-lg md:text-xl font-bold">
                     <span>⚡</span><span>FLASH SALE — UP TO 70% OFF!</span><span>⚡</span>
                   </div>
-                  <p className="text-sm mt-1 opacity-80">Limited Stock • Free Shipping Across Canada 🇨🇦 • FREE Charger with Family Pack 🎁</p>
+                  <p className="text-sm mt-1 opacity-90">Limited Stock • Free Shipping Across Canada 🇨🇦 • FREE Charger with Family Pack 🎁</p>
                 </div>
 
                 <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-foreground">
