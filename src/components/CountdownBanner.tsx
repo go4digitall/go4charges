@@ -38,7 +38,7 @@ export const CountdownBanner = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-1.5 px-2 sm:py-2.5 sm:px-4 shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center flex-wrap">
+      <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center flex-nowrap">
         <span className="font-bold text-[10px] sm:text-base">
           ⚡ FLASH SALE - UP TO 70% OFF ⚡
         </span>
