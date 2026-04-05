@@ -1,5 +1,6 @@
 import heroImage from "@/assets/hero-before-after.jpg";
-import benefitsVideo from "@/assets/benefits-video.mp4";
+import adsHero from "@/assets/ads-hero.jpg";
+import adsFeatures from "@/assets/ads-features.jpg";
 import benefitsVideo2 from "@/assets/benefits-video-2.mp4";
 
 export const BenefitsSection = () => {
@@ -15,55 +16,56 @@ export const BenefitsSection = () => {
           </p>
         </div>
 
-        {/* Grid: Banner + 2 videos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {/* Main banner image */}
-          <div className="md:col-span-2">
-            <img 
-              src={heroImage} 
-              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
+        {/* Grid: 2 images top, 1 image + 1 video bottom */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {/* Top left — Charge Smarter ad */}
+          <div className="rounded-xl overflow-hidden shadow-lg">
+            <img
+              src={adsHero}
+              alt="Charge Smarter. Use Your Phone. Up to 240W Fast Charging, Hands-Free, Built to Last"
               loading="lazy"
               decoding="async"
-              width={800}
-              height={600}
-              className="w-full h-full object-cover rounded-xl shadow-lg"
+              className="w-full h-full object-cover"
             />
           </div>
-          
-          {/* Video showcase 1 */}
-          <div>
-            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary aspect-[3/4]">
-              <video 
-                src={benefitsVideo}
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover rounded-xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
-            </div>
+
+          {/* Top right — Features breakdown */}
+          <div className="rounded-xl overflow-hidden shadow-lg">
+            <img
+              src={adsFeatures}
+              alt="Go4Charges features: 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          {/* Video showcase 2 */}
-          <div>
-            <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary aspect-[3/4]">
-              <video 
-                src={benefitsVideo2}
-                autoPlay 
-                loop 
-                muted 
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover rounded-xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none rounded-xl" />
-            </div>
+          {/* Bottom left — Before/After */}
+          <div className="rounded-xl overflow-hidden shadow-lg">
+            <img
+              src={heroImage}
+              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Bottom right — Video */}
+          <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary">
+            <video
+              src={benefitsVideo2}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
           </div>
         </div>
 
-        {/* Caption */}
         <p className="text-center text-sm text-muted-foreground mt-4 italic">
           See it in action
         </p>
