@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, Truck, RotateCcw, Headphones, Star, CreditCard, ChevronDown, Loader2, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import heroImage from "@/assets/hero-before-after.jpg";
+import heroVideo from "@/assets/benefits-video.mp4";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProductByHandle, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
@@ -89,14 +89,13 @@ export const HeroSection = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="relative group">
             <div className="relative overflow-hidden rounded-xl md:rounded-2xl shadow-2xl shadow-primary/30 ring-1 ring-primary/10">
-              <img 
-                src={heroImage} 
-                alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand" 
-                width={1200}
-                height={800}
-                fetchPriority="high"
-                loading="eager"
-                decoding="async"
+              <video 
+                src={heroVideo}
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                preload="auto"
                 className="w-full h-auto object-contain transition-all duration-700 group-hover:scale-[1.02] animate-fade-in contrast-[1.05] saturate-[1.1]" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-white/5 pointer-events-none" />
