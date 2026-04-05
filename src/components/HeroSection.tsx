@@ -72,10 +72,24 @@ export const HeroSection = () => {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-16 py-6 md:py-16 lg:py-20">
+          {/* Flash Sale + Title + Description — always on top */}
+          <div className="text-center lg:hidden py-4">
+            <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-2 shadow-md shadow-orange-500/30">
+              ⚡ FLASH SALE — UP TO 70% OFF ⚡
+            </div>
+            <h1 className="text-2xl font-extrabold text-foreground leading-[1.1] mb-2">
+              Charge Smarter.{" "}
+              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand Out.</span>
+            </h1>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-0 max-w-xl mx-auto">
+              The cable that charges your phone and holds it — up to 240W, built to never break.
+            </p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-16 pb-6 lg:py-20">
 
             {/* Left on desktop / First on mobile — Video card */}
-            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1 lg:order-1">
+            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1">
               <div className="relative">
                 <div className="bg-card rounded-2xl border shadow-2xl overflow-hidden">
                   <video
@@ -85,22 +99,22 @@ export const HeroSection = () => {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-auto object-cover"
+                    className="w-full h-auto max-h-[280px] lg:max-h-none object-cover"
                   />
-                  <div className="flex items-start gap-3 bg-muted/50 p-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary">
+                  <div className="flex items-start gap-3 bg-muted/50 p-3 lg:p-4">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-xs lg:text-sm font-bold text-primary">
                       JL
                     </div>
                     <div>
-                      <div className="flex items-center gap-1 mb-1">
+                      <div className="flex items-center gap-1 mb-0.5">
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
                         ))}
                       </div>
-                      <p className="text-xs text-foreground leading-relaxed">
-                        "Best cable I've ever owned. The stand feature is genius — charges fast and looks great!"
+                      <p className="text-[11px] lg:text-xs text-foreground leading-relaxed">
+                        "Best cable I've ever owned. The stand feature is genius!"
                       </p>
-                      <p className="text-[10px] text-muted-foreground mt-1">Jason L. — Verified Buyer</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Jason L. — Verified Buyer</p>
                     </div>
                   </div>
                 </div>
@@ -112,19 +126,20 @@ export const HeroSection = () => {
             </div>
 
             {/* Right on desktop / Second on mobile — Copy + packs */}
-            <div className="flex-1 text-center lg:text-left max-w-2xl order-2 lg:order-2">
-              <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-[10px] md:text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-2 md:mb-4 shadow-md shadow-orange-500/30">
-                ⚡ FLASH SALE — UP TO 70% OFF ⚡
+            <div className="flex-1 text-center lg:text-left max-w-2xl order-2">
+              {/* Desktop-only title block */}
+              <div className="hidden lg:block">
+                <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4 shadow-md shadow-orange-500/30">
+                  ⚡ FLASH SALE — UP TO 70% OFF ⚡
+                </div>
+                <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-5">
+                  Charge Smarter.{" "}
+                  <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand Out.</span>
+                </h1>
+                <p className="text-xl text-muted-foreground leading-relaxed mb-6 max-w-xl">
+                  The cable that charges your phone and holds it — up to 240W, built to never break.
+                </p>
               </div>
-
-              <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-2 md:mb-5">
-                Charge Smarter.{" "}
-                <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand Out.</span>
-              </h1>
-
-              <p className="text-sm md:text-xl text-muted-foreground leading-relaxed mb-3 md:mb-6 max-w-xl mx-auto lg:mx-0">
-                The cable that charges your phone and holds it — up to 240W, built to never break.
-              </p>
 
               <div className="flex flex-col gap-1.5 mb-4 md:mb-6 items-center lg:items-start">
                 {heroPoints.map((point) => (
