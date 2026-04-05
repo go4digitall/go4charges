@@ -82,7 +82,7 @@ export const WallChargerCard = () => {
     <Card className="group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col border-0 shadow-sm hover:shadow-lg glow-border hover-glow">
       {/* Hot Deal Banner - matching ProductCard style */}
       <div className="absolute top-0 left-0 right-0 z-10">
-        <div className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
+        <div className="bg-primary text-primary-foreground text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
           <span>🔥</span>
           <span>HOT DEAL - {discount}% OFF</span>
           <span>🔥</span>
@@ -99,7 +99,7 @@ export const WallChargerCard = () => {
 
       {/* Best Seller Badge */}
       <div className="absolute top-10 left-3 z-10">
-        <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-lg px-2 py-1 text-xs font-bold">
+        <Badge className="bg-accent text-accent-foreground shadow-lg px-2 py-1 text-xs font-bold">
           ⚡ Best Seller
         </Badge>
       </div>
@@ -107,19 +107,19 @@ export const WallChargerCard = () => {
       {/* Stock Level Indicator */}
       <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
         <div className="flex items-center gap-1.5 mb-1.5">
-          <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-red-500' : isMediumStock ? 'text-orange-500' : 'text-green-500'}`} />
-          <span className={`text-xs font-semibold ${isLowStock ? 'text-red-600' : isMediumStock ? 'text-orange-600' : 'text-green-600'}`}>
+          <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`} />
+          <span className={`text-xs font-semibold ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`}>
             Only {stockLevel} left in stock!
           </span>
         </div>
         <Progress 
           value={stockPercentage} 
-          className={`h-1.5 ${isLowStock ? '[&>div]:bg-red-500' : isMediumStock ? '[&>div]:bg-orange-500' : '[&>div]:bg-green-500'}`}
+          className={`h-1.5 ${isLowStock ? '[&>div]:bg-destructive' : isMediumStock ? '[&>div]:bg-accent' : '[&>div]:bg-primary'}`}
         />
       </div>
 
       {/* Product Image - Same aspect ratio as ProductCard */}
-      <div className="aspect-square overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
+      <div className="aspect-square overflow-hidden bg-muted">
         {image?.url ? (
           <img 
             src={image.url} 
@@ -132,7 +132,7 @@ export const WallChargerCard = () => {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Zap className="w-20 h-20 text-amber-400" />
+            <Zap className="w-20 h-20 text-primary" />
           </div>
         )}
       </div>
@@ -151,10 +151,10 @@ export const WallChargerCard = () => {
               {comparePrice.toFixed(2)} {currencyCode}
             </span>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-lg text-primary">
+              <span className="font-bold text-lg text-foreground">
                 {price.toFixed(2)} {currencyCode}
               </span>
-              <Badge className="bg-red-500 text-white hover:bg-red-600 text-xs px-1.5 py-0">
+              <Badge className="bg-primary text-primary-foreground text-xs px-1.5 py-0">
                 -{discount}%
               </Badge>
             </div>
@@ -163,7 +163,7 @@ export const WallChargerCard = () => {
             size="sm" 
             onClick={handleAddToCart}
             disabled={isAdding}
-            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md shadow-orange-500/30"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md"
           >
             {isAdding ? (
               <Loader2 className="h-4 w-4 animate-spin" />
