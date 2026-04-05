@@ -75,11 +75,11 @@ export const HeroSection = () => {
           {/* Flash Sale + Title + Description — always on top */}
           <div className="text-center lg:hidden py-4">
             <h1 className="text-2xl font-extrabold text-foreground leading-[1.1] mb-2">
-              Stop Breaking{" "}
-              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Your Cables.</span>
+              Charge It.{" "}
+              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand It. Use It.</span>
             </h1>
             <p className="text-sm text-muted-foreground leading-relaxed mb-0 max-w-xl mx-auto">
-              The last charging cable you'll ever buy — charges fast, stands your phone, never breaks.
+              The cable that charges, holds your phone hands-free, and never breaks.
             </p>
           </div>
 
@@ -127,11 +127,11 @@ export const HeroSection = () => {
               {/* Desktop-only title block */}
               <div className="hidden lg:block">
                 <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-5">
-                  Stop Breaking{" "}
-                  <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Your Cables.</span>
+                  Charge It.{" "}
+                  <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand It. Use It.</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed mb-6 max-w-xl">
-                  The last charging cable you'll ever buy — charges fast, stands your phone, never breaks.
+                  The cable that charges, holds your phone hands-free, and never breaks.
                 </p>
               </div>
 
