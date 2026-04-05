@@ -93,7 +93,7 @@ export const HeroSection = () => {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full max-h-[280px] lg:max-h-[360px] object-cover aspect-square lg:aspect-[4/3]"
+                    className="w-full max-h-[280px] lg:max-h-[500px] object-cover"
                   />
                   <div className="flex items-start gap-3 bg-foreground/95 p-3 lg:p-4">
                     <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-xs lg:text-sm font-bold text-primary">
