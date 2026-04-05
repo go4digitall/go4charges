@@ -35,21 +35,21 @@ const Index = () => {
           <BenefitsSection />
           
           {/* Products Section */}
-          <section id="products" className="py-12 md:py-16 bg-gradient-to-b from-amber-50/50 to-orange-50/30 scroll-mt-56 md:scroll-mt-36 relative overflow-hidden">
+          <section id="products" className="py-12 md:py-16 bg-card scroll-mt-56 md:scroll-mt-36 relative overflow-hidden">
             <div className="container">
               <div className="text-center mb-10">
                 {/* Flash Sale Banner */}
-                <div className="mb-6 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-4 px-6 rounded-xl shadow-lg shadow-orange-500/30 max-w-2xl mx-auto relative overflow-hidden">
+                <div className="mb-6 bg-primary text-primary-foreground py-4 px-6 rounded-xl shadow-lg shadow-primary/20 max-w-2xl mx-auto relative overflow-hidden">
                   <div className="flex items-center justify-center gap-2 text-lg md:text-xl font-bold">
                     <span>⚡</span>
-                    <span>FLASH SALE - UP TO 70% OFF!</span>
+                    <span>FLASH SALE — UP TO 70% OFF!</span>
                     <span>⚡</span>
                   </div>
-                  <p className="text-sm mt-1 text-orange-100">Limited Stock • Free Shipping Across Canada 🇨🇦 • FREE Charger with Family Pack 🎁</p>
+                  <p className="text-sm mt-1 opacity-80">Limited Stock • Free Shipping Across Canada 🇨🇦 • FREE Charger with Family Pack 🎁</p>
                 </div>
 
-                <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4">
-                  The <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">ChargeStand™</span>
+                <h2 className="text-3xl md:text-5xl font-bold mb-2 md:mb-4 text-foreground">
+                  The <span className="text-gradient">ChargeStand™</span>
                 </h2>
                 <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
                   Ultra-fast charging cable with up to 240W power delivery
@@ -101,7 +101,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-3">Looking for a different pack size?</p>
                 <a 
                   href="/product/chargestand-240w-90-fast-charging-cable?bundle=family" 
-                  className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors"
                 >
                   View all bundle options →
                 </a>
