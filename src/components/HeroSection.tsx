@@ -164,14 +164,14 @@ export const HeroSection = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-xl mx-auto lg:mx-0">
                 <button
                   onClick={() => navigate("/product/chargestand-240w-90-fast-charging-cable?bundle=family")}
-                  className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-xl px-3 py-3 shadow-lg shadow-primary/25 text-center relative hover:scale-105 transition-all duration-200 cursor-pointer ring-2 ring-primary/30"
+                  className="bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-xl px-3 py-3 shadow-lg shadow-orange-500/30 text-center relative hover:scale-105 transition-all duration-200 cursor-pointer ring-2 ring-amber-400/40"
                 >
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-foreground text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-md">🏆 BEST VALUE</div>
                   <div className="text-xs font-bold mb-0.5 mt-1.5">Family Pack</div>
-                  <div className="text-[10px] font-semibold opacity-80 -mt-0.5 mb-1">3x Cables</div>
-                  <div className="text-[10px] opacity-50 line-through">$149.70</div>
+                  <div className="text-[10px] font-semibold opacity-90 -mt-0.5 mb-1">3x Cables</div>
+                  <div className="text-[10px] opacity-60 line-through">$149.70</div>
                   <div className="text-xl font-black tracking-tight">$44.90</div>
-                  <div className="inline-block bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-70% OFF</div>
+                  <div className="inline-block bg-white/25 text-[10px] font-bold px-2 py-0.5 rounded-full mt-0.5">-70% OFF</div>
                   <div className="text-[9px] font-bold opacity-90 mt-1">+ FREE Charger 🎁</div>
                 </button>
                 <button
