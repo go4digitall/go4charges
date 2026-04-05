@@ -74,15 +74,12 @@ export const HeroSection = () => {
         <div className="container mx-auto px-4 relative z-10">
           {/* Flash Sale + Title + Description — always on top */}
           <div className="text-center lg:hidden py-4">
-            <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-2 shadow-md shadow-orange-500/30">
-              ⚡ FLASH SALE — UP TO 70% OFF ⚡
-            </div>
             <h1 className="text-2xl font-extrabold text-foreground leading-[1.1] mb-2">
-              Charge Smarter.{" "}
-              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand Out.</span>
+              Stop Breaking{" "}
+              <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Your Cables.</span>
             </h1>
             <p className="text-sm text-muted-foreground leading-relaxed mb-0 max-w-xl mx-auto">
-              The cable that charges your phone and holds it — up to 240W, built to never break.
+              The last charging cable you'll ever buy — charges fast, stands your phone, never breaks.
             </p>
           </div>
 
@@ -129,15 +126,12 @@ export const HeroSection = () => {
             <div className="flex-1 text-center lg:text-left max-w-2xl order-2">
               {/* Desktop-only title block */}
               <div className="hidden lg:block">
-                <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4 shadow-md shadow-orange-500/30">
-                  ⚡ FLASH SALE — UP TO 70% OFF ⚡
-                </div>
                 <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-5">
-                  Charge Smarter.{" "}
-                  <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Stand Out.</span>
+                  Stop Breaking{" "}
+                  <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Your Cables.</span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed mb-6 max-w-xl">
-                  The cable that charges your phone and holds it — up to 240W, built to never break.
+                  The last charging cable you'll ever buy — charges fast, stands your phone, never breaks.
                 </p>
               </div>
 
