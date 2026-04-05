@@ -74,8 +74,45 @@ export const HeroSection = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-16 py-6 md:py-16 lg:py-20">
 
-            {/* Left — Copy */}
-            <div className="flex-1 text-center lg:text-left max-w-2xl">
+            {/* Left on desktop / First on mobile — Video card */}
+            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1 lg:order-1">
+              <div className="relative">
+                <div className="bg-card rounded-2xl border shadow-2xl overflow-hidden">
+                  <video
+                    src={heroVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="flex items-start gap-3 bg-muted/50 p-4">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary">
+                      JL
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1 mb-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                        ))}
+                      </div>
+                      <p className="text-xs text-foreground leading-relaxed">
+                        "Best cable I've ever owned. The stand feature is genius — charges fast and looks great!"
+                      </p>
+                      <p className="text-[10px] text-muted-foreground mt-1">Jason L. — Verified Buyer</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
+                  FREE Shipping 🇨🇦
+                </div>
+              </div>
+            </div>
+
+            {/* Right on desktop / Second on mobile — Copy + packs */}
+            <div className="flex-1 text-center lg:text-left max-w-2xl order-2 lg:order-2">
               <div className="inline-block bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-[10px] md:text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-2 md:mb-4 shadow-md shadow-orange-500/30">
                 ⚡ FLASH SALE — UP TO 70% OFF ⚡
               </div>
@@ -175,43 +212,6 @@ export const HeroSection = () => {
                 <span>Also available for <strong>iPhone 5-14 (Lightning)</strong></span>
                 <span className="text-gray-400">→</span>
               </button>
-            </div>
-
-            {/* Right — Video card */}
-            <div className="flex-1 w-full max-w-md lg:max-w-lg">
-              <div className="relative">
-                <div className="bg-card rounded-2xl border shadow-2xl overflow-hidden">
-                  <video
-                    src={heroVideo}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className="w-full h-auto object-cover"
-                  />
-                  <div className="flex items-start gap-3 bg-muted/50 p-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary">
-                      JL
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1 mb-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
-                      <p className="text-xs text-foreground leading-relaxed">
-                        "Best cable I've ever owned. The stand feature is genius — charges fast and looks great!"
-                      </p>
-                      <p className="text-[10px] text-muted-foreground mt-1">Jason L. — Verified Buyer</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
-                  FREE Shipping 🇨🇦
-                </div>
-              </div>
             </div>
           </div>
         </div>
