@@ -66,7 +66,6 @@ const useCountdown = () => {
 export const CartDrawer = () => {
   const { items, isLoading, isSyncing, isOpen, setIsOpen, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
   const visibleItems = items.reduce<typeof items>((acc, item) => {
-    // Identify gift by isGift flag OR by being the wall charger when a Family Pack is in cart
     const isGiftItem = item.isGift || (isWallCharger(item.product) && hasFamilyPack(items));
     
     if (isGiftItem) {
@@ -88,7 +87,7 @@ export const CartDrawer = () => {
   const totalItems = visibleItems.reduce((sum, item) => sum + (item.isGift ? 1 : item.quantity), 0);
   const displayItems = totalItems;
   const totalPrice = items.reduce((sum, item) => {
-    if (item.isGift) return sum; // Gift items are free
+    if (item.isGift) return sum;
     return sum + (parseFloat(item.price.amount) * item.quantity);
   }, 0);
   const timeLeft = useCountdown();
@@ -131,10 +130,10 @@ export const CartDrawer = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative h-11 w-11 border-2 border-amber-500 bg-amber-500/10 hover:bg-amber-500/20 hover:border-amber-600">
-          <ShoppingCart className="h-6 w-6 text-amber-600" />
+        <Button variant="outline" size="icon" className="relative h-11 w-11 border-2 border-foreground bg-transparent hover:bg-secondary">
+          <ShoppingCart className="h-6 w-6 text-foreground" />
           {displayItems > 0 && (
-            <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold bg-amber-500 text-white shadow-lg">
+            <Badge className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs font-bold bg-primary text-white shadow-lg">
               {displayItems}
             </Badge>
           )}
@@ -150,8 +149,8 @@ export const CartDrawer = () => {
 
         {/* Flash Sale Urgency Banner */}
         {items.length > 0 && (
-          <div className="mx-4 mb-2 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-2.5 px-3 rounded-lg relative overflow-hidden">
-            <div className="flex items-center justify-center gap-2 relative z-10">
+          <div className="mx-4 mb-2 bg-foreground text-white py-2.5 px-3 rounded-lg">
+            <div className="flex items-center justify-center gap-2">
               <span className="text-sm">⚡</span>
               <span className="text-sm font-bold">FLASH SALE ENDS IN:</span>
               <div className="flex gap-1">
@@ -183,8 +182,8 @@ export const CartDrawer = () => {
               <div className="flex-1 overflow-y-auto pr-2 min-h-0">
                 <div className="space-y-3">
                   {visibleItems.map((item, index) => (
-                    <div key={item.lineId ?? `${item.variantId}-${index}`} className={`flex gap-3 p-2 border rounded-lg ${item.isGift ? 'bg-emerald-50 border-emerald-200' : 'bg-card'}`}>
-                      <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
+                    <div key={item.lineId ?? `${item.variantId}-${index}`} className={`flex gap-3 p-2 border rounded-lg ${item.isGift ? 'bg-primary/5 border-primary/20' : 'bg-card'}`}>
+                      <div className="w-16 h-16 bg-secondary rounded-md overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
                           <img 
                             src={item.product.node.images.edges[0].node.url} 
@@ -197,19 +196,19 @@ export const CartDrawer = () => {
                         <h4 className="font-medium truncate text-sm">{item.product.node.title}</h4>
                         {item.isGift ? (
                           <div className="flex items-center gap-1 mt-1">
-                            <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">🎁 FREE GIFT{item.quantity > 1 ? ` x${item.quantity}` : ''}</span>
+                            <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">🎁 FREE GIFT{item.quantity > 1 ? ` x${item.quantity}` : ''}</span>
                           </div>
                         ) : (
                           <p className="text-xs text-muted-foreground">{item.selectedOptions.map(option => option.value).join(' • ')}</p>
                         )}
                         <div className="flex items-center gap-1 mt-1">
-                          <CheckCircle className="h-3 w-3 text-emerald-500" />
-                          <span className="text-xs text-emerald-600 font-medium">In Stock</span>
+                          <CheckCircle className="h-3 w-3 text-primary" />
+                          <span className="text-xs text-primary font-medium">In Stock</span>
                         </div>
                         {item.isGift ? (
                           <div className="flex items-center gap-1.5 mt-1">
                             <span className="text-xs text-muted-foreground line-through">${parseFloat(item.price.amount).toFixed(2)}</span>
-                            <span className="font-semibold text-sm text-emerald-600">FREE</span>
+                            <span className="font-semibold text-sm text-primary">FREE</span>
                           </div>
                         ) : (
                           <p className="font-semibold text-sm mt-1">${parseFloat(item.price.amount).toFixed(2)}</p>
@@ -258,9 +257,9 @@ export const CartDrawer = () => {
               <div className="flex-shrink-0 space-y-3 pt-3 border-t bg-background">
                 {/* Savings Banner */}
                 {totalSavings > 0 && (
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg py-2 px-3 flex items-center justify-center gap-2">
                     <span className="text-lg">🔥</span>
-                    <span className="text-amber-700 font-bold text-sm">
+                    <span className="text-primary font-bold text-sm">
                       You Save: ${totalSavings.toFixed(2)}!
                     </span>
                     <span className="text-lg">🔥</span>
@@ -276,7 +275,7 @@ export const CartDrawer = () => {
                 {/* Secure Checkout Button */}
                 <Button 
                   onClick={handleCheckout} 
-                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-base font-bold shadow-lg shadow-orange-500/30" 
+                  className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-base font-bold shadow-lg shadow-primary/20" 
                   size="lg" 
                   disabled={items.length === 0 || isLoading || isSyncing}
                 >
@@ -304,21 +303,21 @@ export const CartDrawer = () => {
 
                 {/* Trust Badges */}
                 <div className="grid grid-cols-3 gap-2">
-                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
-                    <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center mb-1">
-                      <Lock className="w-4 h-4 text-violet-600" />
+                  <div className="flex flex-col items-center text-center p-2 bg-secondary rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
+                      <Lock className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-[10px] font-medium">Secure</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
-                      <Truck className="w-4 h-4 text-blue-600" />
+                  <div className="flex flex-col items-center text-center p-2 bg-secondary rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
+                      <Truck className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-[10px] font-medium">FREE Shipping 🇨🇦</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg">
-                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mb-1">
-                      <RotateCcw className="w-4 h-4 text-emerald-600" />
+                  <div className="flex flex-col items-center text-center p-2 bg-secondary rounded-lg">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
+                      <RotateCcw className="w-4 h-4 text-primary" />
                     </div>
                     <span className="text-[10px] font-medium">30-Day Return</span>
                   </div>

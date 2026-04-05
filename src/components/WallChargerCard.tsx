@@ -40,8 +40,7 @@ export const WallChargerCard = () => {
   const discount = Math.round(((comparePrice - price) / comparePrice) * 100);
   const stockLevel = 7;
   const stockPercentage = (stockLevel / 15) * 100;
-  const isLowStock = stockLevel < 5;
-  const isMediumStock = stockLevel >= 5 && stockLevel < 10;
+  const isMediumStock = true;
 
   const handleAddToCart = async () => {
     if (!variant) return;
@@ -79,10 +78,10 @@ export const WallChargerCard = () => {
   };
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 bg-card backdrop-blur relative h-full flex flex-col border-0 shadow-sm hover:shadow-lg glow-border hover-glow">
-      {/* Hot Deal Banner - matching ProductCard style */}
+    <Card className="group overflow-hidden transition-all duration-300 bg-card relative h-full flex flex-col border border-border shadow-sm hover:shadow-lg hover-glow">
+      {/* Hot Deal Banner */}
       <div className="absolute top-0 left-0 right-0 z-10">
-        <div className="bg-primary text-primary-foreground text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
+        <div className="bg-foreground text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
           <span>🔥</span>
           <span>HOT DEAL - {discount}% OFF</span>
           <span>🔥</span>
@@ -91,7 +90,7 @@ export const WallChargerCard = () => {
 
       {/* Power Badge */}
       <div className="absolute top-10 right-3 z-10">
-        <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
+        <Badge variant="secondary" className="bg-foreground text-white text-xs">
           <Zap className="h-3 w-3 mr-1" />
           240W GaN
         </Badge>
@@ -99,27 +98,27 @@ export const WallChargerCard = () => {
 
       {/* Best Seller Badge */}
       <div className="absolute top-10 left-3 z-10">
-        <Badge className="bg-accent text-accent-foreground shadow-lg px-2 py-1 text-xs font-bold">
+        <Badge className="bg-primary text-white shadow-lg px-2 py-1 text-xs font-bold">
           ⚡ Best Seller
         </Badge>
       </div>
 
-      {/* Stock Level Indicator */}
+      {/* Stock Level */}
       <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
         <div className="flex items-center gap-1.5 mb-1.5">
-          <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`} />
-          <span className={`text-xs font-semibold ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`}>
+          <AlertTriangle className="h-3 w-3 text-muted-foreground" />
+          <span className="text-xs font-semibold text-muted-foreground">
             Only {stockLevel} left in stock!
           </span>
         </div>
         <Progress 
           value={stockPercentage} 
-          className={`h-1.5 ${isLowStock ? '[&>div]:bg-destructive' : isMediumStock ? '[&>div]:bg-accent' : '[&>div]:bg-primary'}`}
+          className="h-1.5 [&>div]:bg-primary"
         />
       </div>
 
-      {/* Product Image - Same aspect ratio as ProductCard */}
-      <div className="aspect-square overflow-hidden bg-muted">
+      {/* Product Image */}
+      <div className="aspect-square overflow-hidden bg-secondary">
         {image?.url ? (
           <img 
             src={image.url} 
@@ -137,7 +136,7 @@ export const WallChargerCard = () => {
         )}
       </div>
 
-      {/* Card Content - Same structure as ProductCard */}
+      {/* Card Content */}
       <CardContent className="p-4 pb-10 flex flex-col flex-1">
         <h3 className="font-semibold text-sm mb-1 line-clamp-2 transition-colors group-hover:text-primary">
           {product.title}
@@ -154,7 +153,7 @@ export const WallChargerCard = () => {
               <span className="font-bold text-lg text-foreground">
                 {price.toFixed(2)} {currencyCode}
               </span>
-              <Badge className="bg-primary text-primary-foreground text-xs px-1.5 py-0">
+              <Badge className="bg-primary text-white text-xs px-1.5 py-0">
                 -{discount}%
               </Badge>
             </div>
@@ -163,7 +162,7 @@ export const WallChargerCard = () => {
             size="sm" 
             onClick={handleAddToCart}
             disabled={isAdding}
-            className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md"
+            className="bg-primary hover:bg-primary/90 text-white shadow-md"
           >
             {isAdding ? (
               <Loader2 className="h-4 w-4 animate-spin" />

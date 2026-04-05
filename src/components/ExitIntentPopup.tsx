@@ -109,14 +109,9 @@ export const ExitIntentPopup = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden border-0 bg-gradient-to-br from-amber-50 to-orange-100">
-        {/* Header with flash sale theme */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-6 text-white relative overflow-hidden">
-          <Zap className="absolute top-2 left-4 w-6 h-6 text-white/20 animate-pulse" />
-          <Zap className="absolute top-4 right-8 w-4 h-4 text-white/15" />
-          <Zap className="absolute bottom-2 left-12 w-5 h-5 text-white/20" />
-          <Zap className="absolute bottom-4 right-4 w-6 h-6 text-white/15 animate-pulse" />
-          
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden border border-border bg-background">
+        {/* Header */}
+        <div className="bg-foreground p-6 text-white relative overflow-hidden">
           <div className="relative z-10 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
               <Gift className="w-8 h-8 text-white" />
@@ -125,7 +120,7 @@ export const ExitIntentPopup = () => {
               <DialogTitle className="text-2xl font-bold text-white text-center">
                 ⚡ WAIT! Don't Miss This!
               </DialogTitle>
-              <DialogDescription className="text-white/90 text-center text-base mt-2">
+              <DialogDescription className="text-white/80 text-center text-base mt-2">
                 Exclusive offer just for you
               </DialogDescription>
             </DialogHeader>
@@ -135,50 +130,50 @@ export const ExitIntentPopup = () => {
         <div className="p-6 text-center space-y-4">
           {!showCode ? (
             <>
-              <div className="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg shadow-orange-500/30">
+              <div className="inline-block bg-primary text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg shadow-primary/20">
                 EXTRA 10% OFF
               </div>
-              <p className="text-gray-600">
-                Complete your order now and get an <span className="font-bold text-orange-600">additional 10% discount</span> on your entire cart!
+              <p className="text-muted-foreground">
+                Complete your order now and get an <span className="font-bold text-foreground">additional 10% discount</span> on your entire cart!
               </p>
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Clock className="w-4 h-4" />
                 <span>Offer expires when you leave this page</span>
               </div>
               <div className="space-y-3 pt-2">
                 <Button
                   onClick={handleClaim}
-                  className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-6 text-lg font-bold shadow-lg shadow-orange-500/30"
+                  className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg font-bold shadow-lg shadow-primary/20"
                 >
                   ⚡ CLAIM MY 10% OFF NOW
                 </Button>
-                <button onClick={handleClose} className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors">
+                <button onClick={handleClose} className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors">
                   No thanks, I'll pay full price
                 </button>
               </div>
             </>
           ) : (
             <div className="space-y-4">
-              <p className="text-gray-600 font-medium">🎉 Here's your exclusive code:</p>
+              <p className="text-muted-foreground font-medium">🎉 Here's your exclusive code:</p>
               <div 
                 onClick={handleCopyCode}
-                className="bg-gradient-to-r from-amber-100 to-orange-100 border-2 border-dashed border-amber-400 rounded-xl p-4 cursor-pointer hover:border-amber-500 transition-colors group"
+                className="bg-primary/5 border-2 border-dashed border-primary/30 rounded-xl p-4 cursor-pointer hover:border-primary/50 transition-colors group"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <span className="text-3xl font-bold text-orange-600 tracking-wider">{PROMO_CODE}</span>
-                  {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6 text-amber-400 group-hover:text-amber-600 transition-colors" />}
+                  <span className="text-3xl font-bold text-primary tracking-wider">{PROMO_CODE}</span>
+                  {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6 text-primary/40 group-hover:text-primary transition-colors" />}
                 </div>
-                <p className="text-xs text-gray-500 mt-2">{copied ? "Copied!" : "Click to copy"}</p>
+                <p className="text-xs text-muted-foreground mt-2">{copied ? "Copied!" : "Click to copy"}</p>
               </div>
-              <p className="text-sm text-gray-500">
-                Use this code at checkout to get <span className="font-bold text-orange-600">10% OFF</span> your order!
+              <p className="text-sm text-muted-foreground">
+                Use this code at checkout to get <span className="font-bold text-primary">10% OFF</span> your order!
               </p>
-              <Button onClick={handleClose} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-5">
+              <Button onClick={handleClose} className="w-full bg-primary hover:bg-primary/90 text-white py-5">
                 Continue Shopping
               </Button>
             </div>
           )}
-          <p className="text-xs text-gray-400 pt-2">
+          <p className="text-xs text-muted-foreground pt-2">
             🔒 Secure checkout • Free shipping across Canada 🇨🇦 • 30-day guarantee
           </p>
         </div>

@@ -52,12 +52,12 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
     >
       <Card className={`overflow-hidden relative h-full flex flex-col transition-all duration-300 bg-card ${
         isFeatured 
-          ? 'border-2 border-primary shadow-xl shadow-primary/20 hover:shadow-2xl ring-2 ring-primary/20 scale-[1.02]' 
-          : 'border-0 shadow-sm hover:shadow-lg glow-border hover-glow'
+          ? 'border-2 border-primary shadow-xl ring-2 ring-primary/10 scale-[1.02]' 
+          : 'border border-border shadow-sm hover:shadow-lg hover-glow'
       }`}>
         {isFeatured && (
           <div className="absolute -top-1 -right-12 z-20 rotate-45 transform">
-            <div className="bg-primary text-primary-foreground text-[10px] font-bold py-1 px-12 shadow-lg">
+            <div className="bg-primary text-white text-[10px] font-bold py-1 px-12 shadow-lg">
               BEST VALUE
             </div>
           </div>
@@ -65,7 +65,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
 
         {/* Flash Sale Badge */}
         <div className="absolute top-0 left-0 right-0 z-10">
-          <div className="bg-primary text-primary-foreground text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
+          <div className="bg-foreground text-white text-xs font-bold py-1.5 px-2 text-center flex items-center justify-center gap-1.5 rounded-t-lg">
             <span>{isFeatured ? '🏆' : '⚡'}</span>
             <span>{isFeatured ? 'MOST POPULAR CHOICE' : 'FLASH SALE'}</span>
             <span>{isFeatured ? '🏆' : '⚡'}</span>
@@ -74,7 +74,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
 
         {isFeatured && (
           <div className="absolute top-10 left-3 z-10">
-            <Badge className="bg-accent text-accent-foreground shadow-lg px-3 py-1.5 text-xs font-bold animate-pulse">
+            <Badge className="bg-primary text-white shadow-lg px-3 py-1.5 text-xs font-bold">
               <Star className="h-3.5 w-3.5 mr-1 fill-current" />
               #1 Best Seller
             </Badge>
@@ -82,7 +82,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         )}
         
         <div className="absolute top-10 right-3 z-10">
-          <Badge variant="secondary" className="bg-primary/90 text-primary-foreground text-xs">
+          <Badge variant="secondary" className="bg-foreground text-white text-xs">
             <Zap className="h-3 w-3 mr-1" />
             Up to 240W
           </Badge>
@@ -91,18 +91,18 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
         {/* Stock Level */}
         <div className="absolute bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border px-3 py-2 z-10">
           <div className="flex items-center gap-1.5 mb-1.5">
-            <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`} />
-            <span className={`text-xs font-semibold ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-accent' : 'text-primary'}`}>
+            <AlertTriangle className={`h-3 w-3 ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-muted-foreground' : 'text-primary'}`} />
+            <span className={`text-xs font-semibold ${isLowStock ? 'text-destructive' : isMediumStock ? 'text-muted-foreground' : 'text-primary'}`}>
               Only {stockLevel} left in stock!
             </span>
           </div>
           <Progress 
             value={stockPercentage} 
-            className={`h-1.5 ${isLowStock ? '[&>div]:bg-destructive' : isMediumStock ? '[&>div]:bg-accent' : '[&>div]:bg-primary'}`}
+            className={`h-1.5 ${isLowStock ? '[&>div]:bg-destructive' : isMediumStock ? '[&>div]:bg-muted-foreground' : '[&>div]:bg-primary'}`}
           />
         </div>
 
-        <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-muted' : 'bg-muted/50'}`}>
+        <div className={`aspect-square overflow-hidden ${isFeatured ? 'bg-secondary' : 'bg-secondary/50'}`}>
           {image ? (
             <img
               src={image.url}
@@ -138,7 +138,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
                   {price.toFixed(2)} {currencyCode}
                 </span>
                 {hasDiscount && (
-                  <Badge className="bg-primary text-primary-foreground text-xs px-1.5 py-0">
+                  <Badge className="bg-primary text-white text-xs px-1.5 py-0">
                     -{Math.round((1 - price / compareAtPrice) * 100)}%
                   </Badge>
                 )}
@@ -146,7 +146,7 @@ export const ProductCard = ({ product, isFeatured = false }: ProductCardProps) =
             </div>
             <Button 
               size="sm" 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md"
+              className="bg-primary hover:bg-primary/90 text-white shadow-md"
             >
               Shop Now
               <ArrowRight className="h-4 w-4 ml-1" />
