@@ -200,16 +200,16 @@ export const HeroSection = () => {
                 <button
                   onClick={handleAddChargerToCart}
                   disabled={isAddingCharger}
-                  className="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-60"
+                  className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg px-2 py-2 shadow-md text-center relative hover:scale-105 hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-60"
                 >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">⚡ NEW</div>
-                  <div className="text-[10px] font-semibold text-emerald-700 mb-0.5 mt-1">Wall Charger</div>
-                  <div className="text-[9px] font-medium text-emerald-600 -mt-0.5 mb-0.5">240W GaN</div>
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">⚡ NEW</div>
+                  <div className="text-[10px] font-semibold text-amber-700 mb-0.5 mt-1">Wall Charger</div>
+                  <div className="text-[9px] font-medium text-amber-600 -mt-0.5 mb-0.5">240W GaN</div>
                   <div className="text-[10px] text-muted-foreground line-through">$49.90</div>
-                  <div className="text-base font-bold text-emerald-600">
+                  <div className="text-base font-bold text-amber-600">
                     {isAddingCharger ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "$24.90"}
                   </div>
-                  <div className="text-[10px] font-bold text-emerald-500">-50%</div>
+                  <div className="text-[10px] font-bold text-amber-500">-50%</div>
                 </button>
               </div>
 
