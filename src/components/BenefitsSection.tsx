@@ -18,41 +18,8 @@ export const BenefitsSection = () => {
 
         {/* Grid: 2 images top, 1 image + 1 video bottom */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          {/* Top left — Charge Smarter ad */}
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <img
-              src={adsHero}
-              alt="Charge Smarter. Use Your Phone. Up to 240W Fast Charging, Hands-Free, Built to Last"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Top right — Features breakdown */}
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <img
-              src={adsFeatures}
-              alt="Go4Charges features: 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Bottom left — Before/After */}
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <img
-              src={heroImage}
-              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Bottom right — Video */}
-          <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary">
+          {/* Bottom right on desktop / First on mobile — Video */}
+          <div className="relative rounded-xl overflow-hidden shadow-lg glow-primary order-1 md:order-4">
             <video
               src={benefitsVideo2}
               autoPlay
@@ -63,6 +30,39 @@ export const BenefitsSection = () => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent pointer-events-none" />
+          </div>
+
+          {/* Top left — Charge Smarter ad */}
+          <div className="rounded-xl overflow-hidden shadow-lg order-2 md:order-1">
+            <img
+              src={adsHero}
+              alt="Charge Smarter. Use Your Phone. Up to 240W Fast Charging, Hands-Free, Built to Last"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Top right — Features breakdown */}
+          <div className="rounded-xl overflow-hidden shadow-lg order-3 md:order-2">
+            <img
+              src={adsFeatures}
+              alt="Go4Charges features: 240W Fast Charging, 90° Anti-Break Design, Integrated Phone Stand, Reinforced Braided Cable"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Bottom left — Before/After */}
+          <div className="rounded-xl overflow-hidden shadow-lg order-4 md:order-3">
+            <img
+              src={heroImage}
+              alt="ChargeStand - Still charging like this? Charge smarter with built-in phone stand"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
 
