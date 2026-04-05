@@ -83,8 +83,8 @@ export const HeroSection = () => {
           <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-16 pb-6 lg:py-20">
 
             {/* Video card */}
-            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1">
-              <div className="relative">
+            <div className="flex-1 w-full max-w-md lg:max-w-lg order-1 lg:self-stretch flex flex-col">
+              <div className="relative flex-1 flex flex-col">
                 <div className="bg-foreground rounded-2xl overflow-hidden shadow-2xl">
                   <video
                     src={heroVideo}
