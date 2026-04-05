@@ -4,55 +4,50 @@
 
 @layer base {
   :root {
-    /* Go4Charges — Dark Tech Premium */
-    --background: 220 25% 6%;
-    --foreground: 210 20% 93%;
+    /* Clean White Tech — Inspired by Rolling Square */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
     
-    --card: 220 22% 10%;
-    --card-foreground: 210 20% 93%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
     
-    --popover: 220 22% 10%;
-    --popover-foreground: 210 20% 93%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
     
-    /* Primary: Electric Blue */
-    --primary: 205 100% 55%;
-    --primary-foreground: 220 25% 6%;
+    /* Primary: Bright Blue (Rolling Square style) */
+    --primary: 217 91% 50%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Secondary: Lighter cyan-blue */
-    --secondary: 195 90% 60%;
-    --secondary-foreground: 220 25% 6%;
+    /* Secondary: Soft gray */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 0 0% 7%;
     
-    --muted: 220 20% 13%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
     
-    --section-alt: 220 20% 8%;
+    --section-alt: 220 14% 97%;
     
-    /* Accent: Warm amber for CTAs */
-    --accent: 35 95% 55%;
-    --accent-foreground: 220 25% 6%;
+    /* Accent: Same blue — one color system */
+    --accent: 217 91% 50%;
+    --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 220 15% 16%;
-    --input: 220 18% 14%;
-    --ring: 205 100% 55%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 50%;
     
     --radius: 0.75rem;
-    
-    /* Glow system */
-    --glow-blue: 205 100% 55%;
-    --glow-light-blue: 195 90% 60%;
-    --glow-cyan: 185 85% 50%;
 
-    --sidebar-background: 220 22% 10%;
-    --sidebar-foreground: 210 20% 93%;
-    --sidebar-primary: 205 100% 55%;
-    --sidebar-primary-foreground: 220 25% 6%;
-    --sidebar-accent: 220 20% 15%;
-    --sidebar-accent-foreground: 210 20% 93%;
-    --sidebar-border: 220 15% 16%;
-    --sidebar-ring: 205 100% 55%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 7%;
+    --sidebar-primary: 217 91% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 50%;
   }
 }
 
@@ -66,35 +61,9 @@
 }
 
 @layer utilities {
-  /* Electric glow effects */
-  .glow-blue {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3), 0 0 60px hsl(var(--primary) / 0.1);
-  }
-  
-  .glow-light-blue {
-    box-shadow: 0 0 20px hsl(var(--secondary) / 0.25);
-  }
-  
-  .glow-cyan {
-    box-shadow: 0 0 20px hsl(var(--glow-cyan) / 0.25);
-  }
-
-  .glow-primary {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.2), 0 4px 20px hsl(var(--primary) / 0.15);
-  }
-
-  /* Legacy glow classes */
-  .glow-yellow, .glow-lime, .glow-pink, .glow-orange, .glow-silver, .glow-multi {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.15);
-  }
-  
-  .glow-border {
-    border: 1px solid hsl(var(--primary) / 0.2);
-  }
-  
-  /* Text Gradient — electric blue */
+  /* Text Gradient — blue */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    background: linear-gradient(135deg, hsl(217 91% 50%), hsl(217 91% 60%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -106,7 +75,7 @@
   }
   
   .hover-glow:hover {
-    box-shadow: 0 0 25px hsl(var(--primary) / 0.25);
+    box-shadow: 0 4px 20px hsl(217 91% 50% / 0.1);
     transform: translateY(-2px);
   }
   
@@ -129,5 +98,14 @@
     .animate-marquee {
       animation: none;
     }
+  }
+
+  /* Legacy compat */
+  .glow-blue, .glow-light-blue, .glow-cyan, .glow-primary,
+  .glow-yellow, .glow-lime, .glow-pink, .glow-orange, .glow-silver, .glow-multi {
+    box-shadow: none;
+  }
+  .glow-border {
+    border: 1px solid hsl(var(--border));
   }
 }
