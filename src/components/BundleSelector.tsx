@@ -52,7 +52,7 @@ export function BundleSelector({ options, selectedId, onSelect, isLoading }: Bun
   return (
     <div className="space-y-4">
       {/* Timer */}
-      <div className="flex items-center justify-center gap-2 bg-foreground text-white py-2.5 px-4 rounded-lg font-semibold">
+      <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 px-4 rounded-lg font-semibold">
         <Timer className="h-4 w-4" />
         <span>Bundle deal expires in</span>
         <span className="font-mono font-bold">{timeLeft}</span>
@@ -75,13 +75,20 @@ export function BundleSelector({ options, selectedId, onSelect, isLoading }: Bun
               key={option.id}
               className={cn(
                 "relative flex cursor-pointer rounded-xl border-2 p-4 transition-all duration-200",
-                isSelected
+                isFamily && isSelected
+                  ? "border-amber-500 bg-amber-50 shadow-md ring-1 ring-amber-400/30"
+                  : isSelected
                   ? "border-primary bg-primary/5 shadow-md"
+                  : isFamily
+                  ? "border-amber-300 bg-amber-50/50 hover:border-amber-400"
                   : "border-border bg-card hover:border-primary/30"
               )}
             >
               {isSelected && (
-                <div className="absolute -top-2.5 left-4 bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">
+                <div className={cn(
+                  "absolute -top-2.5 left-4 text-white text-xs font-bold px-2 py-0.5 rounded",
+                  isFamily ? "bg-amber-500" : "bg-primary"
+                )}>
                   ✓ SELECTED
                 </div>
               )}
@@ -98,7 +105,7 @@ export function BundleSelector({ options, selectedId, onSelect, isLoading }: Bun
                           className={cn(
                             "text-xs",
                             badge === "BEST VALUE"
-                              ? "bg-primary text-white border-0"
+                              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0"
                               : badge === "POPULAR"
                               ? "bg-foreground text-white border-0"
                               : badge.includes("%")
