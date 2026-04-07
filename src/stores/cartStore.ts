@@ -13,6 +13,7 @@ import {
   isCartNotFoundError
 } from '@/lib/shopify';
 import { trackAnalyticsEvent } from '@/hooks/useAnalyticsTracking';
+import { trackGoogleAddToCart } from '@/lib/googleAds';
 
 export interface CartItem {
   lineId: string | null;
@@ -243,6 +244,7 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              trackGoogleAddToCart(parseFloat(item.price.amount) * item.quantity, item.price.currencyCode);
               // Auto-add/sync free charger if Family Pack
               if (isFamilyPack(item.product)) {
                 if (!hasChargerGiftInItems(get().items)) {
@@ -268,6 +270,7 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              trackGoogleAddToCart(parseFloat(item.price.amount) * item.quantity, item.price.currencyCode);
               // Sync charger gift quantity if Family Pack quantity changed
               if (isFamilyPack(item.product)) {
                 await get().syncChargerGiftQuantity();
@@ -287,6 +290,7 @@ export const useCartStore = create<CartStore>()(
                 quantity: item.quantity,
                 currency: item.price.currencyCode
               });
+              trackGoogleAddToCart(parseFloat(item.price.amount) * item.quantity, item.price.currencyCode);
               // Auto-add/sync free charger if Family Pack
               if (isFamilyPack(item.product)) {
                 if (!hasChargerGiftInItems(get().items)) {

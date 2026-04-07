@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { ShoppingCart, Minus, Plus, Trash2, Loader2, Lock, Truck, RotateCcw, CheckCircle, Clock } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { trackInitiateCheckout } from "@/lib/facebookPixel";
+import { trackGoogleCheckout } from "@/lib/googleAds";
 import { trackAnalyticsEvent } from "@/hooks/useAnalyticsTracking";
 import paymentBadges from "@/assets/payment-badges.png";
 
@@ -121,6 +122,7 @@ export const CartDrawer = () => {
         total_items: totalItems,
         currency: currency
       });
+      trackGoogleCheckout(totalPrice, currency);
       
       window.open(checkoutUrl, '_blank');
       setIsOpen(false);
