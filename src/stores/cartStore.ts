@@ -13,6 +13,7 @@ import {
   isCartNotFoundError
 } from '@/lib/shopify';
 import { trackAnalyticsEvent } from '@/hooks/useAnalyticsTracking';
+import { trackGoogleAddToCart } from '@/lib/googleAds';
 
 export interface CartItem {
   lineId: string | null;
