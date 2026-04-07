@@ -122,6 +122,7 @@ export const CartDrawer = () => {
         total_items: totalItems,
         currency: currency
       });
+      trackGoogleCheckout(totalPrice, currency);
       
       window.open(checkoutUrl, '_blank');
       setIsOpen(false);
